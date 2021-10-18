@@ -99,7 +99,3 @@ yarn-debug.log*
 # Logs
 logs
 *.log
-
-#prettier files
-.prettierignore
-.prettierrc
