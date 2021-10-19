@@ -1,18 +1,16 @@
 import React, { useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
-import { Grid, Typography, TextField, Button, Link } from "@mui/material";
+import { Grid, Typography, TextField, Button } from "@mui/material";
 import image from "../static/login-image.png";
 import nwLogo from "../static/nw-logo.png";
 
-const LoginPage = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+const ForgottenPassword = () => {
+  const [email, setEmail] = useState("");
 
-  const handleLogin = () => {};
+  const handleSendEmail = () => {};
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === "Enter") {
-      handleLogin();
+      handleSendEmail();
     }
   };
 
@@ -40,45 +38,31 @@ const LoginPage = () => {
           sx={{
             padding: "10%",
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: "right",
             alignItems: "center",
           }}
         >
-          <Typography variant="body1">Account Login</Typography>
           <img src={nwLogo} alt="New Wave Learning Logo" />
         </Grid>
-        <Grid item sx={{ padding: "10% 20%" }} container direction="column" spacing={2}>
+        <Grid item sx={{ padding: "5% 20%" }} container direction="column" spacing={4}>
           <Grid item>
-            <TextField
-              id="username"
-              label="Username"
-              value={username}
-              onKeyDown={handleKeyDown}
-              onChange={e => setUsername(e.target.value)}
-              fullWidth
-            />
+            <Typography variant="body1">Forgot your password?</Typography>
           </Grid>
           <Grid item>
             <TextField
-              id="password"
-              label="Password"
-              type="password"
-              value={password}
+              id="email"
+              label="Enter your email and reset your password"
+              value={email}
               onKeyDown={handleKeyDown}
-              onChange={e => setPassword(e.target.value)}
+              onChange={e => setEmail(e.target.value)}
               fullWidth
             />
           </Grid>
           <Grid item container spacing={1} direction="column">
             <Grid item>
-              <Button variant="contained" fullWidth size="large" onClick={handleLogin}>
-                Login
+              <Button variant="contained" fullWidth size="large" onClick={handleSendEmail}>
+                Send Email
               </Button>
-            </Grid>
-            <Grid item>
-              <Link component={RouterLink} to="/forgotten-password" underline="none">
-                Forgot password?
-              </Link>
             </Grid>
           </Grid>
         </Grid>
@@ -87,4 +71,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default ForgottenPassword;
