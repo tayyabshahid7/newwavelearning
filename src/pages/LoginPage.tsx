@@ -1,18 +1,61 @@
 import React, { useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, RouteComponentProps } from "react-router-dom";
 import { Grid, Typography, TextField, Button, Link } from "@mui/material";
 import image from "../static/login-image.png";
 import nwLogo from "../static/nw-logo.png";
+import { loginUser } from "../services/auth";
 
-const LoginPage = () => {
+interface LoginPageProps {
+  history: RouteComponentProps["history"];
+}
+
+const LoginPage = ({ history }: LoginPageProps) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [usernameError, setUsernameError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [loginError, setLoginError] = useState(null);
 
-  const handleLogin = () => {};
+  const handleLogin = async () => {
+    if (username.length <= 0) {
+      setUsernameError(true);
+      return;
+    }
+    if (password.length <= 0) {
+      setPasswordError(true);
+      return;
+    }
+
+    try {
+      await loginUser(username, password);
+      history.push("/dashboard");
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        setLoginError(error.response.data.detail);
+      }
+      console.log(error.response);
+    }
+  };
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === "Enter") {
       handleLogin();
+    }
+  };
+
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(e.target.value);
+    if (e.target.value.length > 0) {
+      setUsernameError(false);
+      setLoginError(null);
+    }
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+    if (e.target.value.length > 0) {
+      setPasswordError(false);
+      setLoginError(null);
     }
   };
 
@@ -54,8 +97,10 @@ const LoginPage = () => {
               label="Username"
               value={username}
               onKeyDown={handleKeyDown}
-              onChange={e => setUsername(e.target.value)}
+              onChange={handleUsernameChange}
               fullWidth
+              error={usernameError}
+              helperText={usernameError && "This field is required"}
             />
           </Grid>
           <Grid item>
@@ -65,11 +110,20 @@ const LoginPage = () => {
               type="password"
               value={password}
               onKeyDown={handleKeyDown}
-              onChange={e => setPassword(e.target.value)}
+              onChange={handlePasswordChange}
               fullWidth
+              error={passwordError}
+              helperText={passwordError && "This field is required"}
             />
           </Grid>
           <Grid item container spacing={1} direction="column">
+            {loginError && (
+              <Grid item>
+                <Typography variant="body2" color="error">
+                  {loginError}
+                </Typography>
+              </Grid>
+            )}
             <Grid item>
               <Button variant="contained" fullWidth size="large" onClick={handleLogin}>
                 Login
