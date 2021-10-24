@@ -1,6 +1,7 @@
-import { axs } from "./axiosAPI";
+import axios from "axios";
+import { AuthData, ResponseData, ResetPasswordData } from "../common/types";
 import { GET_TOKEN_URL, LOGIN_PAGE } from "../common/constants";
-import { AuthData } from "../common/types";
+import { axs } from "./axiosAPI";
 
 export const isBrowser = () => typeof window !== "undefined";
 
@@ -12,21 +13,6 @@ export const getUser = () => {
 const setUser = (accessToken: string) => {
   const decodedToken = decodeJWT(accessToken);
   localStorage.setItem("user", JSON.stringify(decodedToken.user));
-};
-
-export const loginUser = async (username: string, password: string) => {
-  try {
-    const response = await axs.post<AuthData>(GET_TOKEN_URL, {
-      username: username,
-      password: password,
-    });
-    axs.defaults.headers.common["Authorization"] = "Bearer " + response.data.access;
-    localStorage.setItem("access_token", response.data.access);
-    localStorage.setItem("refresh_token", response.data.refresh);
-    setUser(response.data.access);
-  } catch (error: any) {
-    throw error;
-  }
 };
 
 export const isLoggedIn = () => {
@@ -60,4 +46,50 @@ const decodeJWT = (token: string) => {
   );
 
   return JSON.parse(jsonPayload);
+};
+
+export const loginUser = async (username: string, password: string) => {
+  try {
+    const response = await axs.post<AuthData>(GET_TOKEN_URL, {
+      username: username,
+      password: password,
+    });
+    axs.defaults.headers.common["Authorization"] = "Bearer " + response.data.access;
+    localStorage.setItem("access_token", response.data.access);
+    localStorage.setItem("refresh_token", response.data.refresh);
+    setUser(response.data.access);
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const sendResetPasswordEmail = async (email: string) => {
+  try {
+    const response = await axios.post<ResponseData>("/auth/send-password-reset-email/", {
+      email: email,
+    });
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const resetUserPassword = async (data: ResetPasswordData) => {
+  try {
+    const response = await axios.patch<ResponseData>("/auth/password-reset/", data);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const checkToken = async (signature: string, token: string) => {
+  try {
+    const response = await axios.get<ResponseData>(
+      `/auth/password-reset-check/${signature}/${token}/`
+    );
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
 };

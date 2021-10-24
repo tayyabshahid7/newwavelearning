@@ -1,17 +1,50 @@
 import React, { useState } from "react";
-import { Grid, Typography, TextField, Button } from "@mui/material";
+import {
+  Grid,
+  Typography,
+  TextField,
+  Button,
+  Link,
+} from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 import image from "../static/login-image.png";
 import nwLogo from "../static/nw-logo.png";
+import { LOGIN_PAGE } from "../common/constants";
+import { isValidEmail } from "../common/utils";
+import { sendResetPasswordEmail } from "../services/auth";
 
 const ForgottenPassword = () => {
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
+  const [requestError, setRequestError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSendEmail = () => {};
-
-  const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === "Enter") {
-      handleSendEmail();
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+    if (e.target.value.length > 0) {
+      setEmailError(false);
     }
+  };
+
+  const handleSendEmail = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setRequestError(false);
+    setLoading(true);
+    if (isValidEmail(email)) {
+      try {
+        const response = await sendResetPasswordEmail(email);
+        console.log(response);
+        setEmailSent(true);
+        return;
+      } catch (error: any) {
+        console.log(error);
+        setRequestError(true);
+      }
+    } else {
+      setEmailError(true);
+    }
+    setLoading(false);
   };
 
   return (
@@ -44,28 +77,60 @@ const ForgottenPassword = () => {
         >
           <img src={nwLogo} alt="New Wave Learning Logo" />
         </Grid>
-        <Grid item sx={{ padding: "5% 20%" }} container direction="column" spacing={4}>
-          <Grid item>
-            <Typography variant="body1">Forgot your password?</Typography>
+        {emailSent ? (
+          <Grid item sx={{ padding: "5% 10%", textAlign: "center" }}>
+            <Typography variant="h5">Email sent, please check your inbox.</Typography>
+            <br />
+            <Typography variant="caption">
+              (If the email exists you will be get a link to reset your password.)
+            </Typography>
+            <br />
+            <br />
+            <Link component={RouterLink} to={LOGIN_PAGE} underline="none">
+              Back to Login Page
+            </Link>
           </Grid>
-          <Grid item>
-            <TextField
-              id="email"
-              label="Enter your email and reset your password"
-              value={email}
-              onKeyDown={handleKeyDown}
-              onChange={e => setEmail(e.target.value)}
-              fullWidth
-            />
-          </Grid>
-          <Grid item container spacing={1} direction="column">
-            <Grid item>
-              <Button variant="contained" fullWidth size="large" onClick={handleSendEmail}>
-                Send Email
-              </Button>
+        ) : (
+          <form onSubmit={handleSendEmail}>
+            <Grid item sx={{ padding: "5% 20%" }} container direction="column" spacing={4}>
+              <Grid item>
+                <Typography variant="body1">Forgot your password?</Typography>
+              </Grid>
+              <Grid item>
+                <TextField
+                  id="email"
+                  label="Enter your email and reset your password"
+                  value={email}
+                  onChange={handleEmailChange}
+                  fullWidth
+                  helperText={emailError && "Please input a valid email."}
+                  error={emailError}
+                  disabled={loading}
+                />
+              </Grid>
+              <Grid item container spacing={1} direction="column">
+                {requestError && (
+                  <Grid item>
+                    <Typography variant="body2" color="error">
+                      There was an error sending the email, pleas try again
+                    </Typography>
+                  </Grid>
+                )}
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    size="large"
+                    onClick={handleSendEmail}
+                    disabled={loading}
+                  >
+                    Send Email
+                  </Button>
+                </Grid>
+              </Grid>
             </Grid>
-          </Grid>
-        </Grid>
+          </form>
+        )}
       </Grid>
     </Grid>
   );

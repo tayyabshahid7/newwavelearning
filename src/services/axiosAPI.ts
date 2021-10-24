@@ -3,13 +3,16 @@ import { isTokenExpired, logout } from "./auth";
 import { API_URL, TOKEN_REFRESH_URL } from "../common/constants";
 import { AuthData } from "../common/types";
 
+// DEFAULT AXIOS HEADERS
+axios.defaults.baseURL = `${API_URL}`;
+axios.defaults.headers.common["Content-Type"] = "application/json";
+
 export let axs = axios.create({
-  baseURL: `${API_URL}`,
   timeout: 5000,
   headers: {
     Authorization: "Bearer " + localStorage.getItem("access_token"),
     "Content-Type": "application/json",
-    accept: "application/json",
+    Accept: "application/json",
   },
 });
 
@@ -24,7 +27,7 @@ axs.interceptors.response.use(
         if (refreshToken && isTokenExpired(refreshToken)) {
           logout();
           // ERROR EXPIRED TOKEN AND REFRESH TOKEN
-          console.log("EXPIRED BOTH")
+          console.log("EXPIRED BOTH");
           return Promise.reject(error);
         } else {
           try {
@@ -37,14 +40,14 @@ axs.interceptors.response.use(
             return axs(originalRequest);
           } catch (e) {
             // ERROR FETCHING REFRESH TOKEN
-            console.log("EXPIRED REFRESH")
+            console.log("EXPIRED REFRESH");
             return Promise.reject(e);
           }
         }
       }
     }
     // ANY OTHRE TYPE OF ERRORS
-    console.log("NORMAL ERR")
+    console.log("NORMAL ERR");
     return Promise.reject(error);
   }
 );
