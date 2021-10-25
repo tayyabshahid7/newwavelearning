@@ -30,6 +30,9 @@ let theme = createTheme({
     orange: {
       main: "#FD773B",
     },
+    background: {
+      default: "#F5F6F8",
+    },
   },
   components: {
     MuiButton: {
@@ -51,6 +54,22 @@ let theme = createTheme({
       styleOverrides: {
         root: {
           backgroundColor: "white",
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          background: "white",
+          boxShadow: "none",
+          borderBottom: "1px solid #EBEFF2",
+        },
+      },
+    },
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          boxShadow: "0px 0px 10px 0px #d7d2d2",
         },
       },
     },
