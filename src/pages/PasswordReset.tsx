@@ -138,6 +138,7 @@ const PasswordReset = ({ history }: PasswordResetProps) => {
                     value={passwords.password}
                     onChange={handleInputChange}
                     fullWidth
+                    type="password"
                     disabled={loading}
                   />
                 </Grid>
@@ -148,6 +149,7 @@ const PasswordReset = ({ history }: PasswordResetProps) => {
                     value={passwords.password2}
                     onChange={handleInputChange}
                     fullWidth
+                    type="password"
                     helperText={
                       passwordErrors &&
                       "Passwords do not match or are too weak" +
