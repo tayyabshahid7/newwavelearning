@@ -1,24 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link as RouterLink, RouteComponentProps } from "react-router-dom";
 import { Grid, Typography, TextField, Button, Link } from "@mui/material";
 import image from "../static/login-image.png";
 import nwLogo from "../static/nw-logo.png";
-import { loginUser } from "../services/auth";
+import { isLoggedIn, loginUser } from "../services/auth";
 
 interface LoginPageProps {
   history: RouteComponentProps["history"];
 }
 
 const LoginPage = ({ history }: LoginPageProps) => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [usernameError, setUsernameError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
-  const [loginError, setLoginError] = useState(null);
+  const [loginError, setLoginError] = useState<any>(null);
+
+  useEffect(() => {
+    isLoggedIn() && history.push("/dashboard");
+  });
 
   const handleLogin = async () => {
-    if (username.length <= 0) {
-      setUsernameError(true);
+    if (email.length <= 0) {
+      setEmailError(true);
       return;
     }
     if (password.length <= 0) {
@@ -27,11 +31,14 @@ const LoginPage = ({ history }: LoginPageProps) => {
     }
 
     try {
-      await loginUser(username, password);
-      history.push("/dashboard");
+      await loginUser(email, password);
+      window.location.href = "/dashboard";
     } catch (error: any) {
       if (error.response?.status === 401) {
         setLoginError(error.response.data.detail);
+      } else {
+        const serverErrorText = "There was a server error, please try again.";
+        setLoginError(serverErrorText);
       }
       console.log(error.response);
     }
@@ -43,10 +50,10 @@ const LoginPage = ({ history }: LoginPageProps) => {
     }
   };
 
-  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value);
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
     if (e.target.value.length > 0) {
-      setUsernameError(false);
+      setEmailError(false);
       setLoginError(null);
     }
   };
@@ -93,14 +100,14 @@ const LoginPage = ({ history }: LoginPageProps) => {
         <Grid item sx={{ padding: "10% 20%" }} container direction="column" spacing={2}>
           <Grid item>
             <TextField
-              id="username"
-              label="Username"
-              value={username}
+              id="email"
+              label="Email Address"
+              value={email}
               onKeyDown={handleKeyDown}
-              onChange={handleUsernameChange}
+              onChange={handleEmailChange}
               fullWidth
-              error={usernameError}
-              helperText={usernameError && "This field is required"}
+              error={emailError}
+              helperText={emailError && "This field is required"}
             />
           </Grid>
           <Grid item>
