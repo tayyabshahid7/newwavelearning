@@ -19,9 +19,15 @@ import {
   Person as UsersIcon,
   MeetingRoomOutlined as LogoutIcon,
 } from "@mui/icons-material";
+import { useHistory } from "react-router";
 
-const SidebarMenu = () => {
+interface SidebarMenuProps {
+  selected?: string;
+}
+
+const SidebarMenu = ({ selected }: SidebarMenuProps) => {
   const user = getUser();
+  const history = useHistory();
   const sidebarWidth = 240;
   return (
     <Drawer
@@ -46,25 +52,31 @@ const SidebarMenu = () => {
           </ListItemIcon>
           <ListItemText primary={user.name} secondary={user.role.toUpperCase()} />
         </ListItem>
-        <ListItemButton>
+        <ListItemButton onClick={() => history.push("/cohorts")} selected={selected === "cohorts"}>
           <ListItemIcon>
             <CohortsIcon />
           </ListItemIcon>
           <ListItemText primary={"Cohorts"} />
         </ListItemButton>
-        <ListItemButton>
+        <ListItemButton
+          onClick={() => history.push("/programmes")}
+          selected={selected === "programmes"}
+        >
           <ListItemIcon>
             <ProgrammesIcons />
           </ListItemIcon>
           <ListItemText primary={"Programmes"} />
         </ListItemButton>
-        <ListItemButton>
+        <ListItemButton
+          onClick={() => history.push("/feedback")}
+          selected={selected === "feedback"}
+        >
           <ListItemIcon>
             <FeedbackIcon />
           </ListItemIcon>
           <ListItemText primary={"Feedback"} />
         </ListItemButton>
-        <ListItemButton>
+        <ListItemButton onClick={() => history.push("/users")} selected={selected === "users"}>
           <ListItemIcon>
             <UsersIcon />
           </ListItemIcon>

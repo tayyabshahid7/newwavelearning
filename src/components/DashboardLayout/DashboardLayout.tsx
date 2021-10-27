@@ -4,13 +4,13 @@ import { AppBar, Toolbar, IconButton, Badge } from "@mui/material";
 import { Notifications } from "@mui/icons-material";
 import SidebarMenu from "../SidebarMenu.tsx/SidebarMenu";
 
-const drawerWidth = 240;
-
 interface DashboardLayoutProps {
-  children: JSX.Element;
+  selectedPage?: string;
+  children?: React.ReactNode;
 }
 
-export default function DashboardLayout({ children }: DashboardLayoutProps) {
+const DashboardLayout = ({ selectedPage, children }: DashboardLayoutProps) => {
+  const drawerWidth = 240;
   return (
     <Box sx={{ display: "flex" }}>
       <AppBar
@@ -28,11 +28,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           </Box>
         </Toolbar>
       </AppBar>
-      <SidebarMenu />
+      <SidebarMenu selected={selectedPage} />
       <Box component="main" sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}>
         <Toolbar sx={{ bgcolor: "#F5F6F8" }} />
         {children}
       </Box>
     </Box>
   );
-}
+};
+
+export default DashboardLayout;
