@@ -38,11 +38,15 @@ let theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
+          textTransform: "none",
+        },
+        contained: {
           color: "white",
         },
       },
       defaultProps: {
         disableElevation: true,
+        variant: "contained",
       },
     },
     MuiTextField: {
@@ -70,6 +74,19 @@ let theme = createTheme({
       styleOverrides: {
         paper: {
           boxShadow: "0px 0px 10px 0px #d7d2d2",
+        },
+      },
+    },
+    MuiPaper: {
+      defaultProps: {
+        elevation: 0,
+      },
+    },
+    MuiSelect: {
+      styleOverrides: {
+        outlined: {
+          background: "white",
+          height: "10px",
         },
       },
     },

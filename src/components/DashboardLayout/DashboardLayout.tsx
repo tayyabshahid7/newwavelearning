@@ -12,7 +12,7 @@ interface DashboardLayoutProps {
 const DashboardLayout = ({ selectedPage, children }: DashboardLayoutProps) => {
   const drawerWidth = 240;
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", marginTop: "42px" }}>
       <AppBar
         position="fixed"
         sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}

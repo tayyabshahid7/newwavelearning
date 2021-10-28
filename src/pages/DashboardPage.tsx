@@ -3,15 +3,13 @@ import Typography from "@mui/material/Typography";
 
 import DashboardLayout from "../components/DashboardLayout/DashboardLayout";
 
-const DashBoard = () => {
+const DashBoardPage = () => {
   
   return (
     <DashboardLayout>
-      <>
         <Typography variant="h2">Hello, this is the DASHBOARD</Typography>
-      </>
     </DashboardLayout>
   );
 };
 
-export default DashBoard;
+export default DashBoardPage;
