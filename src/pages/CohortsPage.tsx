@@ -17,9 +17,14 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
+import { RouteComponentProps } from "react-router";
 import DashboardLayout from "../components/DashboardLayout/DashboardLayout";
 
-const CohortsPage = () => {
+interface CohortsPageProps {
+  history: RouteComponentProps["history"];
+}
+
+const CohortsPage = ({ history }: CohortsPageProps) => {
   const [cohortStatus, setEmail] = useState("All");
 
   const handleChange = (event: SelectChangeEvent) => {
@@ -41,7 +46,9 @@ const CohortsPage = () => {
           <Typography variant="h4">Cohorts</Typography>
         </Grid>
         <Grid item xs={6} textAlign="right">
-          <Button size="large">Add Cohort</Button>
+          <Button size="large" onClick={() => history.push("/cohorts/add")}>
+            Add Cohort
+          </Button>
         </Grid>
       </Grid>
       <Divider sx={{ margin: "20px 0" }} />
