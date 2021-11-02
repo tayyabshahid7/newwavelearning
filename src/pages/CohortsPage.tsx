@@ -16,19 +16,33 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router";
 import DashboardLayout from "../components/DashboardLayout/DashboardLayout";
+import { getCohorts } from "../services/common";
 
 interface CohortsPageProps {
   history: RouteComponentProps["history"];
 }
 
 const CohortsPage = ({ history }: CohortsPageProps) => {
-  const [cohortStatus, setEmail] = useState("All");
+  const [cohortStatus, setCohortStatus] = useState("All");
+  const [cohortList, setCohortList] = useState<any | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getCohorts();
+        setCohortList(response.data.results);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleChange = (event: SelectChangeEvent) => {
-    setEmail(event.target.value as string);
+    setCohortStatus(event.target.value as string);
   };
 
   const cohortsData = [
@@ -64,9 +78,8 @@ const CohortsPage = ({ history }: CohortsPageProps) => {
               onChange={handleChange}
             >
               <MenuItem value="All">All</MenuItem>
-              <MenuItem value="1">Ten</MenuItem>
-              <MenuItem value="2">Twenty</MenuItem>
-              <MenuItem value="3">Thirty</MenuItem>
+              <MenuItem value="1">Live</MenuItem>
+              <MenuItem value="2">Completed</MenuItem>
             </Select>
           </FormControl>
         </Grid>
@@ -85,16 +98,13 @@ const CohortsPage = ({ history }: CohortsPageProps) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {cohortsData.map((cohort, i) => (
-              <TableRow key={cohort.name + i}>
+            {cohortList?.map((cohort: any, i: number) => (
+              <TableRow key={cohort.id}>
                 <TableCell align="center">
                   <b>#{i + 1}</b>
                 </TableCell>
                 <TableCell>{cohort.name}</TableCell>
-                <TableCell>
-                  {cohort.learners_count} learner{cohort.learners_count > 1 ? "s" : ""}
-                </TableCell>
-                <TableCell align="center">{cohort.status}</TableCell>
+                <TableCell>12 Learners</TableCell>
                 <TableCell align="right">
                   <Button size="small" sx={{ mr: 5 }}>
                     View cohort
