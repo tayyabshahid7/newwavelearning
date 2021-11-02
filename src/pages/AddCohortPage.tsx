@@ -219,6 +219,7 @@ const AddCohortPage = () => {
                         label="Start Date"
                         value={startDate}
                         onChange={handleStartDateChange}
+                        inputFormat="dd/MM/yyyy"
                         renderInput={params => (
                           <TextField
                             size="small"
@@ -237,6 +238,7 @@ const AddCohortPage = () => {
                         label="Start Date"
                         value={endDate}
                         onChange={handleEndDateChange}
+                        inputFormat="dd/MM/yyyy"
                         renderInput={params => (
                           <TextField
                             size="small"
