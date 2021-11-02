@@ -12,14 +12,17 @@ import {
   TableBody,
   TableCell,
   TableContainer,
+  TableFooter,
   TableHead,
+  TablePagination,
   TableRow,
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router";
 import DashboardLayout from "../components/DashboardLayout/DashboardLayout";
-import { getCohorts } from "../services/common";
+import PromptDialog from "../components/PromptDialog";
+import { deleteCohort, getCohorts } from "../services/common";
 
 interface CohortsPageProps {
   history: RouteComponentProps["history"];
@@ -27,13 +30,20 @@ interface CohortsPageProps {
 
 const CohortsPage = ({ history }: CohortsPageProps) => {
   const [cohortStatus, setCohortStatus] = useState("All");
-  const [cohortList, setCohortList] = useState<any | null>(null);
+  const [cohortList, setCohortList] = useState<any>(null);
+  const [pagination, setPagination] = useState<any>(null);
+  const [dialog, setDialog] = useState<any>({
+    open: false,
+    cohort: null,
+  });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await getCohorts();
         setCohortList(response.data.results);
+        delete response.data.results;
+        setPagination({ ...response.data, page: 0 });
       } catch (error) {
         console.log(error);
       }
@@ -41,17 +51,50 @@ const CohortsPage = ({ history }: CohortsPageProps) => {
     fetchData();
   }, []);
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setCohortStatus(event.target.value as string);
+  const handleChangePage = async (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    let pageUrl = null;
+    if (newPage > pagination.page) {
+      pageUrl = pagination.next;
+    } else if (newPage < pagination.page) {
+      pageUrl = pagination.previous;
+    }
+
+    try {
+      const response = await getCohorts(pageUrl);
+      setCohortList(response.data.results);
+      delete response.data.results;
+      setPagination({ ...response.data, page: newPage });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const cohortsData = [
-    { id: 1, name: "EY1", learners_count: 12, status: "1" },
-    { id: 1, name: "EY1", learners_count: 12, status: "1" },
-    { id: 1, name: "EY1", learners_count: 12, status: "1" },
-    { id: 1, name: "EY1", learners_count: 12, status: "1" },
-    { id: 1, name: "EY1", learners_count: 12, status: "1" },
-  ];
+  const handleStatusChange = (event: SelectChangeEvent) => {
+    const newStatus = event.target.value as string;
+    setCohortStatus(newStatus);
+  };
+
+  const handleDeleteCohort = async (cohort: any) => {
+    setDialog({
+      open: true,
+      cohort: cohort,
+    });
+  };
+
+  const deleteCohortCallback = async (cohortId: number) => {
+    try {
+      await deleteCohort(cohortId);
+      const newCohortList = cohortList.filter((cohort: any) => cohort.id !== cohortId);
+      setCohortList(newCohortList);
+      setDialog({ ...dialog, open: false });
+      setPagination({ ...pagination, count: pagination.count - 1 });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <DashboardLayout selectedPage={"cohorts"}>
@@ -75,11 +118,11 @@ const CohortsPage = ({ history }: CohortsPageProps) => {
               id="cohort-status-select"
               label="Cohort Status"
               value={cohortStatus}
-              onChange={handleChange}
+              onChange={handleStatusChange}
             >
               <MenuItem value="All">All</MenuItem>
-              <MenuItem value="1">Live</MenuItem>
-              <MenuItem value="2">Completed</MenuItem>
+              <MenuItem value="live">Live</MenuItem>
+              <MenuItem value="completed">Completed</MenuItem>
             </Select>
           </FormControl>
         </Grid>
@@ -87,13 +130,11 @@ const CohortsPage = ({ history }: CohortsPageProps) => {
       <br />
       <TableContainer component={Paper}>
         <Table>
-          <caption>&nbsp;{/*Used to add the space at the bottom of the table*/}</caption>
           <TableHead>
             <TableRow>
               <TableCell></TableCell>
               <TableCell align="left">Cohort</TableCell>
               <TableCell align="left">Learners</TableCell>
-              <TableCell align="center">Status</TableCell>
               <TableCell></TableCell>
             </TableRow>
           </TableHead>
@@ -109,15 +150,46 @@ const CohortsPage = ({ history }: CohortsPageProps) => {
                   <Button size="small" sx={{ mr: 5 }}>
                     View cohort
                   </Button>
-                  <Button variant="text" color="error" sx={{ mr: 5 }}>
+                  <Button
+                    onClick={() => handleDeleteCohort(cohort)}
+                    variant="text"
+                    color="error"
+                    sx={{ mr: 5 }}
+                  >
                     Delete
                   </Button>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={[10]}
+                count={pagination?.count || 0}
+                page={pagination?.page || 0}
+                rowsPerPage={10}
+                SelectProps={{
+                  inputProps: {
+                    "aria-label": "rows per page",
+                  },
+                  native: true,
+                }}
+                onPageChange={handleChangePage}
+              />
+            </TableRow>
+          </TableFooter>
         </Table>
       </TableContainer>
+      <PromptDialog
+        open={dialog.open}
+        title="Are you sure you would like to delete the following cohort?"
+        content={`Cohort: ${dialog.cohort?.name}`}
+        okButtonText="Yes"
+        cancelButtonText="No"
+        confirmCallback={() => deleteCohortCallback(dialog.cohort.id)}
+        closeCallback={() => setDialog({ ...dialog, open: false })}
+      />
     </DashboardLayout>
   );
 };

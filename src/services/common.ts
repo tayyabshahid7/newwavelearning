@@ -28,9 +28,18 @@ export const AddCohort = async (data: AddCohortData) => {
   }
 };
 
-export const getCohorts = async () => {
+export const getCohorts = async (pageUrl: string = "/cohorts") => {
   try {
-    const response = await axs.get<ResponseData>("/cohorts/");
+    const response = await axs.get<ResponseData>(pageUrl);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const deleteCohort = async (cohortId: number) => {
+  try {
+    const response = await axs.delete<ResponseData>(`/cohorts/${cohortId}`);
     return response;
   } catch (error: any) {
     throw error;
