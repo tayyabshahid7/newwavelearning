@@ -17,7 +17,7 @@ const LoginPage = ({ history }: LoginPageProps) => {
   const [loginError, setLoginError] = useState<any>(null);
 
   useEffect(() => {
-    isLoggedIn() && history.push("/dashboard");
+    isLoggedIn() && history.push("/cohorts");
   });
 
   const handleLogin = async () => {
@@ -32,7 +32,7 @@ const LoginPage = ({ history }: LoginPageProps) => {
 
     try {
       await loginUser(email, password);
-      window.location.href = "/dashboard";
+      window.location.href = "/cohorts";
     } catch (error: any) {
       if (error.response?.status === 401) {
         setLoginError(error.response.data.detail);
