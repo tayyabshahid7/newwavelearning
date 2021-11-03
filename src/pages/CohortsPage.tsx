@@ -29,7 +29,7 @@ interface CohortsPageProps {
 }
 
 const CohortsPage = ({ history }: CohortsPageProps) => {
-  const [cohortStatus, setCohortStatus] = useState("All");
+  const [cohortStatus, setCohortStatus] = useState("all");
   const [cohortList, setCohortList] = useState<any>(null);
   const [pagination, setPagination] = useState<any>(null);
   const [dialog, setDialog] = useState<any>({
@@ -72,9 +72,18 @@ const CohortsPage = ({ history }: CohortsPageProps) => {
     }
   };
 
-  const handleStatusChange = (event: SelectChangeEvent) => {
+  const handleStatusChange = async (event: SelectChangeEvent) => {
     const newStatus = event.target.value as string;
-    setCohortStatus(newStatus);
+    try {
+      let pageUrl = `/cohorts/?search=${newStatus}`;
+      const response = await getCohorts(pageUrl);
+      setCohortList(response.data.results);
+      delete response.data.results;
+      setPagination({ ...response.data, page: 0 });
+      setCohortStatus(newStatus);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleDeleteCohort = async (cohort: any) => {
@@ -120,9 +129,10 @@ const CohortsPage = ({ history }: CohortsPageProps) => {
               value={cohortStatus}
               onChange={handleStatusChange}
             >
-              <MenuItem value="All">All</MenuItem>
+              <MenuItem value="all">All</MenuItem>
               <MenuItem value="live">Live</MenuItem>
               <MenuItem value="completed">Completed</MenuItem>
+              <MenuItem value="upcomming">Upcomming</MenuItem>
             </Select>
           </FormControl>
         </Grid>
