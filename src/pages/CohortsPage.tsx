@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router";
-import DashboardLayout from "../components/DashboardLayout/DashboardLayout";
+import DashboardLayout from "../components/DashboardLayout";
 import PromptDialog from "../components/PromptDialog";
 import { deleteCohort, getCohorts } from "../services/common";
 
@@ -30,6 +30,7 @@ interface CohortsPageProps {
 
 const CohortsPage = ({ history }: CohortsPageProps) => {
   const [cohortStatus, setCohortStatus] = useState("all");
+  const [loading, setLoading] = useState<boolean>(false);
   const [cohortList, setCohortList] = useState<any>(null);
   const [pagination, setPagination] = useState<any>(null);
   const [dialog, setDialog] = useState<any>({
@@ -39,6 +40,7 @@ const CohortsPage = ({ history }: CohortsPageProps) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const response = await getCohorts();
         setCohortList(response.data.results);
@@ -47,6 +49,7 @@ const CohortsPage = ({ history }: CohortsPageProps) => {
       } catch (error) {
         console.log(error);
       }
+      setLoading(false);
     };
     fetchData();
   }, []);
@@ -94,6 +97,7 @@ const CohortsPage = ({ history }: CohortsPageProps) => {
   };
 
   const deleteCohortCallback = async (cohortId: number) => {
+    setLoading(true);
     try {
       await deleteCohort(cohortId);
       const newCohortList = cohortList.filter((cohort: any) => cohort.id !== cohortId);
@@ -103,10 +107,11 @@ const CohortsPage = ({ history }: CohortsPageProps) => {
     } catch (error) {
       console.log(error);
     }
+    setLoading(false);
   };
 
   return (
-    <DashboardLayout selectedPage={"cohorts"}>
+    <DashboardLayout selectedPage={"cohorts"} loading={loading}>
       <Grid container>
         <Grid item xs={6}>
           <Typography variant="h4">Cohorts</Typography>
@@ -157,7 +162,11 @@ const CohortsPage = ({ history }: CohortsPageProps) => {
                 <TableCell>{cohort.name}</TableCell>
                 <TableCell>12 Learners</TableCell>
                 <TableCell align="right">
-                  <Button size="small" sx={{ mr: 5 }}>
+                  <Button
+                    size="small"
+                    sx={{ mr: 5 }}
+                    onClick={() => history.push(`/cohorts/${cohort.id}`)}
+                  >
                     View cohort
                   </Button>
                   <Button
