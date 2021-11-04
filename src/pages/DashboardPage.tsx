@@ -1,7 +1,7 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
 
-import DashboardLayout from "../components/DashboardLayout/DashboardLayout";
+import DashboardLayout from "../components/DashboardLayout";
 
 const DashBoardPage = () => {
   

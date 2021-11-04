@@ -45,3 +45,12 @@ export const deleteCohort = async (cohortId: number) => {
     throw error;
   }
 };
+
+export const getCohortDetails = async (cohortId: string) => {
+  try {
+    const response = await axs.get<ResponseData>(`/cohorts/${cohortId}`);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
