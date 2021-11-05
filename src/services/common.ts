@@ -28,6 +28,15 @@ export const AddCohort = async (data: AddCohortData) => {
   }
 };
 
+export const EditCohort = async (cohortId: number, data: AddCohortData) => {
+  try {
+    const response = await axs.patch<ResponseData>(`/cohorts/${cohortId}/`, data);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
 export const getCohorts = async (pageUrl: string = "/cohorts") => {
   try {
     const response = await axs.get<ResponseData>(pageUrl);

@@ -27,3 +27,9 @@ export interface AddCohortData {
   /** Json string of the start date **/
   end_date: string;
 }
+
+export interface Session {
+  id: string | number;
+  name: string;
+  range?: string | null;
+}

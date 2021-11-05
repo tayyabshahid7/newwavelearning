@@ -1,7 +1,5 @@
 import React from "react";
-import { Link as RouterLink } from "react-router-dom";
 import {
-  Link,
   Paper,
   Table,
   TableBody,
@@ -12,12 +10,8 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-
-type Session = {
-  id: string | number;
-  name: string;
-  range?: string | null;
-};
+import SessionRanges from "./SessionRanges";
+import { Session } from "../../common/types";
 
 interface CohortSessionsTableProps {
   sessions: Array<Session>;
@@ -31,9 +25,10 @@ const CohortSessionsTable = ({ sessions }: CohortSessionsTableProps) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell align="left">Session Name</TableCell>
+              <TableCell width={400} align="left">
+                Session Name
+              </TableCell>
               <TableCell align="left">Date range</TableCell>
-              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -41,20 +36,7 @@ const CohortSessionsTable = ({ sessions }: CohortSessionsTableProps) => {
               <TableRow key={session.id}>
                 <TableCell>{session.name}</TableCell>
                 <TableCell>
-                  {session.range ? (
-                    session.range
-                  ) : (
-                    <Link component={RouterLink} to={"/cohorts"} underline="none">
-                      Add range
-                    </Link>
-                  )}
-                </TableCell>
-                <TableCell>
-                  {session.range && (
-                    <Link component={RouterLink} to={"/cohorts"} underline="none">
-                      Edit
-                    </Link>
-                  )}
+                  <SessionRanges session={session} />
                 </TableCell>
               </TableRow>
             ))}
