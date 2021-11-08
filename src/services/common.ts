@@ -48,7 +48,7 @@ export const getCohorts = async (pageUrl: string = "/cohorts") => {
 
 export const deleteCohort = async (cohortId: number) => {
   try {
-    const response = await axs.delete<ResponseData>(`/cohorts/${cohortId}`);
+    const response = await axs.delete<ResponseData>(`/cohorts/${cohortId}/`);
     return response;
   } catch (error: any) {
     throw error;
@@ -57,7 +57,16 @@ export const deleteCohort = async (cohortId: number) => {
 
 export const getCohortDetails = async (cohortId: string) => {
   try {
-    const response = await axs.get<ResponseData>(`/cohorts/${cohortId}`);
+    const response = await axs.get<ResponseData>(`/cohorts/${cohortId}/`);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const SaveLiveSession = async (sessionId: number | string, data: any) => {
+  try {
+    const response = await axs.patch<ResponseData>(`/livesessions/${sessionId}/`, data);
     return response;
   } catch (error: any) {
     throw error;

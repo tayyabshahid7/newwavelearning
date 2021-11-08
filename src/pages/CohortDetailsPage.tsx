@@ -9,11 +9,6 @@ import { Box } from "@mui/system";
 import CohortEditDialog from "../components/CohortEditDialog";
 import AddLearnerDialog from "../components/AddLearnerDialog";
 
-const dummySessions = [
-  { id: 1, name: "Session 1", range: null },
-  { id: 2, name: "Session 2", range: "01/11/2021 - 05/11/2021" },
-];
-
 const dummyLearners = [
   {
     id: 1,
@@ -149,7 +144,7 @@ const CohortDetailsPage = () => {
               </Grid>
             </Grid>
             <Divider />
-            <CohortSessionsTable sessions={dummySessions} />
+            <CohortSessionsTable sessions={cohort.live_sessions} />
             <Divider />
             <>
               <Typography variant="h5">Learners</Typography>

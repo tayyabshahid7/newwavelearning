@@ -1,8 +1,6 @@
 import React from "react";
 import {
-  Button,
   Paper,
-  Stack,
   Table,
   TableBody,
   TableCell,
@@ -10,7 +8,6 @@ import {
   TableFooter,
   TableHead,
   TableRow,
-  Typography,
 } from "@mui/material";
 
 type Learner = {

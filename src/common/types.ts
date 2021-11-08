@@ -31,5 +31,7 @@ export interface AddCohortData {
 export interface Session {
   id: string | number;
   name: string;
-  range?: string | null;
+  step_number: number;
+  start_time: string;
+  end_time: string;
 }
