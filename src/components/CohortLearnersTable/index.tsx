@@ -28,11 +28,7 @@ interface CohortLearnersTableProps {
 const CohortLearnersTable = ({ learners }: CohortLearnersTableProps) => {
   return (
     <>
-      <Typography variant="h5">Learners</Typography>
-      <Stack justifyContent="flex-end" direction="row" spacing={3}>
-        <Button>Download CSV</Button>
-        <Button>Add new learner</Button>
-      </Stack>
+      
       <TableContainer component={Paper}>
         <Table>
           <TableHead>

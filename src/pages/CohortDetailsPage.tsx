@@ -7,6 +7,7 @@ import CohortSessionsTable from "../components/CohortSessionsTable";
 import CohortLearnersTable from "../components/CohortLearnersTable";
 import { Box } from "@mui/system";
 import CohortEditDialog from "../components/CohortEditDialog";
+import AddLearnerDialog from "../components/AddLearnerDialog";
 
 const dummySessions = [
   { id: 1, name: "Session 1", range: null },
@@ -60,6 +61,7 @@ const CohortDetailsPage = () => {
   const [cohort, setCohort] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [editDialogOpen, setEditDialogOpen] = useState<boolean>(false);
+  const [learnerDialogOpen, setLearnerDialogOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchCohortData = async () => {
@@ -83,6 +85,12 @@ const CohortDetailsPage = () => {
     setCohort(editedCohort);
     // TODO: Check if the programme has changed and edit sessions accordingly.
     setEditDialogOpen(false);
+  };
+
+  const handleAddLearners = (newLearners: any) => {
+    // TODO: Ser newly created learners using learners
+    console.log(newLearners);
+    setLearnerDialogOpen(false);
   };
 
   return (
@@ -143,6 +151,13 @@ const CohortDetailsPage = () => {
             <Divider />
             <CohortSessionsTable sessions={dummySessions} />
             <Divider />
+            <>
+              <Typography variant="h5">Learners</Typography>
+              <Stack justifyContent="flex-end" direction="row" spacing={3}>
+                <Button>Download CSV</Button>
+                <Button onClick={() => setLearnerDialogOpen(true)}>Add new learner</Button>
+              </Stack>
+            </>
             <CohortLearnersTable learners={dummyLearners} />
           </Stack>
           <CohortEditDialog
@@ -150,6 +165,12 @@ const CohortDetailsPage = () => {
             cohort={cohort}
             editCallback={handleEditCohort}
             cancelEditCallback={() => setEditDialogOpen(false)}
+          />
+          <AddLearnerDialog
+            open={learnerDialogOpen}
+            cohortId={cohort.id}
+            cancelCallback={() => setLearnerDialogOpen(false)}
+            uploadFinishedCallback={handleAddLearners}
           />
         </>
       )}
