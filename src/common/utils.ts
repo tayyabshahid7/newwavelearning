@@ -5,3 +5,7 @@ export const isValidEmail = (email: string): boolean =>
 
 export const isValidPassword = (password: string): boolean =>
   password && password.search(PASSWORD_VALIDATOR_REGEX) ? false : true;
+
+export const isValidDate = (d:any) => {
+  return d instanceof Date && !isNaN(d.getTime());
+};

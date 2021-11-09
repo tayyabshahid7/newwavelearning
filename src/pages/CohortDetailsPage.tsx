@@ -76,14 +76,13 @@ const CohortDetailsPage = () => {
     setEditDialogOpen(true);
   };
 
-  const handleEditCohort = (editedCohort: any) => {
+  const handleEditCohort = async (editedCohort: any) => {
     setCohort(editedCohort);
-    // TODO: Check if the programme has changed and edit sessions accordingly.
     setEditDialogOpen(false);
   };
 
   const handleAddLearners = (newLearners: any) => {
-    // TODO: Ser newly created learners using learners
+    // TODO: Ser newly created learners using learners variable
     console.log(newLearners);
     setLearnerDialogOpen(false);
   };

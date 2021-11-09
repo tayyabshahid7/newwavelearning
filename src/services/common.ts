@@ -1,4 +1,4 @@
-import { AddCohortData, ResponseData } from "../common/types";
+import { AddCohortData, ResponseData, Session } from "../common/types";
 import { axs } from "./axiosAPI";
 
 export const getProgrammes = async () => {
@@ -66,8 +66,8 @@ export const getCohortDetails = async (cohortId: string) => {
 
 export const SaveLiveSession = async (sessionId: number | string, data: any) => {
   try {
-    const response = await axs.patch<ResponseData>(`/livesessions/${sessionId}/`, data);
-    return response;
+    const response = await axs.patch<Session>(`/livesessions/${sessionId}/`, data);
+    return response.data;
   } catch (error: any) {
     throw error;
   }

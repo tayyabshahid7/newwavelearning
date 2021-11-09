@@ -32,7 +32,7 @@ const CohortSessionsTable = ({ sessions }: CohortSessionsTableProps) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {sessions.map(session => (
+            {sessions?.map(session => (
               <TableRow key={session.id}>
                 <TableCell>Session (Step: {session.step_number})</TableCell>
                 <TableCell>
