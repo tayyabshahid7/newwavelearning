@@ -17,7 +17,7 @@ const setUser = (accessToken: string) => {
 
 export const isLoggedIn = () => {
   const user = getUser();
-  return !!user.name && !isTokenExpired(localStorage.getItem("access_token"));
+  return !!user && !isTokenExpired(localStorage.getItem("access_token"));
 };
 
 export const logout = () => {
@@ -48,10 +48,10 @@ const decodeJWT = (token: string) => {
   return JSON.parse(jsonPayload);
 };
 
-export const loginUser = async (username: string, password: string) => {
+export const loginUser = async (email: string, password: string) => {
   try {
     const response = await axs.post<AuthData>(GET_TOKEN_URL, {
-      username: username,
+      email: email,
       password: password,
     });
     axs.defaults.headers.common["Authorization"] = "Bearer " + response.data.access;
