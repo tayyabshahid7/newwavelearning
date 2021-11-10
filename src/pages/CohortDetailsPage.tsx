@@ -7,7 +7,9 @@ import CohortLearnersTable from "../components/CohortLearnersTable";
 import { Box } from "@mui/system";
 import CohortEditDialog from "../components/CohortEditDialog";
 import AddLearnerDialog from "../components/AddLearnerDialog";
+import { CSVDownload } from "react-csv";
 import { deleteLearner, getCohortDetails, getCohortLearners } from "services/common";
+import { Learner } from "common/types";
 
 interface CohortPageParams {
   cohortId: string;
@@ -20,6 +22,8 @@ const CohortDetailsPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [editDialogOpen, setEditDialogOpen] = useState<boolean>(false);
   const [learnerDialogOpen, setLearnerDialogOpen] = useState<boolean>(false);
+  const [downloadLearnersCSV, setDownloadLearnersCSV] = useState<boolean>(false);
+  const [learnersCsvData, setLearnersCsvData] = useState<any>(null);
 
   useEffect(() => {
     const fetchCohortData = async () => {
@@ -60,6 +64,18 @@ const CohortDetailsPage = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleDownloadLearnersCSV = () => {
+    const data = learners.map((learner: Learner, i: number) => ({
+      "#": i + 1,
+      Email: learner.email,
+      "First name": learner.first_name,
+      "Last name": learner.last_name,
+    }));
+    setLearnersCsvData(data);
+    setDownloadLearnersCSV(true);
+    setTimeout(setDownloadLearnersCSV, 100, false);
   };
 
   return (
@@ -123,7 +139,8 @@ const CohortDetailsPage = () => {
             <>
               <Typography variant="h5">Learners</Typography>
               <Stack justifyContent="flex-end" direction="row" spacing={3}>
-                <Button>Download CSV</Button>
+                {downloadLearnersCSV && <CSVDownload data={learnersCsvData} target="_blank" />}
+                <Button onClick={handleDownloadLearnersCSV}>Download CSV</Button>
                 <Button onClick={() => setLearnerDialogOpen(true)}>Add new learner</Button>
               </Stack>
             </>

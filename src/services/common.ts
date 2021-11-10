@@ -101,3 +101,12 @@ export const deleteLearner = async (learnerId: number) => {
     throw error;
   }
 };
+
+export const downloadLearnersCSV = async (cohortId: string) => {
+  try {
+    const response = await axs.get<ResponseData>(`/learners/download-csv/?cohort_id=${cohortId}`);
+    return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+};
