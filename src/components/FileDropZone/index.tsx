@@ -1,15 +1,26 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Chip, Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { useDropzone } from "react-dropzone";
+import { DropEvent, useDropzone } from "react-dropzone";
 import { FileCopyOutlined, FilePresent } from "@mui/icons-material";
 
 interface FileDropZoneProps {
   accept: string;
+  addFilesCallback: (files: File[]) => void;
 }
 
-const FileDropZone = ({ accept }: FileDropZoneProps) => {
-  const { acceptedFiles, getRootProps, getInputProps } = useDropzone({ accept: ".csv" });
+const FileDropZone = ({ accept, addFilesCallback }: FileDropZoneProps) => {
+  const onDropAccepted = useCallback(
+    (files: File[], event: DropEvent) => {
+      addFilesCallback(files);
+    },
+    [addFilesCallback]
+  );
+
+  const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
+    accept: accept,
+    onDropAccepted,
+  });
 
   const files = acceptedFiles.map(file => (
     <Chip key={file.name} icon={<FilePresent />} label={`${file.name} - ${file.size} bytes`} />

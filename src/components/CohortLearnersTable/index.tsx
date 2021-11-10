@@ -12,9 +12,9 @@ import {
 
 type Learner = {
   id: string | number;
-  name: string;
-  completion: string;
-  time: string;
+  email: string;
+  first_name: string;
+  last_name: string;
   last_login: string;
 };
 
@@ -25,30 +25,27 @@ interface CohortLearnersTableProps {
 const CohortLearnersTable = ({ learners }: CohortLearnersTableProps) => {
   return (
     <>
-      
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell></TableCell>
               <TableCell>Name</TableCell>
-              <TableCell>Completion</TableCell>
-              <TableCell>Time</TableCell>
+              <TableCell>Email</TableCell>
               <TableCell>Last Logged in</TableCell>
               <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {learners.map((learner, i) => (
+            {learners?.map((learner, i) => (
               <TableRow key={learner.id}>
                 <TableCell>
                   <b>#{i + 1}</b>
                 </TableCell>
-                <TableCell>{learner.name}</TableCell>
-                <TableCell>{learner.completion}</TableCell>
-                <TableCell>{learner.time}</TableCell>
+                <TableCell>{`${learner.first_name} ${learner.last_name}`}</TableCell>
+                <TableCell>{learner.email}</TableCell>
                 <TableCell>{learner.last_login}</TableCell>
-                <TableCell></TableCell>
+                <TableCell>Delete | View Details</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -58,7 +55,7 @@ const CohortLearnersTable = ({ learners }: CohortLearnersTableProps) => {
                 Average
               </TableCell>
               <TableCell>3/15</TableCell>
-              <TableCell align="left" colSpan={3}>
+              <TableCell align="left" colSpan={2}>
                 2hrs 32mins
               </TableCell>
             </TableRow>
