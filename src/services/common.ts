@@ -75,7 +75,9 @@ export const SaveLiveSession = async (sessionId: number | string, data: any) => 
 
 export const getCohortLearners = async (cohortId: string | number) => {
   try {
-    const response = await axs.get<ResponseData>(`/learners/cohort-learners/?cohort_id=${cohortId}`);
+    const response = await axs.get<ResponseData>(
+      `/learners/cohort-learners/?cohort_id=${cohortId}`
+    );
     return response.data;
   } catch (error: any) {
     throw error;
@@ -86,6 +88,15 @@ export const uploadLearners = async (formData: FormData) => {
   try {
     const response = await axs.post<ResponseData>(`/learners/create-learners-csv/`, formData);
     return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const deleteLearner = async (learnerId: number) => {
+  try {
+    const response = await axs.delete<ResponseData>(`/learners/${learnerId}/`);
+    return response;
   } catch (error: any) {
     throw error;
   }

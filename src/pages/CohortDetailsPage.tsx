@@ -7,7 +7,7 @@ import CohortLearnersTable from "../components/CohortLearnersTable";
 import { Box } from "@mui/system";
 import CohortEditDialog from "../components/CohortEditDialog";
 import AddLearnerDialog from "../components/AddLearnerDialog";
-import { getCohortDetails, getCohortLearners } from "services/common";
+import { deleteLearner, getCohortDetails, getCohortLearners } from "services/common";
 
 interface CohortPageParams {
   cohortId: string;
@@ -49,6 +49,17 @@ const CohortDetailsPage = () => {
   const handleAddLearners = (newLearners: any) => {
     setLearners(newLearners);
     setLearnerDialogOpen(false);
+  };
+
+  const handleLearnerDelete = async (learnerId: number) => {
+    try {
+      const response = await deleteLearner(learnerId);
+      console.log(response);
+      const newLearners = learners.filter((l: any) => l.id !== learnerId);
+      setLearners(newLearners);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -116,7 +127,7 @@ const CohortDetailsPage = () => {
                 <Button onClick={() => setLearnerDialogOpen(true)}>Add new learner</Button>
               </Stack>
             </>
-            <CohortLearnersTable learners={learners} />
+            <CohortLearnersTable learners={learners} onDelete={handleLearnerDelete} />
           </Stack>
           <CohortEditDialog
             open={editDialogOpen}
