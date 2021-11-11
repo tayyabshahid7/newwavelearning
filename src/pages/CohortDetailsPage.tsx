@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Button, Divider, Grid, List, ListItem, Paper, Stack, Typography } from "@mui/material";
-import DashboardLayout from "../components/DashboardLayout";
+import DashboardLayout from "components/DashboardLayout";
 import { useParams } from "react-router";
-import CohortSessionsTable from "../components/CohortSessionsTable";
-import CohortLearnersTable from "../components/CohortLearnersTable";
+import CohortSessionsTable from "components/CohortSessionsTable";
+import CohortLearnersTable from "components/CohortLearnersTable";
 import { Box } from "@mui/system";
-import CohortEditDialog from "../components/CohortEditDialog";
-import AddLearnerDialog from "../components/AddLearnerDialog";
+import CohortEditDialog from "components/CohortEditDialog";
+import AddLearnerDialog from "components/AddLearnerDialog";
 import { CSVDownload } from "react-csv";
 import { deleteLearner, getCohortDetails, getCohortLearners } from "services/common";
 import { Learner } from "common/types";
@@ -57,8 +57,7 @@ const CohortDetailsPage = () => {
 
   const handleLearnerDelete = async (learnerId: number) => {
     try {
-      const response = await deleteLearner(learnerId);
-      console.log(response);
+      await deleteLearner(learnerId);
       const newLearners = learners.filter((l: any) => l.id !== learnerId);
       setLearners(newLearners);
     } catch (error) {
