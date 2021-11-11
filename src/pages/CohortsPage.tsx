@@ -160,7 +160,9 @@ const CohortsPage = ({ history }: CohortsPageProps) => {
                   <b>#{i + 1}</b>
                 </TableCell>
                 <TableCell>{cohort.name}</TableCell>
-                <TableCell>12 Learners</TableCell>
+                <TableCell>
+                  {cohort.learners_count} learner{cohort.learners_count !== 1 && "s"}
+                </TableCell>
                 <TableCell align="right">
                   <Button
                     size="small"
