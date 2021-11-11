@@ -1,6 +1,6 @@
 import axios from "axios";
 import { AuthData, ResponseData, ResetPasswordData } from "../common/types";
-import { GET_TOKEN_URL, LOGIN_PAGE } from "../common/constants";
+import { GET_TOKEN_URL, LOGIN_PAGE, TOKEN_REFRESH_URL } from "../common/constants";
 import { axs } from "./axiosAPI";
 
 export const isBrowser = () => typeof window !== "undefined";
@@ -59,6 +59,17 @@ export const loginUser = async (email: string, password: string) => {
     localStorage.setItem("refresh_token", response.data.refresh);
     setUser(response.data.access);
   } catch (error: any) {
+    throw error;
+  }
+};
+
+export const refreshBearerToken = async () => {
+  try {
+    const response = await axs.post<AuthData>(TOKEN_REFRESH_URL, {
+      refresh: localStorage.getItem("refresh_token"),
+    });
+    localStorage.setItem("auth_token", response.data.access);
+  } catch (error) {
     throw error;
   }
 };
