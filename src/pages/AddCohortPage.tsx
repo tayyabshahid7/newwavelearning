@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
-  Backdrop,
   Button,
-  CircularProgress,
   FormControl,
   FormHelperText,
   Grid,
@@ -187,10 +185,7 @@ const AddCohortPage = () => {
   };
   return (
     <>
-      <DashboardLayout selectedPage={"cohorts"}>
-        <Backdrop sx={{ color: "#fff", zIndex: theme => theme.zIndex.drawer + 1 }} open={loading}>
-          <CircularProgress color="inherit" />
-        </Backdrop>
+      <DashboardLayout selectedPage={"cohorts"} loading={loading}>
         <Typography variant="h4" sx={{ marginBottom: "50px" }}>
           Add Cohort
         </Typography>

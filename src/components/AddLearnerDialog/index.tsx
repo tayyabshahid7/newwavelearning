@@ -7,10 +7,12 @@ import {
   DialogTitle,
   Typography,
   Stack,
+  Link,
 } from "@mui/material";
 import { uploadLearners } from "services/common";
 import FileDropZone from "../FileDropZone";
 import Loading from "components/Loading";
+import { Link as RouterLink } from "react-router-dom";
 
 interface AddLearnerDialogProps {
   open: boolean;
@@ -53,6 +55,7 @@ const AddLearnerDialog = ({
     setUploadResponse(null);
     setFiles(null);
   };
+
   return (
     <>
       <Loading loading={loading} />
@@ -67,7 +70,7 @@ const AddLearnerDialog = ({
               </Typography>
               <Typography>
                 There were {uploadResponse?.existing.length} previously added or repeated learner
-                {uploadResponse?.existing.length === 1 ? "" : "s"} 
+                {uploadResponse?.existing.length === 1 ? "" : "s"}
               </Typography>
               <Stack>
                 {uploadResponse?.existing.map((e: any) => (
@@ -82,7 +85,12 @@ const AddLearnerDialog = ({
               </Stack>
             </Stack>
           ) : (
-            <FileDropZone accept=".csv" addFilesCallback={handleAddFiles} />
+            <Stack>
+              <FileDropZone accept=".csv" addFilesCallback={handleAddFiles} />
+              <Link component={RouterLink} to="/learners/add">
+                Or add learner manually
+              </Link>
+            </Stack>
           )}
         </DialogContent>
         <DialogActions>

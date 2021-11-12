@@ -93,6 +93,15 @@ export const uploadLearners = async (formData: FormData) => {
   }
 };
 
+export const addLearner = async (formData: any) => {
+  try {
+    const response = await axs.post<ResponseData>(`/learners/add/`, formData);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
 export const deleteLearner = async (learnerId: number) => {
   try {
     const response = await axs.delete<ResponseData>(`/learners/${learnerId}/`);

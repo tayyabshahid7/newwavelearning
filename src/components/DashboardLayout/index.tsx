@@ -1,8 +1,9 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import { AppBar, Toolbar, IconButton, Badge, Backdrop, CircularProgress } from "@mui/material";
+import { AppBar, Toolbar, IconButton, Badge } from "@mui/material";
 import { Notifications } from "@mui/icons-material";
 import SidebarMenu from "../SidebarMenu";
+import Loading from "components/Loading";
 
 interface DashboardLayoutProps {
   selectedPage?: string;
@@ -14,9 +15,7 @@ const DashboardLayout = ({ selectedPage, loading = false, children }: DashboardL
   const drawerWidth = 240;
   return (
     <>
-      <Backdrop sx={{ color: "#fff", zIndex: theme => theme.zIndex.drawer + 1 }} open={loading}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <Loading loading={loading} />
       <Box sx={{ display: "flex", marginTop: "42px" }}>
         <AppBar
           position="fixed"
