@@ -87,7 +87,7 @@ const AddLearnerDialog = ({
           ) : (
             <Stack>
               <FileDropZone accept=".csv" addFilesCallback={handleAddFiles} />
-              <Link component={RouterLink} to="/learners/add">
+              <Link component={RouterLink} to={`/learners/${cohortId}/add`}>
                 Or add learner manually
               </Link>
             </Stack>

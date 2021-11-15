@@ -29,7 +29,7 @@ function App() {
         <ProtectedRoute exact path="/programmes" component={ProgrammesPage} />
         <ProtectedRoute exact path="/feedback" component={FeedbackPage} />
         <ProtectedRoute exact path="/users" component={UsersPage} />
-        <ProtectedRoute exact path="/learners/add" component={AddLearnerPage} />
+        <ProtectedRoute exact path="/learners/:cohortId/add" component={AddLearnerPage} />
       </Switch>
     </Router>
   );

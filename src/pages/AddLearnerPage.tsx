@@ -2,6 +2,8 @@ import { Button, Grid, Paper, Stack, TextField, Typography } from "@mui/material
 import { isValidEmail } from "common/utils";
 import DashboardLayout from "components/DashboardLayout";
 import React, { BaseSyntheticEvent, useState } from "react";
+import { useHistory, useParams } from "react-router";
+import { addLearner } from "services/common";
 
 const initialErrors = {
   email: {
@@ -18,11 +20,13 @@ const initialErrors = {
   },
 };
 
-interface AddLearnerPageProps {
-  cohortId: number;
+interface CohortPageParams {
+  cohortId: string;
 }
 
-const AddLearnerPage = ({ cohortId }: AddLearnerPageProps) => {
+const AddLearnerPage = () => {
+  const { cohortId } = useParams<CohortPageParams>();
+  const history = useHistory();
   const [validationFields, setValidationFields] = useState<any>(initialErrors);
   const [loading, setLoading] = useState<boolean>(false);
   const [form, setForm] = useState<any>({
@@ -32,7 +36,7 @@ const AddLearnerPage = ({ cohortId }: AddLearnerPageProps) => {
     lastName: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     let errorFound = false;
@@ -62,10 +66,17 @@ const AddLearnerPage = ({ cohortId }: AddLearnerPageProps) => {
       errorFound = true;
     }
 
-    if (errorFound) {
-      setLoading(false);
-      return;
+    if (!errorFound) {
+      try {
+        const response = await addLearner(form);
+        console.log(response);
+        history.push(`/cohorts/${cohortId}`);
+      } catch (error) {
+        console.log(error);
+      }
     }
+
+    setLoading(false);
   };
 
   const handleChange = (e: BaseSyntheticEvent) => {
