@@ -1,51 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Button, Divider, Grid, List, ListItem, Paper, Stack, Typography } from "@mui/material";
-import DashboardLayout from "../components/DashboardLayout";
+import DashboardLayout from "components/DashboardLayout";
 import { useParams } from "react-router";
-import { getCohortDetails } from "../services/common";
-import CohortSessionsTable from "../components/CohortSessionsTable";
-import CohortLearnersTable from "../components/CohortLearnersTable";
+import CohortSessionsTable from "components/CohortSessionsTable";
+import CohortLearnersTable from "components/CohortLearnersTable";
 import { Box } from "@mui/system";
-import CohortEditDialog from "../components/CohortEditDialog";
-import AddLearnerDialog from "../components/AddLearnerDialog";
-
-const dummyLearners = [
-  {
-    id: 1,
-    name: "Learner 1",
-    completion: "3/15",
-    time: "2hrs 32mins",
-    last_login: "July 19, 20201, 6:20pm",
-  },
-  {
-    id: 2,
-    name: "Learner 1",
-    completion: "3/15",
-    time: "2hrs 32mins",
-    last_login: "July 19, 20201, 6:20pm",
-  },
-  {
-    id: 3,
-    name: "Learner 1",
-    completion: "3/15",
-    time: "2hrs 32mins",
-    last_login: "July 19, 20201, 6:20pm",
-  },
-  {
-    id: 4,
-    name: "Learner 1",
-    completion: "3/15",
-    time: "2hrs 32mins",
-    last_login: "July 19, 20201, 6:20pm",
-  },
-  {
-    id: 5,
-    name: "Learner 1",
-    completion: "3/15",
-    time: "2hrs 32mins",
-    last_login: "July 19, 20201, 6:20pm",
-  },
-];
+import CohortEditDialog from "components/CohortEditDialog";
+import AddLearnerDialog from "components/AddLearnerDialog";
+import { CSVDownload } from "react-csv";
+import { deleteLearner, getCohortDetails, getCohortLearners } from "services/common";
+import { Learner } from "common/types";
 
 interface CohortPageParams {
   cohortId: string;
@@ -54,16 +18,21 @@ interface CohortPageParams {
 const CohortDetailsPage = () => {
   const { cohortId } = useParams<CohortPageParams>();
   const [cohort, setCohort] = useState<any>(null);
+  const [learners, setLearners] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [editDialogOpen, setEditDialogOpen] = useState<boolean>(false);
   const [learnerDialogOpen, setLearnerDialogOpen] = useState<boolean>(false);
+  const [downloadLearnersCSV, setDownloadLearnersCSV] = useState<boolean>(false);
+  const [learnersCsvData, setLearnersCsvData] = useState<any>(null);
 
   useEffect(() => {
     const fetchCohortData = async () => {
       setLoading(true);
       try {
-        const response = await getCohortDetails(cohortId);
-        setCohort(response.data);
+        const cohortDetails = await getCohortDetails(cohortId);
+        const learnersList = await getCohortLearners(cohortId);
+        setCohort(cohortDetails.data);
+        setLearners(learnersList);
       } catch (error) {
         console.log(error);
       }
@@ -82,9 +51,30 @@ const CohortDetailsPage = () => {
   };
 
   const handleAddLearners = (newLearners: any) => {
-    // TODO: Ser newly created learners using learners variable
-    console.log(newLearners);
+    setLearners(newLearners);
     setLearnerDialogOpen(false);
+  };
+
+  const handleLearnerDelete = async (learnerId: number) => {
+    try {
+      await deleteLearner(learnerId);
+      const newLearners = learners.filter((l: any) => l.id !== learnerId);
+      setLearners(newLearners);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDownloadLearnersCSV = () => {
+    const data = learners.map((learner: Learner, i: number) => ({
+      "#": i + 1,
+      Email: learner.email,
+      "First name": learner.first_name,
+      "Last name": learner.last_name,
+    }));
+    setLearnersCsvData(data);
+    setDownloadLearnersCSV(true);
+    setTimeout(setDownloadLearnersCSV, 100, false);
   };
 
   return (
@@ -148,11 +138,12 @@ const CohortDetailsPage = () => {
             <>
               <Typography variant="h5">Learners</Typography>
               <Stack justifyContent="flex-end" direction="row" spacing={3}>
-                <Button>Download CSV</Button>
+                {downloadLearnersCSV && <CSVDownload data={learnersCsvData} target="_blank" />}
+                <Button onClick={handleDownloadLearnersCSV}>Download CSV</Button>
                 <Button onClick={() => setLearnerDialogOpen(true)}>Add new learner</Button>
               </Stack>
             </>
-            <CohortLearnersTable learners={dummyLearners} />
+            <CohortLearnersTable learners={learners} onDelete={handleLearnerDelete} />
           </Stack>
           <CohortEditDialog
             open={editDialogOpen}

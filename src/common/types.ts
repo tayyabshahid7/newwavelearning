@@ -35,3 +35,11 @@ export interface Session {
   start_time: string;
   end_time: string;
 }
+
+export interface Learner {
+  id: number;
+  email: string;
+  first_name: string;
+  last_name: string;
+  last_login: string;
+}

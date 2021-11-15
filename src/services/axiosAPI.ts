@@ -22,7 +22,7 @@ axs.interceptors.response.use(
     const originalRequest = error.config;
     const access_token = localStorage.getItem("access_token");
     if (access_token && isTokenExpired(access_token)) {
-      if (error.response.status === 401 && error.response.statusText === "Unauthorized") {
+      if (403 === error.response.status && "Forbidden" === error.response.statusText) {
         const refreshToken = localStorage.getItem("refresh_token");
         if (refreshToken && isTokenExpired(refreshToken)) {
           logout();
@@ -35,8 +35,8 @@ axs.interceptors.response.use(
               refresh: refreshToken,
             });
             localStorage.setItem("auth_token", response.data.access);
-            localStorage.setItem("refresh_token", response.data.refresh);
-            axs.defaults.headers.common["Authorization"] = `Bearer ${response.data.access}`;
+            originalRequest.__isRetryRequest = true;
+            originalRequest.headers.Authorization = `Bearer ${response.data.access}`;
             return axs(originalRequest);
           } catch (e) {
             // ERROR FETCHING REFRESH TOKEN
