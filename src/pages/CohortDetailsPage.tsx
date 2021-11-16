@@ -66,12 +66,11 @@ const CohortDetailsPage = () => {
   };
 
   const handleDownloadLearnersCSV = () => {
-    const data = learners.map((learner: Learner, i: number) => ({
-      "#": i + 1,
-      Email: learner.email,
-      "First name": learner.first_name,
-      "Last name": learner.last_name,
-    }));
+    const data = learners.map((learner: Learner, i: number) => [
+      learner.email,
+      learner.first_name,
+      learner.last_name,
+    ]);
     setLearnersCsvData(data);
     setDownloadLearnersCSV(true);
     setTimeout(setDownloadLearnersCSV, 100, false);

@@ -73,14 +73,18 @@ const AddLearnerDialog = ({
                 {uploadResponse?.existing.length === 1 ? "" : "s"}
               </Typography>
               <Stack>
-                {uploadResponse?.existing.map((e: any) => (
-                  <Typography sx={{ pl: 2 }}>{e}</Typography>
+                {uploadResponse?.existing.map((e: any, i: number) => (
+                  <Typography key={i + e} sx={{ pl: 2 }}>
+                    {e}
+                  </Typography>
                 ))}
               </Stack>
               <Typography>Failed: {uploadResponse?.failed.length > 0 ? "" : "None"}</Typography>
               <Stack>
-                {uploadResponse?.failed.map((f: any) => (
-                  <Typography sx={{ pl: 2 }}>{f}</Typography>
+                {uploadResponse?.failed.map((f: any, i: number) => (
+                  <Typography key={i + f} sx={{ pl: 2 }}>
+                    {f}
+                  </Typography>
                 ))}
               </Stack>
             </Stack>
