@@ -1,4 +1,4 @@
-import { AddCohortData, ProgrammeData, ResponseData, Session } from "common/types";
+import { CohortData, ProgrammeData, ResponseData, Session } from "common/types";
 import { axs } from "./axiosAPI";
 
 export const getProgrammes = async () => {
@@ -55,16 +55,16 @@ export const getFacilitators = async () => {
   }
 };
 
-export const AddCohort = async (data: AddCohortData) => {
+export const AddCohort = async (data: CohortData) => {
   try {
-    const response = await axs.post<ResponseData>("/cohorts/", data);
-    return response;
+    const response = await axs.post<CohortData>("/cohorts/", data);
+    return response.data;
   } catch (error: any) {
     throw error;
   }
 };
 
-export const EditCohort = async (cohortId: number, data: AddCohortData) => {
+export const EditCohort = async (cohortId: number, data: CohortData) => {
   try {
     const response = await axs.patch<ResponseData>(`/cohorts/${cohortId}/`, data);
     return response;
