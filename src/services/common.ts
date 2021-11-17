@@ -10,6 +10,15 @@ export const getProgrammes = async () => {
   }
 };
 
+export const deleteProgramme = async (programmeId: number | string) => {
+  try {
+    const response = await axs.delete<ResponseData>(`programmes/${programmeId}/`);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
 export const getFacilitators = async () => {
   try {
     const response = await axs.get<ResponseData>("/users/facilitators/");
