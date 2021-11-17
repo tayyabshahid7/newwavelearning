@@ -175,13 +175,12 @@ const AddCohortPage = () => {
         facilitator: facilitator,
       };
       try {
-        await AddCohort(formData);
-        history.push("/cohorts");
+        const addedCohort = await AddCohort(formData);
+        history.push(`/cohorts/${addedCohort.id}`);
       } catch (error) {
         console.log(error);
       }
     }
-    setLoading(false);
   };
   return (
     <>

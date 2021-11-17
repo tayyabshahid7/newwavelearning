@@ -18,13 +18,14 @@ export interface ResetPasswordData {
   signature: string;
 }
 
-export interface AddCohortData {
+export interface CohortData {
+  id?: number;
   facilitator: string;
   programme: string;
   name: string;
-  /** Json string of the start date **/
+  /** Json string of the start date */
   start_date: string;
-  /** Json string of the start date **/
+  /** Json string of the start date */
   end_date: string;
 }
 
