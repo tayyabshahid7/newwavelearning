@@ -89,7 +89,7 @@ const CohortsPage = ({ history }: CohortsPageProps) => {
     }
   };
 
-  const handleDeleteCohort = async (cohort: any) => {
+  const handleDeleteCohort = (cohort: any) => {
     setDialog({
       open: true,
       cohort: cohort,
