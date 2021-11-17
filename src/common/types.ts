@@ -10,6 +10,7 @@ export interface ResponseData {
   next?: string;
   previous?: string;
   results?: [];
+  data?: any;
 }
 
 export interface ResetPasswordData {
@@ -26,6 +27,12 @@ export interface AddCohortData {
   start_date: string;
   /** Json string of the start date **/
   end_date: string;
+}
+
+export interface ProgrammeData {
+  id?: number;
+  name?: string;
+  cohorts?: number;
 }
 
 export interface Session {

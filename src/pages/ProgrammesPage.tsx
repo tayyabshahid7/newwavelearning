@@ -66,8 +66,8 @@ const ProgrammesPage = () => {
             <Typography variant="h4">Programmes</Typography>
           </Grid>
           <Grid item xs={6} textAlign="right">
-            <Button size="large" onClick={() => history.push("/programme/add")}>
-              Add Cohort
+            <Button size="large" onClick={() => history.push("/programmes/add")}>
+              Add Programme
             </Button>
           </Grid>
         </Grid>
@@ -94,9 +94,9 @@ const ProgrammesPage = () => {
                     <Button
                       size="small"
                       sx={{ mr: 5 }}
-                      onClick={() => history.push(`/programme/${programme.id}`)}
+                      onClick={() => history.push(`/programmes/${programme.id}`)}
                     >
-                      Edit
+                      View Programme
                     </Button>
                     <Button
                       onClick={() => openDeletePrompt(programme)}
