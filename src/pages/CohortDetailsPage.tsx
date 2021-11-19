@@ -120,7 +120,7 @@ const CohortDetailsPage = () => {
                   <ListItem>
                     <Stack direction={"row"}>
                       <Box sx={{ minWidth: "100px", textAlign: "right", fontWeight: "bold" }}>
-                        Start End:
+                        End Date:
                       </Box>
                       <Box sx={{ ml: 2 }}>{cohort.end_date}</Box>
                     </Stack>
@@ -138,8 +138,8 @@ const CohortDetailsPage = () => {
               <Typography variant="h5">Learners</Typography>
               <Stack justifyContent="flex-end" direction="row" spacing={3}>
                 {downloadLearnersCSV && <CSVDownload data={learnersCsvData} target="_blank" />}
-                <Button onClick={handleDownloadLearnersCSV}>Download CSV</Button>
-                <Button onClick={() => setLearnerDialogOpen(true)}>Add new learner</Button>
+                <Button onClick={handleDownloadLearnersCSV}>Download Learners CSV</Button>
+                <Button onClick={() => setLearnerDialogOpen(true)}>Upload/add new learners</Button>
               </Stack>
             </>
             <CohortLearnersTable learners={learners} onDelete={handleLearnerDelete} />

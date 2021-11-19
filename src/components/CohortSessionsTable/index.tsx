@@ -20,7 +20,7 @@ interface CohortSessionsTableProps {
 const CohortSessionsTable = ({ sessions }: CohortSessionsTableProps) => {
   return (
     <>
-      <Typography variant="h5">Sessions</Typography>
+      <Typography variant="h5">Live Sessions</Typography>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>

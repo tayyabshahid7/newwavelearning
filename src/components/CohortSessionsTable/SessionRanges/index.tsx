@@ -120,7 +120,7 @@ const SessionRanges = ({ session }: SessionRagesProps) => {
         />
 
         <DatePicker
-          label="End Date"
+          label="Finish Date"
           value={endDate}
           onChange={handleEndDateChange}
           inputFormat="dd/MM/yyyy"

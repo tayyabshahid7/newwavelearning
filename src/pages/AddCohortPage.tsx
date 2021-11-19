@@ -292,10 +292,15 @@ const AddCohortPage = () => {
                 </FormControl>
               </Stack>
             </Grid>
-            <Grid item xs={12} sx={{ pr: 5, pb: 5, textAlign: "right" }}>
-              <Button size="large" onClick={handleAddCohort} disabled={loading}>
-                Add Cohort
-              </Button>
+            <Grid item xs={12} sx={{ pr: 5, pb: 5 }}>
+              <Stack spacing={2} direction="row" justifyContent="end">
+                <Button size="large" onClick={handleAddCohort} disabled={loading}>
+                  Add Cohort
+                </Button>
+                <Button size="large" variant="text" color="error" onClick={() => history.goBack()}>
+                  Cancel
+                </Button>
+              </Stack>
             </Grid>
           </Grid>
         </form>

@@ -304,7 +304,7 @@ const CohortEditDialog = ({
           Cancel
         </Button>
         <Button onClick={handleEditCohort} disabled={loading}>
-          Edit
+          Save
         </Button>
       </DialogActions>
     </Dialog>

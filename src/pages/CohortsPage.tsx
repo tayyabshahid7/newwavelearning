@@ -137,7 +137,7 @@ const CohortsPage = ({ history }: CohortsPageProps) => {
               <MenuItem value="all">All</MenuItem>
               <MenuItem value="live">Live</MenuItem>
               <MenuItem value="completed">Completed</MenuItem>
-              <MenuItem value="upcomming">Upcomming</MenuItem>
+              <MenuItem value="upcoming">Upcoming</MenuItem>
             </Select>
           </FormControl>
         </Grid>
