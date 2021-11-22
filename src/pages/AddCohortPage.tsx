@@ -229,7 +229,7 @@ const AddCohortPage = () => {
                     </Grid>
                     <Grid item xs={6}>
                       <DatePicker
-                        label="Start Date"
+                        label="Finish Date"
                         value={endDate}
                         onChange={handleEndDateChange}
                         inputFormat="dd/MM/yyyy"
