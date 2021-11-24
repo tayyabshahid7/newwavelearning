@@ -18,6 +18,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router";
 import DashboardLayout from "../components/DashboardLayout";
@@ -29,6 +30,7 @@ interface CohortsPageProps {
 }
 
 const CohortsPage = ({ history }: CohortsPageProps) => {
+  const { enqueueSnackbar } = useSnackbar();
   const [cohortStatus, setCohortStatus] = useState("all");
   const [loading, setLoading] = useState<boolean>(false);
   const [cohortList, setCohortList] = useState<any>(null);
@@ -102,12 +104,13 @@ const CohortsPage = ({ history }: CohortsPageProps) => {
       await deleteCohort(cohortId);
       const newCohortList = cohortList.filter((cohort: any) => cohort.id !== cohortId);
       setCohortList(newCohortList);
-      setDialog({ ...dialog, open: false });
       setPagination({ ...pagination, count: pagination.count - 1 });
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      enqueueSnackbar(error.response?.data.details as string, { variant: "error" });
     }
     setLoading(false);
+    setDialog({ ...dialog, open: false });
   };
 
   return (

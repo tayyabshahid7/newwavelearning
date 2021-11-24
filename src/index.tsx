@@ -6,12 +6,20 @@ import reportWebVitals from "./reportWebVitals";
 import theme from "./common/theme";
 import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
+import { SnackbarProvider } from "notistack";
 
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <App />
+      <SnackbarProvider
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <App />
+      </SnackbarProvider>
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById("root")
