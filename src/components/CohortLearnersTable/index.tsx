@@ -67,7 +67,9 @@ const CohortLearnersTable = ({ learners, onDelete }: CohortLearnersTableProps) =
               <TableCell align="right" colSpan={4}>
                 Total:
               </TableCell>
-              <TableCell align="left" colSpan={1}>{learners?.length}</TableCell>
+              <TableCell align="left" colSpan={1}>
+                {learners?.length}
+              </TableCell>
             </TableRow>
             <TableRow></TableRow>
           </TableFooter>
@@ -77,6 +79,7 @@ const CohortLearnersTable = ({ learners, onDelete }: CohortLearnersTableProps) =
         open={dialog.open}
         title="Are you sure you would like to delete the following learner?"
         content={`Learner: ${dialog.learner?.email}`}
+        match={dialog.learner?.email}
         okButtonText="Yes"
         cancelButtonText="No"
         confirmCallback={handleConfirm}
