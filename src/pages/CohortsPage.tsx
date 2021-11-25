@@ -107,7 +107,7 @@ const CohortsPage = ({ history }: CohortsPageProps) => {
       setPagination({ ...pagination, count: pagination.count - 1 });
     } catch (error: any) {
       console.log(error);
-      enqueueSnackbar(error.response?.data.details as string, { variant: "error" });
+      enqueueSnackbar(error.response?.data.detail, { variant: "error" });
     }
     setLoading(false);
     setDialog({ ...dialog, open: false });

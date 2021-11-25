@@ -18,9 +18,11 @@ import {
 } from "@mui/material";
 import { getProgrammes, deleteProgramme } from "services/common";
 import PromptDialog from "components/PromptDialog";
+import { useSnackbar } from "notistack";
 
 const ProgrammesPage = () => {
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
   const [programmes, setProgrammes] = useState<any>(null);
   const [dialog, setDialog] = useState<any>({
     open: false,
@@ -53,8 +55,9 @@ const ProgrammesPage = () => {
         (programme: any) => programme.id !== dialog.programme.id
       );
       setProgrammes(newProgrammes);
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      enqueueSnackbar(error.response?.data.detail, { variant: "warning" });
     }
     setDialog({ ...dialog, open: false });
   };
