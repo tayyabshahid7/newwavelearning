@@ -14,6 +14,8 @@ import UsersPage from "./pages/UsersPage";
 import AddCohortPage from "./pages/AddCohortPage";
 import CohortDetailsPage from "./pages/CohortDetailsPage";
 import AddLearnerPage from "pages/AddLearnerPage";
+import ProgrammeDetailsPage from "pages/ProgrammeDetailsPage";
+import AddProgrammePage from "pages/AddProgrammePage";
 
 function App() {
   return (
@@ -27,6 +29,8 @@ function App() {
         <ProtectedRoute exact path="/cohorts/add" component={AddCohortPage} />
         <ProtectedRoute exact path="/cohorts/:cohortId" component={CohortDetailsPage} />
         <ProtectedRoute exact path="/programmes" component={ProgrammesPage} />
+        <ProtectedRoute exact path="/programmes/add" component={AddProgrammePage} />
+        <ProtectedRoute exact path="/programmes/:programmeId" component={ProgrammeDetailsPage} />
         <ProtectedRoute exact path="/feedback" component={FeedbackPage} />
         <ProtectedRoute exact path="/users" component={UsersPage} />
         <ProtectedRoute exact path="/learners/:cohortId/add" component={AddLearnerPage} />

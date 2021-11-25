@@ -10,12 +10,14 @@ import AddLearnerDialog from "components/AddLearnerDialog";
 import { CSVDownload } from "react-csv";
 import { deleteLearner, getCohortDetails, getCohortLearners } from "services/common";
 import { Learner } from "common/types";
+import { useSnackbar } from "notistack";
 
 interface CohortPageParams {
   cohortId: string;
 }
 
 const CohortDetailsPage = () => {
+  const { enqueueSnackbar } = useSnackbar();
   const { cohortId } = useParams<CohortPageParams>();
   const [cohort, setCohort] = useState<any>(null);
   const [learners, setLearners] = useState<any>(null);
@@ -33,13 +35,14 @@ const CohortDetailsPage = () => {
         const learnersList = await getCohortLearners(cohortId);
         setCohort(cohortDetails.data);
         setLearners(learnersList);
-      } catch (error) {
-        console.log(error);
+      } catch (error: any) {
+        // console.log(error);
+        enqueueSnackbar("There was an error fetching cohort details.", { variant: "error" });
       }
       setLoading(false);
     };
     fetchCohortData();
-  }, [cohortId]);
+  }, [cohortId, enqueueSnackbar]);
 
   const handleOpenEditDialog = () => {
     setEditDialogOpen(true);
@@ -60,17 +63,19 @@ const CohortDetailsPage = () => {
       await deleteLearner(learnerId);
       const newLearners = learners.filter((l: any) => l.id !== learnerId);
       setLearners(newLearners);
+      enqueueSnackbar("Learner Deleted");
     } catch (error) {
       console.log(error);
     }
   };
 
   const handleDownloadLearnersCSV = () => {
-    const data = learners.map((learner: Learner, i: number) => [
+    let data = learners.map((learner: Learner, i: number) => [
       learner.email,
       learner.first_name,
       learner.last_name,
     ]);
+    data = [["email", "first Name", "last name"], ...data];
     setLearnersCsvData(data);
     setDownloadLearnersCSV(true);
     setTimeout(setDownloadLearnersCSV, 100, false);

@@ -1,4 +1,4 @@
-import { CohortData, ResponseData, Session } from "common/types";
+import { CohortData, ProgrammeData, ResponseData, Session } from "common/types";
 import { axs } from "./axiosAPI";
 
 export const getProgrammes = async () => {
@@ -6,6 +6,42 @@ export const getProgrammes = async () => {
     const response = await axs.get<ResponseData>("/programmes/");
     return response;
   } catch (error: any) {
+    throw error;
+  }
+};
+
+export const addProgramme = async (data: ProgrammeData) => {
+  try {
+    const response = await axs.post<ProgrammeData>("/programmes/", data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteProgramme = async (programmeId: number | string) => {
+  try {
+    const response = await axs.delete<ResponseData>(`programmes/${programmeId}/`);
+    return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const editProgramme = async (programmeId: number, data: ProgrammeData) => {
+  try {
+    const response = await axs.patch<ResponseData>(`/programmes/${programmeId}/`, data);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const getProgrammeDetails = async (programmeId: number | string) => {
+  try {
+    const response = await axs.get<ResponseData>(`programmes/${programmeId}/`);
+    return response;
+  } catch (error) {
     throw error;
   }
 };
