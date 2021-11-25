@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -36,27 +36,39 @@ const PromptDialog = ({
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [matchValue, setMatchValue] = useState<string | undefined>("");
-  const [canConfirm, seCanConfirm] = useState<boolean>(false);
+  const [canConfirm, setCanConfirm] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (match === undefined) {
+      setCanConfirm(true);
+    } else {
+      setCanConfirm(false);
+    }
+  }, [match]);
 
   const handleChange = (event: any) => {
     const newMatchValue = event.target.value;
     if (newMatchValue === match) {
-      seCanConfirm(true);
+      setCanConfirm(true);
     } else {
-      seCanConfirm(false);
+      setCanConfirm(false);
     }
     setMatchValue(newMatchValue);
   };
 
   const handleConfirm = () => {
     confirmCallback();
-    seCanConfirm(false);
+    if (match !== undefined) {
+      setCanConfirm(false);
+    }
     setMatchValue("");
   };
 
   const handleClose = () => {
     closeCallback();
-    seCanConfirm(false);
+    if (match !== undefined) {
+      setCanConfirm(false);
+    }
     setMatchValue("");
   };
 
