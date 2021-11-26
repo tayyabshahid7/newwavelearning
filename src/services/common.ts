@@ -28,9 +28,11 @@ export const deleteProgramme = async (programmeId: number | string) => {
   }
 };
 
-export const editProgramme = async (programmeId: number, data: ProgrammeData) => {
+export const editProgramme = async (programmeId: number, data: FormData) => {
   try {
-    const response = await axs.patch<ResponseData>(`/programmes/${programmeId}/`, data);
+    const response = await axs.patch<ResponseData>(`/programmes/${programmeId}/`, data, {
+      timeout: 15000,
+    });
     return response;
   } catch (error: any) {
     throw error;

@@ -7,9 +7,12 @@ import {
   DialogTitle,
   Stack,
   TextField,
+  Typography,
 } from "@mui/material";
 
 import { editProgramme } from "services/common";
+import FileDropZone from "components/FileDropZone";
+import Loading from "components/Loading";
 
 const initialErrors = {
   name: {
@@ -34,12 +37,14 @@ const ProgrammeEditDialog = ({
   const [name, setName] = useState<string>(programme.name);
   const [loading, setLoading] = useState<boolean>(false);
   const [validationFields, setValidationFields] = useState<any>(initialErrors);
+  const [dropzoneOpen, setDropzoneOpen] = useState<boolean>(programme.background_image === null);
+  const [files, setFiles] = useState<File[] | null>(null);
+  const [deleteBackground, setDeleteBackground] = useState<boolean>(false);
 
   useEffect(() => {
-    const fetchData = async () => {};
-    if (open) {
-      fetchData();
-    }
+    setDropzoneOpen(programme.background_image === null);
+    setDeleteBackground(false);
+    setName(programme.name);
   }, [programme, open]);
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,18 +69,32 @@ const ProgrammeEditDialog = ({
     e.preventDefault();
     setLoading(true);
     if (isFormValid()) {
-      const formData = {
-        name: name,
-      };
+      const data = new FormData();
+      data.append("name", name);
+      if (deleteBackground) {
+        data.append("background_image", "");
+      } else {
+        files?.map(file => data.append("background_image", file));
+      }
       try {
-        const response = await editProgramme(programme.id, formData);
+        const response = await editProgramme(programme.id, data);
         editCallback(response.data);
       } catch (error) {
         console.log(error);
       }
     }
     setLoading(false);
+    programme.background_image && setDropzoneOpen(false);
   };
+
+  const handleAddFiles = (files: File[]) => {
+    setFiles(files);
+  };
+
+  const handleCancelButton = () => {
+    cancelEditCallback();
+  };
+
   return (
     <Dialog open={open}>
       <DialogTitle>Edit Programme</DialogTitle>
@@ -92,6 +111,27 @@ const ProgrammeEditDialog = ({
               error={validationFields.name.error}
               helperText={validationFields.name.error && validationFields.name.message}
             />
+            {dropzoneOpen ? (
+              <FileDropZone
+                accept="image/*"
+                addFilesCallback={handleAddFiles}
+                maxFiles={2}
+                showPreview
+              />
+            ) : deleteBackground ? (
+              <Typography>Background marked to be deleted after pressig "Edit"</Typography>
+            ) : (
+              <>
+                <Typography variant="body2">Programme background</Typography>
+                <img src={programme.background_image} width={150} alt="background" />
+                <Button variant="text" color="primary" onClick={() => setDropzoneOpen(true)}>
+                  Change Background
+                </Button>
+                <Button variant="text" color="error" onClick={() => setDeleteBackground(true)}>
+                  Mark to Delete Background
+                </Button>
+              </>
+            )}
           </Stack>
         </form>
       </DialogContent>
@@ -100,7 +140,7 @@ const ProgrammeEditDialog = ({
           size="large"
           color="error"
           variant="text"
-          onClick={cancelEditCallback}
+          onClick={handleCancelButton}
           disabled={loading}
         >
           Cancel
@@ -109,6 +149,7 @@ const ProgrammeEditDialog = ({
           Edit
         </Button>
       </DialogActions>
+      <Loading loading={loading} />
     </Dialog>
   );
 };

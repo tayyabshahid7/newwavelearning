@@ -30,6 +30,7 @@ const ProgrammeDetailsPage = () => {
     fetchProgrammeData();
   }, [programmeId]);
 
+
   const handleOpenEditDialog = () => {
     setEditDialogOpen(true);
   };
@@ -62,11 +63,15 @@ const ProgrammeDetailsPage = () => {
                         Programme Image:
                       </Box>
                       <Box sx={{ ml: 2 }}>
-                        <img
-                          src={programme.background_image}
-                          width={150}
-                          alt="programme background"
-                        />
+                        {programme.background_image ? (
+                          <img
+                            src={programme.background_image}
+                            width={150}
+                            alt="programme background"
+                          />
+                        ) : (
+                          <Typography>None</Typography>
+                        )}
                       </Box>
                     </Stack>
                   </ListItem>
