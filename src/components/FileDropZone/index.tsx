@@ -7,23 +7,58 @@ import { FileCopyOutlined, FilePresent } from "@mui/icons-material";
 interface FileDropZoneProps {
   accept: string;
   addFilesCallback: (files: File[]) => void;
+  maxFiles?: number;
+  showPreview?: boolean;
 }
 
-const FileDropZone = ({ accept, addFilesCallback }: FileDropZoneProps) => {
+const FileDropZone = ({
+  accept,
+  addFilesCallback,
+  maxFiles = 0,
+  showPreview = false,
+}: FileDropZoneProps) => {
   const onDropAccepted = useCallback(
     (files: File[], event: DropEvent) => {
       addFilesCallback(files);
     },
     [addFilesCallback]
   );
-
-  const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
+  const { acceptedFiles, fileRejections, getRootProps, getInputProps } = useDropzone({
     accept: accept,
     onDropAccepted,
+    maxFiles: maxFiles,
   });
 
-  const files = acceptedFiles.map(file => (
-    <Chip key={file.name} icon={<FilePresent />} label={`${file.name} - ${file.size} bytes`} />
+  const fileRejectionItems = fileRejections.map(({ file, errors }) => (
+    <Chip
+      key={file.name}
+      color={"error"}
+      icon={<FilePresent />}
+      label={`${file.name} - ${Math.round(file.size / 1024)} Kb`}
+    />
+  ));
+  let files = null;
+  if (showPreview) {
+    files = acceptedFiles.map(file =>
+      Object.assign(file, {
+        preview: URL.createObjectURL(file),
+      })
+    );
+  } else {
+    files = acceptedFiles.map(file => (
+      <Chip
+        key={file.name}
+        icon={<FilePresent />}
+        label={`${file.name} - ${Math.round(file.size / 1024)} Kb`}
+      />
+    ));
+  }
+
+  const thumbs = files?.map((file: any) => (
+    <Stack>
+      <img width={300} src={file.preview} alt="preview" />
+      <Typography variant="caption">{file.name}</Typography>
+    </Stack>
   ));
 
   return (
@@ -47,7 +82,21 @@ const FileDropZone = ({ accept, addFilesCallback }: FileDropZoneProps) => {
         </p>
       </Box>
       <Typography variant="body1">Selected Files</Typography>
-      <Stack>{files}</Stack>
+      {showPreview ? (
+        <Stack direction="row" spacing={3}>
+          {thumbs}
+        </Stack>
+      ) : (
+        <Stack spacing={1}>{files}</Stack>
+      )}
+      {fileRejectionItems.length > maxFiles && (
+        <Stack spacing={1}>
+          <Typography variant="caption" color="red">
+            You can only upload {maxFiles} file{maxFiles > 1 && "s"}
+          </Typography>
+          {fileRejectionItems}
+        </Stack>
+      )}
     </>
   );
 };
