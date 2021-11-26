@@ -61,7 +61,13 @@ const ProgrammeDetailsPage = () => {
                       <Box sx={{ minWidth: "100px", textAlign: "right", fontWeight: "bold" }}>
                         Programme Image:
                       </Box>
-                      <Box sx={{ ml: 2 }}>Programme image here</Box>
+                      <Box sx={{ ml: 2 }}>
+                        <img
+                          src={programme.background_image}
+                          width={150}
+                          alt="programme background"
+                        />
+                      </Box>
                     </Stack>
                   </ListItem>
                 </List>

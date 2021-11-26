@@ -10,9 +10,9 @@ export const getProgrammes = async () => {
   }
 };
 
-export const addProgramme = async (data: ProgrammeData) => {
+export const addProgramme = async (data: FormData) => {
   try {
-    const response = await axs.post<ProgrammeData>("/programmes/", data);
+    const response = await axs.post<ProgrammeData>("/programmes/", data, { timeout: 15000 });
     return response.data;
   } catch (error) {
     throw error;
