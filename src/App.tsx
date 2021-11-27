@@ -16,6 +16,7 @@ import CohortDetailsPage from "./pages/CohortDetailsPage";
 import AddLearnerPage from "pages/AddLearnerPage";
 import ProgrammeDetailsPage from "pages/ProgrammeDetailsPage";
 import AddProgrammePage from "pages/AddProgrammePage";
+import NotFoundPage from "pages/NotFoundPage";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
         <ProtectedRoute exact path="/feedback" component={FeedbackPage} />
         <ProtectedRoute exact path="/users" component={UsersPage} />
         <ProtectedRoute exact path="/learners/:cohortId/add" component={AddLearnerPage} />
+        <Route component={NotFoundPage} />
       </Switch>
     </Router>
   );
