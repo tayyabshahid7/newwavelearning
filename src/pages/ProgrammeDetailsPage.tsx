@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Divider, Grid, List, ListItem, Paper, Stack, Typography } from "@mui/material";
+import { Button, Divider, Grid, Paper, Stack, Typography } from "@mui/material";
 import DashboardLayout from "components/DashboardLayout";
 import { useParams } from "react-router";
 import { Box } from "@mui/system";
@@ -30,7 +30,6 @@ const ProgrammeDetailsPage = () => {
     fetchProgrammeData();
   }, [programmeId]);
 
-
   const handleOpenEditDialog = () => {
     setEditDialogOpen(true);
   };
@@ -39,43 +38,30 @@ const ProgrammeDetailsPage = () => {
     setProgramme(editedProgramme);
     setEditDialogOpen(false);
   };
-
   return (
     <DashboardLayout selectedPage={"programmes"} loading={loading}>
       {programme && (
         <>
           <Stack spacing={3}>
-            <Typography variant="h4">Programme details</Typography>
+            <Typography variant="h4">{programme.name} Programme</Typography>
             <Grid sx={{ m: 0, p: 2 }} container component={Paper}>
               <Grid item container xs={6}>
-                <List dense>
-                  <ListItem>
-                    <Stack direction={"row"}>
-                      <Box sx={{ minWidth: "100px", textAlign: "right", fontWeight: "bold" }}>
-                        Programme Name:
-                      </Box>
-                      <Box sx={{ ml: 2 }}>{programme.name}</Box>
-                    </Stack>
-                  </ListItem>
-                  <ListItem>
-                    <Stack direction={"row"}>
-                      <Box sx={{ minWidth: "100px", textAlign: "right", fontWeight: "bold" }}>
-                        Programme Image:
-                      </Box>
-                      <Box sx={{ ml: 2 }}>
-                        {programme.background_image ? (
-                          <img
-                            src={programme.background_image}
-                            width={150}
-                            alt="programme background"
-                          />
-                        ) : (
-                          <Typography>None</Typography>
-                        )}
-                      </Box>
-                    </Stack>
-                  </ListItem>
-                </List>
+                <Stack direction="row">
+                  <Box sx={{ minWidth: "100px", textAlign: "right", fontWeight: "bold" }}>
+                    Background Image:
+                  </Box>
+                  <Box sx={{ ml: 2 }}>
+                    {programme.background_image ? (
+                      <img
+                        src={programme.background_image}
+                        width={150}
+                        alt="programme background"
+                      />
+                    ) : (
+                      <Typography>None</Typography>
+                    )}
+                  </Box>
+                </Stack>
               </Grid>
               <Grid item sx={{ pr: 2, textAlign: "right" }} xs={6}>
                 <Button onClick={handleOpenEditDialog}>Edit Programme</Button>
