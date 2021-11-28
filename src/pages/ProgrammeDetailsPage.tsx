@@ -6,6 +6,8 @@ import { Box } from "@mui/system";
 import ProgrammeEditDialog from "components/ProgrammeEditDialog";
 import { getProgrammeDetails } from "services/common";
 
+import ProgrammeSectionsTable from "components/ProgrammeSectionsTable";
+
 interface ProgrammePageParams {
   programmeId: string;
 }
@@ -68,6 +70,7 @@ const ProgrammeDetailsPage = () => {
               </Grid>
             </Grid>
             <Divider />
+            <ProgrammeSectionsTable programmeId={programme.id} />
           </Stack>
           <ProgrammeEditDialog
             open={editDialogOpen}

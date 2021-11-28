@@ -1,4 +1,11 @@
-import { CohortData, ProgrammeData, ResponseData, Session } from "common/types";
+import {
+  CohortData,
+  ProgrammeData,
+  ResponseData,
+  SectionData,
+  Session,
+  StepData,
+} from "common/types";
 import { axs } from "./axiosAPI";
 
 export const getProgrammes = async () => {
@@ -33,6 +40,51 @@ export const editProgramme = async (programmeId: number, data: FormData) => {
     const response = await axs.patch<ResponseData>(`/programmes/${programmeId}/`, data, {
       timeout: 15000,
     });
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const addSection = async (data: FormData) => {
+  try {
+    const response = await axs.post<SectionData>(`/sections/`, data);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const deleteSection = async (sectionId: number | string) => {
+  try {
+    const response = await axs.delete<ResponseData>(`sections/${sectionId}/`);
+    return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const getSection = async (sectionId: number | string) => {
+  try {
+    const response = await axs.get<SectionData>(`sections/${sectionId}/`);
+    return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const getProgrammeSections = async (programmeId: number) => {
+  try {
+    const response = await axs.get<SectionData[]>(`/programmes/${programmeId}/sections`);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const getSectionSteps = async (sectionId: number) => {
+  try {
+    const response = await axs.get<StepData[]>(`/sections/${sectionId}/steps`);
     return response;
   } catch (error: any) {
     throw error;
