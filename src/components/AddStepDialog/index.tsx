@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Dialog,
@@ -12,6 +12,7 @@ import {
   SelectChangeEvent,
   Stack,
 } from "@mui/material";
+import { axs } from "services/axiosAPI";
 
 interface AddStepDialogProps {
   open: boolean;
@@ -20,13 +21,32 @@ interface AddStepDialogProps {
   continueCallback: (data?: any) => any;
 }
 
-const AddStepDialog = ({ open, cancelCallback, continueCallback, sectionId }: AddStepDialogProps) => {
+const AddStepDialog = ({
+  open,
+  cancelCallback,
+  continueCallback,
+  sectionId,
+}: AddStepDialogProps) => {
+  const [stepTypes, setStepTypes] = useState<any>(null);
   const [formData, setFormData] = useState<any>({
     section: sectionId,
     number: 0,
     fields: "",
     step_type: "",
   });
+
+  useEffect(() => {
+    const getStepTypes = async () => {
+      try {
+        const response = await axs.get("/steps/step-types");
+        setStepTypes(response.data);
+      } catch (error: any) {
+        console.log(error);
+      }
+    };
+    getStepTypes();
+  }, []);
+
   const handleContinue = async () => {
     // TODO: implement add step
     continueCallback();
@@ -64,9 +84,11 @@ const AddStepDialog = ({ open, cancelCallback, continueCallback, sectionId }: Ad
                 label="Conten Type"
                 onChange={handleChange}
               >
-                <MenuItem value={1}>Live Session</MenuItem>
-                <MenuItem value={2}>Text Content</MenuItem>
-                <MenuItem value={3}>Etc</MenuItem>
+                {stepTypes?.map((stepType: any) => (
+                  <MenuItem key={stepType.constant} value={stepType.constant}>
+                    {stepType.description}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Stack>
