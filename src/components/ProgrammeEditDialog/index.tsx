@@ -96,7 +96,7 @@ const ProgrammeEditDialog = ({
   };
 
   return (
-    <Dialog open={open}>
+    <Dialog open={open} fullWidth>
       <DialogTitle>Edit Programme</DialogTitle>
       <DialogContent>
         <form onSubmit={handleEditProgramme}>

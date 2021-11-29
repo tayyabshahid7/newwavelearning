@@ -55,6 +55,15 @@ export const addSection = async (data: FormData) => {
   }
 };
 
+export const editSection = async (sectionId: number | string, data: FormData) => {
+  try {
+    const response = await axs.patch<ResponseData>(`sections/${sectionId}/`, data);
+    return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
 export const deleteSection = async (sectionId: number | string) => {
   try {
     const response = await axs.delete<ResponseData>(`sections/${sectionId}/`);
