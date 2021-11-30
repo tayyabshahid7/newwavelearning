@@ -33,8 +33,10 @@ const SectionStepsTable = ({ sectionId, onDelete }: SectionStepsTableProps) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getSectionSteps(sectionId);
-        setSteps(response.data);
+        if(sectionId){
+          const response = await getSectionSteps(sectionId);
+          setSteps(response.data);
+        }
       } catch (error) {
         console.log(error);
       }
