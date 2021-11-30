@@ -45,7 +45,7 @@ const AddProgrammePage = () => {
       try {
         const data = new FormData();
         data.append("name", programmeName);
-        files?.map(file => data.append("background_image", file));
+        files?.map(file => data.append("image", file));
         const addedProgramme = await addProgramme(data);
         history.push(`/programmes/${addedProgramme.id}`);
       } catch (error) {
@@ -88,6 +88,7 @@ const AddProgrammePage = () => {
                 error={validationFields.name.error}
                 helperText={validationFields.name.error && validationFields.name.message}
               />
+              <Typography>Image</Typography>
               <FileDropZone
                 accept="image/*"
                 addFilesCallback={handleAddFiles}

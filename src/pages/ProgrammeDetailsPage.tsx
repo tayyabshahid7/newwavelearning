@@ -50,12 +50,12 @@ const ProgrammeDetailsPage = () => {
               <Grid item container xs={6}>
                 <Stack direction="row">
                   <Box sx={{ minWidth: "100px", textAlign: "right", fontWeight: "bold" }}>
-                    Background Image:
+                    Image:
                   </Box>
                   <Box sx={{ ml: 2 }}>
-                    {programme.background_image ? (
+                    {programme.image ? (
                       <img
-                        src={programme.background_image}
+                        src={programme.image}
                         width={150}
                         alt="programme background"
                       />
