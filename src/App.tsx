@@ -16,6 +16,9 @@ import CohortDetailsPage from "./pages/CohortDetailsPage";
 import AddLearnerPage from "pages/AddLearnerPage";
 import ProgrammeDetailsPage from "pages/ProgrammeDetailsPage";
 import AddProgrammePage from "pages/AddProgrammePage";
+import SectionDetailsPage from "pages/SectionDetailsPage";
+import NotFoundPage from "pages/NotFoundPage";
+import AddTextContentPage from "pages/AddTextContentStepPage";
 
 function App() {
   return (
@@ -31,9 +34,20 @@ function App() {
         <ProtectedRoute exact path="/programmes" component={ProgrammesPage} />
         <ProtectedRoute exact path="/programmes/add" component={AddProgrammePage} />
         <ProtectedRoute exact path="/programmes/:programmeId" component={ProgrammeDetailsPage} />
+        <ProtectedRoute
+          exact
+          path="/programmes/:programmeId/sections/:sectionId"
+          component={SectionDetailsPage}
+        />
+        <ProtectedRoute
+          exact
+          path="/sections/:sectionId/steps/add-text-content"
+          component={AddTextContentPage}
+        />
         <ProtectedRoute exact path="/feedback" component={FeedbackPage} />
         <ProtectedRoute exact path="/users" component={UsersPage} />
         <ProtectedRoute exact path="/learners/:cohortId/add" component={AddLearnerPage} />
+        <Route component={NotFoundPage} />
       </Switch>
     </Router>
   );

@@ -36,6 +36,24 @@ export interface ProgrammeData {
   cohorts?: number;
 }
 
+export interface SectionData {
+  id?: number;
+  title?: string;
+  description?: string;
+  programme?: number;
+  number?: number;
+  steps?: number;
+}
+
+export interface StepData {
+  id?: number;
+  section?: number;
+  name?: string;
+  number?: number;
+  fields: string;
+  step_type?: string;
+}
+
 export interface Session {
   id: string | number;
   name: string;

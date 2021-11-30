@@ -1,6 +1,7 @@
 import { Button, Grid, Paper, Stack, TextField, Typography } from "@mui/material";
 
 import DashboardLayout from "components/DashboardLayout";
+import FileDropZone from "components/FileDropZone";
 import React, { BaseSyntheticEvent, useState } from "react";
 import { useHistory } from "react-router";
 import { addProgramme } from "services/common";
@@ -10,21 +11,29 @@ const initialErrors = {
     error: false,
     message: "",
   },
+  background: {
+    error: false,
+    message: "",
+  },
 };
 
 const AddProgrammePage = () => {
   const history = useHistory();
   const [validationFields, setValidationFields] = useState<any>(initialErrors);
   const [loading, setLoading] = useState<boolean>(false);
-  const [form, setForm] = useState<any>({
-    name: "",
-  });
+
+  const [files, setFiles] = useState<File[] | null>(null);
+
+  const handleAddFiles = (files: File[]) => {
+    setFiles(files);
+  };
+  const [programmeName, setProgrammeName] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     let errorFound = false;
-    if (form.name.length <= 0 || form.name.trim().length <= 0) {
+    if (programmeName.length <= 0 || programmeName.trim().length <= 0) {
       setValidationFields({
         ...validationFields,
         name: { error: true, message: "This field must not be empty" },
@@ -34,7 +43,10 @@ const AddProgrammePage = () => {
 
     if (!errorFound) {
       try {
-        const addedProgramme = await addProgramme(form);
+        const data = new FormData();
+        data.append("name", programmeName);
+        files?.map(file => data.append("background_image", file));
+        const addedProgramme = await addProgramme(data);
         history.push(`/programmes/${addedProgramme.id}`);
       } catch (error) {
         console.log(error);
@@ -51,7 +63,7 @@ const AddProgrammePage = () => {
         message: "",
       },
     });
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setProgrammeName(e.target.value);
   };
   return (
     <DashboardLayout loading={loading}>
@@ -69,12 +81,18 @@ const AddProgrammePage = () => {
               <TextField
                 name="name"
                 label="Programme Name"
-                value={form.name}
+                value={programmeName}
                 onChange={handleChange}
                 fullWidth
                 size="small"
                 error={validationFields.name.error}
                 helperText={validationFields.name.error && validationFields.name.message}
+              />
+              <FileDropZone
+                accept="image/*"
+                addFilesCallback={handleAddFiles}
+                maxFiles={2}
+                showPreview
               />
             </Stack>
           </Grid>
