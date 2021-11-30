@@ -48,7 +48,7 @@ export const editProgramme = async (programmeId: number, data: FormData) => {
 
 export const addSection = async (data: FormData) => {
   try {
-    const response = await axs.post<SectionData>(`/sections/`, data);
+    const response = await axs.post<SectionData>(`/sections/`, data, { timeout: 15000 });
     return response;
   } catch (error: any) {
     throw error;
@@ -57,7 +57,9 @@ export const addSection = async (data: FormData) => {
 
 export const editSection = async (sectionId: number | string, data: FormData) => {
   try {
-    const response = await axs.patch<ResponseData>(`sections/${sectionId}/`, data);
+    const response = await axs.patch<ResponseData>(`sections/${sectionId}/`, data, {
+      timeout: 15000,
+    });
     return response.data;
   } catch (error: any) {
     throw error;
