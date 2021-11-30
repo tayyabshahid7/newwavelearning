@@ -9,6 +9,7 @@ interface FileDropZoneProps {
   addFilesCallback: (files: File[]) => void;
   maxFiles?: number;
   showPreview?: boolean;
+  helpText?: string;
 }
 
 const FileDropZone = ({
@@ -16,6 +17,7 @@ const FileDropZone = ({
   addFilesCallback,
   maxFiles = 0,
   showPreview = false,
+  helpText = "",
 }: FileDropZoneProps) => {
   const onDropAccepted = useCallback(
     (files: File[], event: DropEvent) => {
@@ -79,9 +81,11 @@ const FileDropZone = ({
           <FileCopyOutlined fontSize="large" />
           <br />
           Drag files here, or click to select files
+          <br />
+          {helpText}
         </p>
       </Box>
-      <Typography variant="body1">Selected Files</Typography>
+      {files?.length > 0 && <Typography variant="body1">Selected Files</Typography>}
       {showPreview ? (
         <Stack direction="row" spacing={3}>
           {thumbs}
