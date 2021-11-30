@@ -18,6 +18,7 @@ import ProgrammeDetailsPage from "pages/ProgrammeDetailsPage";
 import AddProgrammePage from "pages/AddProgrammePage";
 import SectionDetailsPage from "pages/SectionDetailsPage";
 import NotFoundPage from "pages/NotFoundPage";
+import AddTextContentPage from "pages/AddTextContentStepPage";
 
 function App() {
   return (
@@ -37,6 +38,11 @@ function App() {
           exact
           path="/programmes/:programmeId/sections/:sectionId"
           component={SectionDetailsPage}
+        />
+        <ProtectedRoute
+          exact
+          path="/sections/:sectionId/steps/add-text-content"
+          component={AddTextContentPage}
         />
         <ProtectedRoute exact path="/feedback" component={FeedbackPage} />
         <ProtectedRoute exact path="/users" component={UsersPage} />

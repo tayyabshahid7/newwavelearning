@@ -13,6 +13,7 @@ import {
   Stack,
 } from "@mui/material";
 import { axs } from "services/axiosAPI";
+import { useHistory } from "react-router";
 
 interface AddStepDialogProps {
   open: boolean;
@@ -27,13 +28,9 @@ const AddStepDialog = ({
   continueCallback,
   sectionId,
 }: AddStepDialogProps) => {
+  const history = useHistory();
   const [stepTypes, setStepTypes] = useState<any>(null);
-  const [formData, setFormData] = useState<any>({
-    section: sectionId,
-    number: 0,
-    fields: "",
-    step_type: "",
-  });
+  const [selectedType, setSelectedType] = useState<any>("");
 
   useEffect(() => {
     const getStepTypes = async () => {
@@ -49,24 +46,18 @@ const AddStepDialog = ({
 
   const handleContinue = async () => {
     // TODO: implement add step
-    continueCallback();
+    // continueCallback();
+    const stepType = selectedType.replace("_", "-");
+    history.push(`/sections/${sectionId}/steps/add-${stepType}`);
   };
 
   const handleCancel = () => {
-    setFormData({
-      section: sectionId,
-      number: 0,
-      fields: "",
-      step_type: "",
-    });
+    setSelectedType("");
     cancelCallback();
   };
 
   const handleChange = (event: SelectChangeEvent) => {
-    setFormData({
-      ...formData,
-      step_type: event.target.value,
-    });
+    setSelectedType(event.target.value);
   };
 
   return (
@@ -80,7 +71,7 @@ const AddStepDialog = ({
               <Select
                 labelId="step-type-label"
                 id="step_type"
-                value={formData.step_type}
+                value={selectedType.step_type}
                 label="Conten Type"
                 onChange={handleChange}
               >
