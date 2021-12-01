@@ -33,7 +33,7 @@ const SectionStepsTable = ({ sectionId, onDelete }: SectionStepsTableProps) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if(sectionId){
+        if (sectionId) {
           const response = await getSectionSteps(sectionId);
           setSteps(response.data);
         }
@@ -61,10 +61,6 @@ const SectionStepsTable = ({ sectionId, onDelete }: SectionStepsTableProps) => {
     setDialog({ section: null, open: false });
   };
 
-  const addStep = (stepType: string) => {
-    setDialog({ ...dialog, open: false });
-    //  TODO: redirect to the corresponding step type form based on Step type selected
-  };
   return (
     <>
       <Stack direction="row" justifyContent="space-between">
@@ -85,7 +81,9 @@ const SectionStepsTable = ({ sectionId, onDelete }: SectionStepsTableProps) => {
                   <Stack spacing={1} direction="row" justifyContent="flex-end">
                     <Button
                       size="small"
-                      onClick={() => history.push(`/programmes/sections/${step.id}`)}
+                      onClick={() =>
+                        history.push(`/sections/${step.section}/steps/${step.id}/edit-text-content`)
+                      }
                     >
                       Edit
                     </Button>
@@ -125,7 +123,6 @@ const SectionStepsTable = ({ sectionId, onDelete }: SectionStepsTableProps) => {
         open={dialog.open === "add"}
         sectionId={sectionId}
         cancelCallback={closeDialog}
-        continueCallback={addStep}
       />
     </>
   );

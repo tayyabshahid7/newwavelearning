@@ -111,6 +111,15 @@ export const addStep = async (data: FormData) => {
   }
 };
 
+export const getStepDetails = async (stepId: number | string) => {
+  try {
+    const response = await axs.get<StepData>(`/steps/${stepId}/`);
+    return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
 export const getProgrammeDetails = async (programmeId: number | string) => {
   try {
     const response = await axs.get<ResponseData>(`programmes/${programmeId}/`);

@@ -51,7 +51,7 @@ export interface StepData {
   step_type?: string;
   name?: string;
   number?: number;
-  fields?: string;
+  fields?: any;
 }
 
 export interface Session {
