@@ -19,13 +19,11 @@ interface AddStepDialogProps {
   open: boolean;
   sectionId: number;
   cancelCallback: (data?: any) => any;
-  continueCallback: (data?: any) => any;
 }
 
 const AddStepDialog = ({
   open,
   cancelCallback,
-  continueCallback,
   sectionId,
 }: AddStepDialogProps) => {
   const history = useHistory();
