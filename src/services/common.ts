@@ -102,6 +102,15 @@ export const getSectionSteps = async (sectionId: number) => {
   }
 };
 
+export const addStep = async (data: FormData) => {
+  try {
+    const response = await axs.post<StepData>("/steps/", data, { timeout: 15000 });
+    return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
 export const getProgrammeDetails = async (programmeId: number | string) => {
   try {
     const response = await axs.get<ResponseData>(`programmes/${programmeId}/`);

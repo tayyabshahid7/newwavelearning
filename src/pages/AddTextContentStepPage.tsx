@@ -2,32 +2,81 @@ import React, { BaseSyntheticEvent, useState } from "react";
 import DashboardLayout from "components/DashboardLayout";
 import { Button, Grid, Paper, Stack, Switch, TextField, Typography } from "@mui/material";
 import FileDropZone from "components/FileDropZone";
-import { useHistory } from "react-router";
+import { useHistory, useParams } from "react-router";
+import { addStep } from "services/common";
+
+interface AddStepParams {
+  sectionId: string;
+}
 
 const AddTextContentPage = () => {
+  const { sectionId } = useParams<AddStepParams>();
   const history = useHistory();
   const [loading, setLoading] = useState<boolean>(false);
-  const [files, setFiles] = useState<File[]>([]);
+  const [formErrors, setFormErrors] = useState<any>({
+    title: false,
+    content: false,
+  });
   const [formData, setFormData] = useState<any>({
     title: "",
     content: "",
     feedback: false,
+    images: [],
+    bgImages: [],
   });
 
   const handleTextChange = (e: BaseSyntheticEvent) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormErrors({ ...formErrors, [e.target.name]: false });
   };
 
   const handleFeedbackChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      feedback: event.target.checked,
-    });
+    setFormData({ ...formData, feedback: event.target.checked });
   };
 
-  const handleAddFile = (addedFiles: File[]) => {
-    setFiles(addedFiles);
+  const handleAddBackgroundImage = (addedFiles: File[]) => {
+    setFormData({ ...formData, images: addedFiles });
   };
+
+  const handleAddImage = (addedFiles: File[]) => {
+    setFormData({ ...formData, bgImages: addedFiles });
+  };
+
+  const isFormValid = () => {
+    let valid = true;
+    if (formData.title.length < 1) {
+      setFormErrors({ ...formErrors, title: true });
+      valid = false;
+    }
+    if (formData.content.length < 1) {
+      setFormErrors({ ...formErrors, content: true });
+      valid = false;
+    }
+    return valid;
+  };
+
+  const handleSave = async () => {
+    setLoading(true);
+    if (isFormValid()) {
+      const data = new FormData();
+      data.append("title", formData.title);
+      data.append("content", formData.content);
+      data.append("section", sectionId);
+      data.append("feedback", formData.feedback);
+      data.append("step_type", "text_content");
+      data.append("number", "0");
+      formData.images.map((image: File) => data.append("image", image));
+      formData.bgImages.map((image: File) => data.append("background_image", image));
+      try {
+        await addStep(data);
+        history.goBack()
+      } catch (error: any) {
+        console.log(error);
+      }
+    }
+    setLoading(false);
+  };
+
   return (
     <DashboardLayout loading={loading}>
       <Paper>
@@ -54,11 +103,19 @@ const AddTextContentPage = () => {
           </Grid>
           <Grid item xs={6}>
             <Stack spacing={2}>
+              <Typography>Image</Typography>
+              <FileDropZone
+                accept="image/*"
+                maxFiles={1}
+                addFilesCallback={handleAddImage}
+                showPreview
+                helpText={"You can only upload image files"}
+              />
               <Typography>Background Image</Typography>
               <FileDropZone
                 accept="image/*"
                 maxFiles={1}
-                addFilesCallback={handleAddFile}
+                addFilesCallback={handleAddBackgroundImage}
                 showPreview
                 helpText={"You can only upload image files"}
               />
@@ -75,7 +132,9 @@ const AddTextContentPage = () => {
                 <Typography> Facilitator Feedback</Typography>
                 <Switch checked={formData.feedback} onChange={handleFeedbackChange} />
               </Stack>
-              <Button size="large">Save</Button>
+              <Button size="large" onClick={handleSave}>
+                Save
+              </Button>
             </Stack>
           </Grid>
         </Grid>
