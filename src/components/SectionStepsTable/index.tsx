@@ -76,7 +76,11 @@ const SectionStepsTable = ({ sectionId, onDelete }: SectionStepsTableProps) => {
                   <b>#{step.number}</b>
                 </TableCell>
                 <TableCell>{step.name}</TableCell>
+                <TableCell>{step.fields.title}</TableCell>
                 <TableCell>{step.step_type}</TableCell>
+                <TableCell>
+                  {step.fields.feedback ? "Feedback needed" : "No feedback needed"}
+                </TableCell>
                 <TableCell align="right">
                   <Stack spacing={1} direction="row" justifyContent="flex-end">
                     <Button
@@ -102,7 +106,7 @@ const SectionStepsTable = ({ sectionId, onDelete }: SectionStepsTableProps) => {
           </TableBody>
           <TableFooter>
             <TableRow>
-              <TableCell align="right" colSpan={4}>
+              <TableCell align="left" colSpan={6}>
                 Total: {steps?.length}
               </TableCell>
             </TableRow>
