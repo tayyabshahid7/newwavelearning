@@ -114,7 +114,6 @@ const EditTextContentPage = () => {
         title: formData.title,
         content: formData.content,
         feedback: formData.feedback,
-        step_type: "text_content", // So the backend knows which type of field is being updated
         image: stepData.images,
         background_image: stepData.bgImages,
       };

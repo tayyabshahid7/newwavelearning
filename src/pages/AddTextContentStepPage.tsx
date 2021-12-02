@@ -16,6 +16,8 @@ const AddTextContentPage = () => {
   const [formErrors, setFormErrors] = useState<any>({
     title: false,
     content: false,
+    images: false,
+    bgImages: false,
   });
   const [formData, setFormData] = useState<any>({
     title: "",
@@ -35,11 +37,13 @@ const AddTextContentPage = () => {
   };
 
   const handleAddBackgroundImage = (addedFiles: File[]) => {
-    setFormData({ ...formData, images: addedFiles });
+    setFormData({ ...formData, bgImages: addedFiles });
+    setFormErrors({ ...formErrors, bgImages: false });
   };
 
   const handleAddImage = (addedFiles: File[]) => {
-    setFormData({ ...formData, bgImages: addedFiles });
+    setFormData({ ...formData, images: addedFiles });
+    setFormErrors({ ...formErrors, images: false });
   };
 
   const isFormValid = () => {
@@ -52,6 +56,12 @@ const AddTextContentPage = () => {
       setFormErrors({ ...formErrors, content: true });
       valid = false;
     }
+    if (formData.bgImages.length < 1) {
+      setFormErrors({ ...formErrors, bgImages: true });
+    }
+    if (formData.images.length < 1) {
+      setFormErrors({ ...formErrors, images: true });
+    }
     return valid;
   };
 
@@ -59,17 +69,23 @@ const AddTextContentPage = () => {
     setLoading(true);
     if (isFormValid()) {
       const data = new FormData();
-      data.append("title", formData.title);
-      data.append("content", formData.content);
-      data.append("section", sectionId);
-      data.append("feedback", formData.feedback);
+
+      data.append(
+        "fields",
+        JSON.stringify({
+          title: formData.title,
+          content: formData.content,
+          feedback: formData.feedback,
+        })
+      );
       data.append("step_type", "text_content");
+      data.append("section", sectionId);
       data.append("number", "0");
       formData.images.map((image: File) => data.append("image", image));
       formData.bgImages.map((image: File) => data.append("background_image", image));
       try {
         await addStep(data);
-        history.goBack()
+        history.goBack();
       } catch (error: any) {
         console.log(error);
       }
@@ -89,6 +105,8 @@ const AddTextContentPage = () => {
                 name="title"
                 label="Title"
                 onChange={handleTextChange}
+                error={formErrors.title}
+                helperText={formErrors.title && "This field is required"}
               />
               <TextField
                 fullWidth
@@ -98,12 +116,14 @@ const AddTextContentPage = () => {
                 name="content"
                 label="Content"
                 onChange={handleTextChange}
+                error={formErrors.content}
+                helperText={formErrors.content && "This field is required"}
               />
             </Stack>
           </Grid>
           <Grid item xs={6}>
             <Stack spacing={2}>
-              <Typography>Image</Typography>
+              <Typography color={formErrors.images ? "error" : "default"}>Image</Typography>
               <FileDropZone
                 accept="image/*"
                 maxFiles={1}
@@ -111,7 +131,9 @@ const AddTextContentPage = () => {
                 showPreview
                 helpText={"You can only upload image files"}
               />
-              <Typography>Background Image</Typography>
+              <Typography color={formErrors.bgImages ? "error" : "default"}>
+                Background Image
+              </Typography>
               <FileDropZone
                 accept="image/*"
                 maxFiles={1}
