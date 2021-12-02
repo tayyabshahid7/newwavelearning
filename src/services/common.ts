@@ -111,6 +111,15 @@ export const addStep = async (data: FormData) => {
   }
 };
 
+export const editStep = async (stepId: number | string, data: FormData) => {
+  try {
+    const response = await axs.patch<StepData>(`/steps/${stepId}/`, data, { timeout: 15000 });
+    return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
 export const getStepDetails = async (stepId: number | string) => {
   try {
     const response = await axs.get<StepData>(`/steps/${stepId}/`);

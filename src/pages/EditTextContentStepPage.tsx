@@ -3,15 +3,14 @@ import DashboardLayout from "components/DashboardLayout";
 import { Button, Grid, Paper, Stack, Switch, TextField, Typography } from "@mui/material";
 import FileDropZone from "components/FileDropZone";
 import { useHistory, useParams } from "react-router";
-import { addStep, getStepDetails } from "services/common";
+import { editStep, getStepDetails } from "services/common";
 
 interface EditStepParams {
-  sectionId: string;
   stepId: string;
 }
 
 const EditTextContentPage = () => {
-  const { sectionId, stepId } = useParams<EditStepParams>();
+  const { stepId } = useParams<EditStepParams>();
   const history = useHistory();
   const [loading, setLoading] = useState<boolean>(false);
   const [formErrors, setFormErrors] = useState<any>({
@@ -22,21 +21,34 @@ const EditTextContentPage = () => {
     title: "",
     content: "",
     feedback: false,
-    images: null,
-    bgImages: null,
+    images: [],
+    bgImages: [],
   });
+  const [changeBgImage, setChangeBgImage] = useState<boolean>(false);
+  const [changeImage, setChangeImage] = useState<boolean>(false);
+  const [stepData, setStepData] = useState<any>({});
 
   useEffect(() => {
     const fetchStepData = async () => {
       try {
-        const stepData = await getStepDetails(stepId);
+        const response = await getStepDetails(stepId);
+        const data = {
+          title: response.fields.title,
+          content: response.fields.content,
+          feedback: response.fields.feedback,
+          images: response.fields.image,
+          bgImages: response.fields.background_image,
+        };
+        setStepData(data);
         setFormData({
-          title: stepData.fields.title,
-          content: stepData.fields.content,
-          feedback: stepData.fields.feedback,
-          images: stepData.fields.image,
-          bgImages: stepData.fields.background_image,
+          title: data.title,
+          content: data.content,
+          feedback: data.feedback,
+          images: [],
+          bgImages: [],
         });
+        setChangeBgImage(response.fields.background_image === null);
+        setChangeImage(response.fields.image === null);
       } catch (error: any) {
         console.log(error);
       }
@@ -54,11 +66,31 @@ const EditTextContentPage = () => {
   };
 
   const handleAddBackgroundImage = (addedFiles: File[]) => {
-    setFormData({ ...formData, images: addedFiles });
+    setFormData({ ...formData, bgImages: addedFiles });
   };
 
   const handleAddImage = (addedFiles: File[]) => {
-    setFormData({ ...formData, bgImages: addedFiles });
+    setFormData({ ...formData, images: addedFiles });
+  };
+
+  const handleChangeBgImage = () => {
+    setFormData({ ...formData, bgImages: null });
+    setChangeBgImage(true);
+  };
+
+  const handleCangelChangeBgImage = () => {
+    setFormData({ ...formData, bgImages: stepData.bgImages });
+    setChangeBgImage(false);
+  };
+
+  const handleChangeImage = () => {
+    setFormData({ ...formData, images: null });
+    setChangeImage(true);
+  };
+
+  const handleCancelChangeImage = () => {
+    setFormData({ ...formData, images: stepData.images });
+    setChangeImage(false);
   };
 
   const isFormValid = () => {
@@ -78,16 +110,19 @@ const EditTextContentPage = () => {
     setLoading(true);
     if (isFormValid()) {
       const data = new FormData();
-      data.append("title", formData.title);
-      data.append("content", formData.content);
-      data.append("section", sectionId);
-      data.append("feedback", formData.feedback);
-      data.append("step_type", "text_content");
-      data.append("number", "0");
+      const fields = {
+        title: formData.title,
+        content: formData.content,
+        feedback: formData.feedback,
+        step_type: "text_content", // So the backend knows which type of field is being updated
+        image: stepData.images,
+        background_image: stepData.bgImages,
+      };
+      data.append("fields", JSON.stringify(fields));
       formData.images.map((image: File) => data.append("image", image));
       formData.bgImages.map((image: File) => data.append("background_image", image));
       try {
-        await addStep(data);
+        await editStep(stepId, data);
         history.goBack();
       } catch (error: any) {
         console.log(error);
@@ -123,34 +158,50 @@ const EditTextContentPage = () => {
           <Grid item xs={6}>
             <Stack spacing={2}>
               <Typography>Image</Typography>
-              {formData.images ? (
-                <Stack spacing={1}>
-                  <img src={formData.images} width={150} alt="step" />
-                  <Button variant="text">Change Image</Button>
-                </Stack>
+              {changeImage ? (
+                <>
+                  <FileDropZone
+                    accept="image/*"
+                    maxFiles={1}
+                    addFilesCallback={handleAddImage}
+                    showPreview
+                    helpText={"You can only upload image files"}
+                  />
+                  {stepData.images !== null && (
+                    <Button variant="text" color="error" onClick={handleCancelChangeImage}>
+                      Cancel image change
+                    </Button>
+                  )}
+                </>
               ) : (
-                <FileDropZone
-                  accept="image/*"
-                  maxFiles={1}
-                  addFilesCallback={handleAddImage}
-                  showPreview
-                  helpText={"You can only upload image files"}
-                />
+                <>
+                  <img src={stepData.images} width={150} alt="step" />
+                  <Button variant="text" onClick={handleChangeImage}>
+                    Change image
+                  </Button>
+                </>
               )}
               <Typography>Background Image</Typography>
-              {formData.bgImages ? (
-                <Stack spacing={1}>
-                  <img src={formData.bgImages} width={150} alt="step" />
-                  <Button variant="text">Change Image</Button>
-                </Stack>
+              {changeBgImage ? (
+                <>
+                  <FileDropZone
+                    accept="image/*"
+                    maxFiles={1}
+                    addFilesCallback={handleAddBackgroundImage}
+                    showPreview
+                    helpText={"You can only upload image files"}
+                  />
+                  <Button variant="text" color="error" onClick={handleCangelChangeBgImage}>
+                    Cancel background image change
+                  </Button>
+                </>
               ) : (
-                <FileDropZone
-                  accept="image/*"
-                  maxFiles={1}
-                  addFilesCallback={handleAddBackgroundImage}
-                  showPreview
-                  helpText={"You can only upload image files"}
-                />
+                <>
+                  <img src={stepData.bgImages} width={150} alt="step" />
+                  <Button variant="text" onClick={handleChangeBgImage}>
+                    Change background image
+                  </Button>
+                </>
               )}
             </Stack>
           </Grid>
