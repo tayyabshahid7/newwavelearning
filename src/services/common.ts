@@ -120,6 +120,15 @@ export const editStep = async (stepId: number | string, data: FormData) => {
   }
 };
 
+export const deleteStep = async (stepId: number | string) => {
+  try {
+    const response = await axs.delete<ResponseData>(`/steps/${stepId}/`);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
 export const getStepDetails = async (stepId: number | string) => {
   try {
     const response = await axs.get<StepData>(`/steps/${stepId}/`);

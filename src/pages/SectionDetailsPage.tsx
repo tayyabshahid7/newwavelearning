@@ -34,11 +34,6 @@ const SectionDetailsPage = () => {
     fetchData();
   }, [sectionId, enqueueSnackbar]);
 
-  const handleStepDelete = (stepId: number) => {
-    // TODO: handle step deletion
-    console.log(stepId);
-  };
-
   const handleEditedSection = (editedSection: any) => {
     setSection(editedSection);
     setEditDialogOpen(false);
@@ -86,7 +81,7 @@ const SectionDetailsPage = () => {
           </Grid>
 
           <Divider />
-          <SectionStepsTable onDelete={handleStepDelete} sectionId={section?.id} />
+          <SectionStepsTable sectionId={section?.id} />
         </Stack>
       </DashboardLayout>
       <SectionEditDialog

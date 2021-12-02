@@ -58,9 +58,11 @@ const AddTextContentPage = () => {
     }
     if (formData.bgImages.length < 1) {
       setFormErrors({ ...formErrors, bgImages: true });
+      valid = false;
     }
     if (formData.images.length < 1) {
       setFormErrors({ ...formErrors, images: true });
+      valid = false;
     }
     return valid;
   };

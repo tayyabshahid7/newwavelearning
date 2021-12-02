@@ -14,15 +14,14 @@ import {
 import PromptDialog from "components/PromptDialog";
 import { useHistory } from "react-router";
 import { StepData } from "common/types";
-import { getSectionSteps } from "services/common";
+import { deleteStep, getSectionSteps } from "services/common";
 import AddStepDialog from "components/AddStepDialog";
 
 interface SectionStepsTableProps {
   sectionId: number;
-  onDelete: (stepId: number) => void;
 }
 
-const SectionStepsTable = ({ sectionId, onDelete }: SectionStepsTableProps) => {
+const SectionStepsTable = ({ sectionId }: SectionStepsTableProps) => {
   const history = useHistory();
   const [steps, setSteps] = useState<StepData[]>([]);
   const [dialog, setDialog] = useState<any>({
@@ -48,9 +47,15 @@ const SectionStepsTable = ({ sectionId, onDelete }: SectionStepsTableProps) => {
     setDialog({ step: step, open: "prompt" });
   };
 
-  const handleConfirm = () => {
-    onDelete(dialog.step.id);
-    setDialog({ ...dialog, open: false });
+  const handleConfirm = async () => {
+    try {
+      await deleteStep(dialog.step.id);
+      const newSteps = steps.filter(s => s.id !== dialog.step.id);
+      setSteps(newSteps);
+      setDialog({ ...dialog, open: false });
+    } catch (error: any) {
+      console.log(error);
+    }
   };
 
   const openAddStepDialog = () => {
