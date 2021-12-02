@@ -20,6 +20,7 @@ import SectionDetailsPage from "pages/SectionDetailsPage";
 import NotFoundPage from "pages/NotFoundPage";
 import AddTextContentPage from "pages/AddTextContentStepPage";
 import EditTextContentPage from "pages/EditTextContentStepPage";
+import AddLiveSessionStepPage from "pages/AddLiveSessionStepPage";
 
 function App() {
   return (
@@ -49,6 +50,11 @@ function App() {
           exact
           path="/sections/:sectionId/steps/:stepId/edit-text-content"
           component={EditTextContentPage}
+        />
+        <ProtectedRoute
+          exact
+          path="/sections/:sectionId/steps/add-live-session"
+          component={AddLiveSessionStepPage}
         />
         <ProtectedRoute exact path="/feedback" component={FeedbackPage} />
         <ProtectedRoute exact path="/users" component={UsersPage} />
