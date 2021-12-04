@@ -4,10 +4,7 @@ import { Button, Grid, Paper, Stack, Switch, TextField, Typography } from "@mui/
 import FileDropZone from "components/FileDropZone";
 import { useHistory, useParams } from "react-router";
 import { addStep } from "services/common";
-
-interface AddStepParams {
-  sectionId: string;
-}
+import { AddStepParams } from "common/types";
 
 const AddTextContentPage = () => {
   const { sectionId } = useParams<AddStepParams>();

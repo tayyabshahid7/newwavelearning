@@ -48,7 +48,7 @@ function App() {
         />
         <ProtectedRoute
           exact
-          path="/sections/:sectionId/steps/:stepId/edit-text-content"
+          path="/sections/:sectionId/steps/:stepId/edit-text_content"
           component={EditTextContentPage}
         />
         <ProtectedRoute
