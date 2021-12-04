@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent, useState } from "react";
+import React, { BaseSyntheticEvent, useEffect, useState } from "react";
 import DashboardLayout from "components/DashboardLayout";
 import {
   Button,
@@ -15,11 +15,12 @@ import {
 } from "@mui/material";
 import { LIVE_SESSION_TYPES } from "common/constants";
 import { useHistory, useParams } from "react-router";
-import { addStep } from "services/common";
-import { AddStepParams } from "common/types";
+import { editStep, getStepDetails } from "services/common";
+import { EditStepParams } from "common/types";
 
-const AddLiveSessionStepPage = () => {
-  const { sectionId } = useParams<AddStepParams>();
+const EditLiveSessionStepPage = () => {
+  const history = useHistory();
+  const { stepId } = useParams<EditStepParams>();
   const [stepData, setStepData] = useState<any>({
     title: "",
     description: "",
@@ -27,7 +28,25 @@ const AddLiveSessionStepPage = () => {
     session_duration: "",
   });
   const [loading, setLoading] = useState<boolean>(false);
-  const history = useHistory();
+
+  useEffect(() => {
+    const fetchStepData = async () => {
+      setLoading(true);
+      try {
+        const response = await getStepDetails(stepId);
+        setStepData({
+          title: response.fields.title,
+          description: response.fields.description,
+          session_type: response.fields.session_type,
+          session_duration: response.fields.session_duration,
+        });
+      } catch (error: any) {
+        console.log(error);
+      }
+      setLoading(false);
+    };
+    fetchStepData();
+  }, [stepId]);
 
   const handleSelectChange = (event: SelectChangeEvent) => {
     setStepData({ ...stepData, [event.target.name]: event.target.value });
@@ -41,11 +60,8 @@ const AddLiveSessionStepPage = () => {
     setLoading(true);
     try {
       const data = new FormData();
-      data.append("step_type", "live_session");
-      data.append("section", sectionId);
-      data.append("number", "0");
       data.append("fields", JSON.stringify(stepData));
-      await addStep(data);
+      await editStep(stepId, data);
       history.goBack();
     } catch (error: any) {
       console.log(error);
@@ -58,7 +74,7 @@ const AddLiveSessionStepPage = () => {
       <Paper>
         <Grid container sx={{ p: 8 }} spacing={6}>
           <Grid item xs={12}>
-            <Typography variant="h4">Add Live Session</Typography>
+            <Typography variant="h4">Edit Live Session</Typography>
           </Grid>
           <Grid item xs={6}>
             <Stack spacing={2}>
@@ -131,4 +147,4 @@ const AddLiveSessionStepPage = () => {
   );
 };
 
-export default AddLiveSessionStepPage;
+export default EditLiveSessionStepPage;
