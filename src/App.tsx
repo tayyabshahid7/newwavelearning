@@ -22,6 +22,7 @@ import AddTextContentPage from "pages/AddTextContentStepPage";
 import EditTextContentPage from "pages/EditTextContentStepPage";
 import AddLiveSessionStepPage from "pages/AddLiveSessionStepPage";
 import EditLiveSessionStepPage from "pages/EditLiveSessionStepPage";
+import AddMultipleChoiceQuestionStep from "pages/AddMultipleChoiceQuestionStepPage";
 
 function App() {
   return (
@@ -61,6 +62,11 @@ function App() {
           exact
           path="/sections/:sectionId/steps/:stepId/edit-live_session"
           component={EditLiveSessionStepPage}
+        />
+        <ProtectedRoute
+          exact
+          path="/sections/:sectionId/steps/add-multiple-choice-question"
+          component={AddMultipleChoiceQuestionStep}
         />
         <ProtectedRoute exact path="/feedback" component={FeedbackPage} />
         <ProtectedRoute exact path="/users" component={UsersPage} />

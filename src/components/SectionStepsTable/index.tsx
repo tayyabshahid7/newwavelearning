@@ -81,8 +81,8 @@ const SectionStepsTable = ({ sectionId }: SectionStepsTableProps) => {
                   <b>#{step.number}</b>
                 </TableCell>
                 <TableCell>{step.name}</TableCell>
-                <TableCell>{step.fields.title}</TableCell>
-                <TableCell>{step.step_type}</TableCell>
+                <TableCell>{step.fields.title || step.fields.question}</TableCell>
+                <TableCell>{step.step_type.replaceAll("_"," ")}</TableCell>
                 <TableCell>
                   {step.fields.feedback ? "Feedback needed" : "No feedback needed"}
                 </TableCell>
