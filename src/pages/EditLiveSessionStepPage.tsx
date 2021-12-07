@@ -128,9 +128,6 @@ const EditLiveSessionStepPage = () => {
               </FormControl>
             </Stack>
           </Grid>
-          <Grid item xs={6}>
-            Background Image???
-          </Grid>
           <Grid item xs={12}>
             <Stack direction="row" justifyContent="space-between">
               <Button size="large" color="error" onClick={() => history.goBack()}>
