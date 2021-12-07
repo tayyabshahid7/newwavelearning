@@ -4,10 +4,9 @@ import { Button, Grid, Paper, Stack, Switch, TextField, Typography } from "@mui/
 import FileDropZone from "components/FileDropZone";
 import { useHistory, useParams } from "react-router";
 import { editStep, getStepDetails } from "services/common";
+import { EditStepParams } from "common/types";
 
-interface EditStepParams {
-  stepId: string;
-}
+
 
 const EditTextContentPage = () => {
   const { stepId } = useParams<EditStepParams>();

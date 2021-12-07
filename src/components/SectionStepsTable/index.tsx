@@ -91,7 +91,9 @@ const SectionStepsTable = ({ sectionId }: SectionStepsTableProps) => {
                     <Button
                       size="small"
                       onClick={() =>
-                        history.push(`/sections/${step.section}/steps/${step.id}/edit-text-content`)
+                        history.push(
+                          `/sections/${step.section}/steps/${step.id}/edit-${step.step_type}`
+                        )
                       }
                     >
                       Edit

@@ -69,3 +69,11 @@ export interface Learner {
   last_name: string;
   last_login: string;
 }
+
+export interface AddStepParams {
+  sectionId: string;
+}
+
+export interface EditStepParams {
+  stepId: string;
+}
