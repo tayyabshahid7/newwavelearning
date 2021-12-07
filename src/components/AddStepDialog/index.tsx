@@ -43,7 +43,7 @@ const AddStepDialog = ({
   }, []);
 
   const handleContinue = async () => {
-    const stepType = selectedType.replace("_", "-");
+    const stepType = selectedType.replaceAll("_", "-");
     history.push(`/sections/${sectionId}/steps/add-${stepType}`);
   };
 
