@@ -19,13 +19,11 @@ interface AddStepDialogProps {
   open: boolean;
   sectionId: number;
   cancelCallback: (data?: any) => any;
-  continueCallback: (data?: any) => any;
 }
 
 const AddStepDialog = ({
   open,
   cancelCallback,
-  continueCallback,
   sectionId,
 }: AddStepDialogProps) => {
   const history = useHistory();
@@ -45,8 +43,6 @@ const AddStepDialog = ({
   }, []);
 
   const handleContinue = async () => {
-    // TODO: implement add step
-    // continueCallback();
     const stepType = selectedType.replace("_", "-");
     history.push(`/sections/${sectionId}/steps/add-${stepType}`);
   };
@@ -71,7 +67,7 @@ const AddStepDialog = ({
               <Select
                 labelId="step-type-label"
                 id="step_type"
-                value={selectedType.step_type}
+                value={selectedType}
                 label="Conten Type"
                 onChange={handleChange}
               >

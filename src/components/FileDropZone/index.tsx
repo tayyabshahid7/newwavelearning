@@ -57,7 +57,7 @@ const FileDropZone = ({
   }
 
   const thumbs = files?.map((file: any) => (
-    <Stack>
+    <Stack key={file.name}>
       <img width={300} src={file.preview} alt="preview" />
       <Typography variant="caption">{file.name}</Typography>
     </Stack>

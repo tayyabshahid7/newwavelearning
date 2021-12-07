@@ -9,6 +9,7 @@ import {
   TextField,
 } from "@mui/material";
 import { addSection } from "services/common";
+import FileDropZone from "components/FileDropZone";
 
 interface AddSectionDialogProps {
   open: boolean;
@@ -28,6 +29,7 @@ const AddSectionDialog = ({
     description: "",
     number: 0,
     programme: programmeId.toString(),
+    files: [],
   });
   const handleContinue = async () => {
     const data = new FormData();
@@ -35,6 +37,7 @@ const AddSectionDialog = ({
     data.append("description", formData.description);
     data.append("number", formData.number);
     data.append("programme", formData.programme);
+    formData.files.map((file: File) => data.append("image", file));
     try {
       const response = await addSection(data);
       addCallback(response.data);
@@ -43,6 +46,7 @@ const AddSectionDialog = ({
         description: "",
         number: 0,
         programme: programmeId.toString(),
+        files: [],
       });
     } catch (error: any) {
       console.log(error);
@@ -55,12 +59,17 @@ const AddSectionDialog = ({
       description: "",
       number: 0,
       programme: programmeId.toString(),
+      files: [],
     });
     cancelCallback();
   };
 
   const handleTextChange = (e: BaseSyntheticEvent) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+
+  const handleAddImage = (newFiles: File[]) => {
+    setFormData({ ...formData, files: newFiles });
   };
 
   return (
@@ -80,6 +89,13 @@ const AddSectionDialog = ({
               label="Description"
               value={formData.description}
               onChange={handleTextChange}
+            />
+            <FileDropZone
+              accept="image/*"
+              addFilesCallback={handleAddImage}
+              helpText="You can only upload image files"
+              showPreview={true}
+              maxFiles={1}
             />
           </Stack>
         </DialogContent>

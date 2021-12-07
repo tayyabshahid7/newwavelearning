@@ -37,12 +37,12 @@ const ProgrammeEditDialog = ({
   const [name, setName] = useState<string>(programme.name);
   const [loading, setLoading] = useState<boolean>(false);
   const [validationFields, setValidationFields] = useState<any>(initialErrors);
-  const [dropzoneOpen, setDropzoneOpen] = useState<boolean>(programme.background_image === null);
+  const [dropzoneOpen, setDropzoneOpen] = useState<boolean>(programme.image === null);
   const [files, setFiles] = useState<File[] | null>(null);
   const [deleteBackground, setDeleteBackground] = useState<boolean>(false);
 
   useEffect(() => {
-    setDropzoneOpen(programme.background_image === null);
+    setDropzoneOpen(programme.image === null);
     setDeleteBackground(false);
     setName(programme.name);
   }, [programme, open]);
@@ -72,9 +72,9 @@ const ProgrammeEditDialog = ({
       const data = new FormData();
       data.append("name", name);
       if (deleteBackground) {
-        data.append("background_image", "");
+        data.append("image", "");
       } else {
-        files?.map(file => data.append("background_image", file));
+        files?.map(file => data.append("image", file));
       }
       try {
         const response = await editProgramme(programme.id, data);
@@ -84,7 +84,7 @@ const ProgrammeEditDialog = ({
       }
     }
     setLoading(false);
-    programme.background_image && setDropzoneOpen(false);
+    programme.image && setDropzoneOpen(false);
   };
 
   const handleAddFiles = (files: File[]) => {
@@ -123,7 +123,7 @@ const ProgrammeEditDialog = ({
             ) : (
               <>
                 <Typography variant="body2">Programme background</Typography>
-                <img src={programme.background_image} width={150} alt="background" />
+                <img src={programme.image} width={150} alt="background" />
                 <Button variant="text" color="primary" onClick={() => setDropzoneOpen(true)}>
                   Change Background
                 </Button>

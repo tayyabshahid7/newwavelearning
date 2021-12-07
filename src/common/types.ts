@@ -48,10 +48,10 @@ export interface SectionData {
 export interface StepData {
   id?: number;
   section?: number;
+  step_type?: string;
   name?: string;
   number?: number;
-  fields: string;
-  step_type?: string;
+  fields?: any;
 }
 
 export interface Session {

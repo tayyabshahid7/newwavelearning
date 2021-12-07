@@ -48,7 +48,7 @@ export const editProgramme = async (programmeId: number, data: FormData) => {
 
 export const addSection = async (data: FormData) => {
   try {
-    const response = await axs.post<SectionData>(`/sections/`, data);
+    const response = await axs.post<SectionData>(`/sections/`, data, { timeout: 15000 });
     return response;
   } catch (error: any) {
     throw error;
@@ -57,7 +57,9 @@ export const addSection = async (data: FormData) => {
 
 export const editSection = async (sectionId: number | string, data: FormData) => {
   try {
-    const response = await axs.patch<ResponseData>(`sections/${sectionId}/`, data);
+    const response = await axs.patch<ResponseData>(`sections/${sectionId}/`, data, {
+      timeout: 15000,
+    });
     return response.data;
   } catch (error: any) {
     throw error;
@@ -95,6 +97,42 @@ export const getSectionSteps = async (sectionId: number) => {
   try {
     const response = await axs.get<StepData[]>(`/sections/${sectionId}/steps`);
     return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const addStep = async (data: FormData) => {
+  try {
+    const response = await axs.post<StepData>("/steps/", data, { timeout: 15000 });
+    return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const editStep = async (stepId: number | string, data: FormData) => {
+  try {
+    const response = await axs.patch<StepData>(`/steps/${stepId}/`, data, { timeout: 15000 });
+    return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const deleteStep = async (stepId: number | string) => {
+  try {
+    const response = await axs.delete<ResponseData>(`/steps/${stepId}/`);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const getStepDetails = async (stepId: number | string) => {
+  try {
+    const response = await axs.get<StepData>(`/steps/${stepId}/`);
+    return response.data;
   } catch (error: any) {
     throw error;
   }

@@ -14,15 +14,14 @@ import {
 import PromptDialog from "components/PromptDialog";
 import { useHistory } from "react-router";
 import { StepData } from "common/types";
-import { getSectionSteps } from "services/common";
+import { deleteStep, getSectionSteps } from "services/common";
 import AddStepDialog from "components/AddStepDialog";
 
 interface SectionStepsTableProps {
   sectionId: number;
-  onDelete: (stepId: number) => void;
 }
 
-const SectionStepsTable = ({ sectionId, onDelete }: SectionStepsTableProps) => {
+const SectionStepsTable = ({ sectionId }: SectionStepsTableProps) => {
   const history = useHistory();
   const [steps, setSteps] = useState<StepData[]>([]);
   const [dialog, setDialog] = useState<any>({
@@ -33,8 +32,10 @@ const SectionStepsTable = ({ sectionId, onDelete }: SectionStepsTableProps) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getSectionSteps(sectionId);
-        setSteps(response.data);
+        if (sectionId) {
+          const response = await getSectionSteps(sectionId);
+          setSteps(response.data);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -46,9 +47,15 @@ const SectionStepsTable = ({ sectionId, onDelete }: SectionStepsTableProps) => {
     setDialog({ step: step, open: "prompt" });
   };
 
-  const handleConfirm = () => {
-    onDelete(dialog.step.id);
-    setDialog({ ...dialog, open: false });
+  const handleConfirm = async () => {
+    try {
+      await deleteStep(dialog.step.id);
+      const newSteps = steps.filter(s => s.id !== dialog.step.id);
+      setSteps(newSteps);
+      setDialog({ ...dialog, open: false });
+    } catch (error: any) {
+      console.log(error);
+    }
   };
 
   const openAddStepDialog = () => {
@@ -59,10 +66,6 @@ const SectionStepsTable = ({ sectionId, onDelete }: SectionStepsTableProps) => {
     setDialog({ section: null, open: false });
   };
 
-  const addStep = (stepType: string) => {
-    setDialog({ ...dialog, open: false });
-    //  TODO: redirect to the corresponding step type form based on Step type selected
-  };
   return (
     <>
       <Stack direction="row" justifyContent="space-between">
@@ -78,12 +81,18 @@ const SectionStepsTable = ({ sectionId, onDelete }: SectionStepsTableProps) => {
                   <b>#{step.number}</b>
                 </TableCell>
                 <TableCell>{step.name}</TableCell>
+                <TableCell>{step.fields.title}</TableCell>
                 <TableCell>{step.step_type}</TableCell>
+                <TableCell>
+                  {step.fields.feedback ? "Feedback needed" : "No feedback needed"}
+                </TableCell>
                 <TableCell align="right">
                   <Stack spacing={1} direction="row" justifyContent="flex-end">
                     <Button
                       size="small"
-                      onClick={() => history.push(`/programmes/sections/${step.id}`)}
+                      onClick={() =>
+                        history.push(`/sections/${step.section}/steps/${step.id}/edit-text-content`)
+                      }
                     >
                       Edit
                     </Button>
@@ -102,7 +111,7 @@ const SectionStepsTable = ({ sectionId, onDelete }: SectionStepsTableProps) => {
           </TableBody>
           <TableFooter>
             <TableRow>
-              <TableCell align="right" colSpan={4}>
+              <TableCell align="left" colSpan={6}>
                 Total: {steps?.length}
               </TableCell>
             </TableRow>
@@ -123,7 +132,6 @@ const SectionStepsTable = ({ sectionId, onDelete }: SectionStepsTableProps) => {
         open={dialog.open === "add"}
         sectionId={sectionId}
         cancelCallback={closeDialog}
-        continueCallback={addStep}
       />
     </>
   );
