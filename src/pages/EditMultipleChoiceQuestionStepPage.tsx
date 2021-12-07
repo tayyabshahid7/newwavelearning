@@ -71,8 +71,8 @@ const EditMultipleChoiceQuestionStep = () => {
   };
 
   const handleAnswerTextChange = (e: BaseSyntheticEvent) => {
-    const answerId = e.target.id;
     let newAnswers = stepForm.answers;
+    const answerId = newAnswers.findIndex((a: any) => a.id === parseInt(e.target.id));
     newAnswers[answerId].text = e.target.value;
     setStepForm({ ...stepForm, answers: newAnswers });
   };

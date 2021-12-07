@@ -56,8 +56,8 @@ const AddMultipleChoiceQuestionStep = () => {
   };
 
   const handleAnswerTextChange = (e: BaseSyntheticEvent) => {
-    const answerId = e.target.id;
     let newAnswers = stepData.answers;
+    const answerId = newAnswers.findIndex((a: any) => a.id === parseInt(e.target.id));
     newAnswers[answerId].text = e.target.value;
     setStepData({ ...stepData, answers: newAnswers });
   };
@@ -65,7 +65,6 @@ const AddMultipleChoiceQuestionStep = () => {
   const handleFeedbackChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStepData({ ...stepData, feedback: event.target.checked });
   };
-
 
   const deleteAnswer = (answerId: number) => {
     let newAnswers = stepData.answers.filter((answer: any) => answer.id !== answerId);
