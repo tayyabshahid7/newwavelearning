@@ -24,6 +24,7 @@ const EditLiveSessionStepPage = () => {
   const [stepData, setStepData] = useState<any>({
     title: "",
     description: "",
+    step_description: "",
     session_type: "",
     session_duration: "",
   });
@@ -37,6 +38,7 @@ const EditLiveSessionStepPage = () => {
         setStepData({
           title: response.fields.title,
           description: response.fields.description,
+          step_description: response.fields.step_description,
           session_type: response.fields.session_type,
           session_duration: response.fields.session_duration,
         });
@@ -91,6 +93,15 @@ const EditLiveSessionStepPage = () => {
                 fullWidth
                 multiline
                 value={stepData.description}
+                onChange={handleTextChange}
+                minRows={5}
+              />
+              <TextField
+                name="step_description"
+                label="Step Description"
+                fullWidth
+                multiline
+                value={stepData.step_description}
                 onChange={handleTextChange}
                 minRows={5}
               />
