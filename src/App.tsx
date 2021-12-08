@@ -24,6 +24,7 @@ import AddLiveSessionStepPage from "pages/AddLiveSessionStepPage";
 import EditLiveSessionStepPage from "pages/EditLiveSessionStepPage";
 import AddMultipleChoiceQuestionStep from "pages/AddMultipleChoiceQuestionStepPage";
 import EditMultipleChoiceQuestionStep from "pages/EditMultipleChoiceQuestionStepPage";
+import AddPictureChoiceQuestionStep from "pages/AddPictureChoiceQuestionStep";
 
 function App() {
   return (
@@ -73,6 +74,16 @@ function App() {
           exact
           path="/sections/:sectionId/steps/:stepId/edit-multiple_choice_question"
           component={EditMultipleChoiceQuestionStep}
+        />
+        <ProtectedRoute
+          exact
+          path="/sections/:sectionId/steps/add-picture-choice-question"
+          component={AddPictureChoiceQuestionStep}
+        />
+        <ProtectedRoute
+          exact
+          path="/sections/:sectionId/steps/:stepId/edit-picture_choice_question"
+          component={AddPictureChoiceQuestionStep}
         />
         <ProtectedRoute exact path="/feedback" component={FeedbackPage} />
         <ProtectedRoute exact path="/users" component={UsersPage} />
