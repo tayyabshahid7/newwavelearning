@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent, ChangeEvent, useState } from "react";
+import React, { BaseSyntheticEvent, ChangeEvent, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
 import {
   Box,
@@ -14,15 +14,16 @@ import {
 } from "@mui/material";
 import DashboardLayout from "components/DashboardLayout";
 import FileDropZone from "components/FileDropZone";
-import { AddStepParams } from "common/types";
-import { addStep } from "services/common";
+import { EditStepParams } from "common/types";
+import { editStep, getStepDetails } from "services/common";
 import { UploadFile } from "@mui/icons-material";
 
-const AddPictureChoiceQuestionStep = () => {
-  const { sectionId } = useParams<AddStepParams>();
+const EditPictureChoiceQuestionStep = () => {
+  const { stepId } = useParams<EditStepParams>();
   const history = useHistory();
   const [loading, setLoading] = useState<boolean>(false);
   const [backgroundImage, setBackgroundImage] = useState<File[]>([]);
+  const [changeBackground, setChangeBackground] = useState<boolean>(false);
   const [stepData, setStepData] = useState<any>({
     question: "",
     description: "",
@@ -30,6 +31,24 @@ const AddPictureChoiceQuestionStep = () => {
     answers: [],
     pictures: [],
   });
+
+  useEffect(() => {
+    const fetchStepData = async () => {
+      setLoading(true);
+      try {
+        const response = await getStepDetails(stepId);
+        let newPictures = new Array<any>();
+        response.fields.answers.forEach(
+          (answer: any) => (newPictures[answer.id] = response.fields.pictures[answer.picture_name])
+        );
+        setStepData({ ...response.fields, pictures: newPictures });
+      } catch (error: any) {
+        console.log(error);
+      }
+      setLoading(false);
+    };
+    fetchStepData();
+  }, [stepId]);
 
   const handleAddChoice = () => {
     let newIndex = 0;
@@ -87,24 +106,41 @@ const AddPictureChoiceQuestionStep = () => {
     setStepData({ ...stepData, feedback: event.target.checked });
   };
 
+  const cancelChangeBackground = () => {
+    setBackgroundImage([]);
+    setChangeBackground(false);
+  };
+
   const handleSave = async () => {
     setLoading(true);
     const data = new FormData();
     data.append("step_type", "picture_choice_question");
-    data.append("number", "0");
-    data.append("section", sectionId);
-    stepData.pictures.map((picture: File) => data.append("pictures", picture));
+
     const fields = {
       question: stepData.question,
       description: stepData.description,
       feedback: stepData.feedback,
       answers: stepData.answers,
+      pictures: stepData.pictures,
+      background_image: stepData.background_image,
     };
+
+    if (stepData.pictures instanceof Object) {
+      for (const prop in stepData.pictures) {
+        if (stepData.pictures[prop] instanceof File) {
+          data.append("pictures", stepData.pictures[prop]);
+          fields.pictures[prop] = stepData.pictures[prop].name;
+        }
+      }
+    }
+    if (backgroundImage.length > 0) {
+      backgroundImage.map((image: File) => data.append("background_image", image));
+    }
+
     data.append("fields", JSON.stringify(fields));
-    backgroundImage.map((image: File) => data.append("background_image", image));
 
     try {
-      await addStep(data);
+      await editStep(stepId, data);
     } catch (error: any) {
       console.log(error);
     }
@@ -117,7 +153,7 @@ const AddPictureChoiceQuestionStep = () => {
       <Paper>
         <Grid container sx={{ p: 8 }} spacing={6}>
           <Grid item xs={12}>
-            <Typography variant="h4">Add Picture Choice Question</Typography>
+            <Typography variant="h4">Edit Picture Choice Question</Typography>
           </Grid>
           <Grid item xs={6}>
             <Stack spacing={2}>
@@ -152,7 +188,11 @@ const AddPictureChoiceQuestionStep = () => {
                       {stepData.pictures[answer.id] ? (
                         <Stack spacing={1}>
                           <img
-                            src={URL.createObjectURL(stepData.pictures[answer.id])}
+                            src={
+                              stepData.pictures[answer.id] instanceof File
+                                ? URL.createObjectURL(stepData.pictures[answer.id])
+                                : stepData.pictures[answer.id]
+                            }
                             width={200}
                             height={200}
                             alt="choice"
@@ -222,13 +262,27 @@ const AddPictureChoiceQuestionStep = () => {
           <Grid item xs={6}>
             <Stack spacing={2}>
               <Typography>Background Image</Typography>
-              <FileDropZone
-                accept="image/*"
-                addFilesCallback={updateFiles}
-                helpText="You can upload just 1 image file"
-                maxFiles={1}
-                showPreview
-              />
+              {stepData.background_image && !changeBackground ? (
+                <>
+                  <img src={stepData.background_image} alt="step background" width={250} />
+                  <Button variant="text" onClick={() => setChangeBackground(true)}>
+                    Change background image
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <FileDropZone
+                    accept="image/*"
+                    addFilesCallback={updateFiles}
+                    helpText="You can upload just 1 image file"
+                    maxFiles={1}
+                    showPreview
+                  />
+                  <Button variant="text" color="error" onClick={cancelChangeBackground}>
+                    Cancel change
+                  </Button>
+                </>
+              )}
             </Stack>
           </Grid>
           <Grid item xs={6} alignItems="flex-end">
@@ -253,4 +307,4 @@ const AddPictureChoiceQuestionStep = () => {
   );
 };
 
-export default AddPictureChoiceQuestionStep;
+export default EditPictureChoiceQuestionStep;
