@@ -67,8 +67,9 @@ const EditPictureChoiceQuestionStep = () => {
     let newPictures = stepData.pictures;
     let newAnswers = stepData.answers;
     const answerIndex = newAnswers.findIndex((a: any) => a.id === answerId);
-    newPictures[answerId] = event.target.files[0];
-    newAnswers[answerIndex].picture_name = event.target.files[0].name;
+    const newPicture = event.target.files[0];
+    newPictures[newPicture.name] = newPicture;
+    newAnswers[answerIndex].picture_name = newPicture.name;
     setStepData({ ...stepData, answers: newAnswers, pictures: newPictures });
   };
 
@@ -83,7 +84,9 @@ const EditPictureChoiceQuestionStep = () => {
   const deleteAnswer = (answerId: number) => {
     let newAnswers = stepData.answers.filter((answer: any) => answer.id !== answerId);
     let newPictures = stepData.pictures;
-    delete newPictures[answerId];
+    if (newPictures.length > 0) {
+      delete newPictures[stepData.answers[answerId].picture_name];
+    }
     setStepData({ ...stepData, answers: newAnswers, pictures: newPictures });
   };
 
@@ -185,13 +188,13 @@ const EditPictureChoiceQuestionStep = () => {
                 {stepData.answers.map((answer: any) => (
                   <Stack key={answer.id} direction="column" textAlign="center" spacing={1}>
                     <Paper variant="outlined" sx={{ p: 2, minHeight: "280px" }}>
-                      {stepData.pictures[answer.id] ? (
+                      {stepData.pictures[answer.picture_name] ? (
                         <Stack spacing={1}>
                           <img
                             src={
                               stepData.pictures[answer.id] instanceof File
-                                ? URL.createObjectURL(stepData.pictures[answer.id])
-                                : stepData.pictures[answer.id]
+                                ? URL.createObjectURL(stepData.pictures[answer.picture_name])
+                                : stepData.pictures[answer.picture_name]
                             }
                             width={200}
                             height={200}

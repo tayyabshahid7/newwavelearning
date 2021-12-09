@@ -37,10 +37,8 @@ const AddPictureChoiceQuestionStep = () => {
       newIndex = stepData.answers[stepData.answers.length - 1].id + 1;
     }
     let newAnswers = stepData.answers;
-    newAnswers.push({ id: newIndex, text: "", correct: false, picture_name: null });
-    const newPictures = stepData.pictures;
-    newPictures[newIndex] = null;
-    setStepData({ ...stepData, answers: newAnswers, pictures: newPictures });
+    newAnswers.push({ id: newIndex, text: "", correct: false, picture: null });
+    setStepData({ ...stepData, answers: newAnswers });
   };
 
   const handlePictureChange = (event: any) => {
@@ -48,8 +46,9 @@ const AddPictureChoiceQuestionStep = () => {
     let newPictures = stepData.pictures;
     let newAnswers = stepData.answers;
     const answerIndex = newAnswers.findIndex((a: any) => a.id === answerId);
-    newPictures[answerId] = event.target.files[0];
-    newAnswers[answerIndex].picture_name = event.target.files[0].name;
+    const newPicture = event.target.files[0];
+    newPictures[newPicture.name] = newPicture;
+    newAnswers[answerIndex].picture_name = newPicture.name;
     setStepData({ ...stepData, answers: newAnswers, pictures: newPictures });
   };
 
@@ -64,7 +63,9 @@ const AddPictureChoiceQuestionStep = () => {
   const deleteAnswer = (answerId: number) => {
     let newAnswers = stepData.answers.filter((answer: any) => answer.id !== answerId);
     let newPictures = stepData.pictures;
-    delete newPictures[answerId];
+    if (newPictures.length > 0) {
+      delete newPictures[stepData.answers[answerId].picture_name];
+    }
     setStepData({ ...stepData, answers: newAnswers, pictures: newPictures });
   };
 
@@ -93,7 +94,9 @@ const AddPictureChoiceQuestionStep = () => {
     data.append("step_type", "picture_choice_question");
     data.append("number", "0");
     data.append("section", sectionId);
-    stepData.pictures.map((picture: File) => data.append("pictures", picture));
+    for (const picture in Object.values(stepData.pictures)) {
+      data.append("pictures", picture);
+    }
     const fields = {
       question: stepData.question,
       description: stepData.description,
@@ -148,11 +151,14 @@ const AddPictureChoiceQuestionStep = () => {
               <Stack direction="row" spacing={2}>
                 {stepData.answers.map((answer: any) => (
                   <Stack key={answer.id} direction="column" textAlign="center" spacing={1}>
+                    <Button color="error" variant="text" onClick={() => deleteAnswer(answer.id)}>
+                      Delete
+                    </Button>
                     <Paper variant="outlined" sx={{ p: 2, minHeight: "280px" }}>
-                      {stepData.pictures[answer.id] ? (
+                      {stepData.pictures[answer.picture_name] ? (
                         <Stack spacing={1}>
                           <img
-                            src={URL.createObjectURL(stepData.pictures[answer.id])}
+                            src={URL.createObjectURL(stepData.pictures[answer.picture_name])}
                             width={200}
                             height={200}
                             alt="choice"
@@ -211,9 +217,6 @@ const AddPictureChoiceQuestionStep = () => {
                       disableRipple
                       size="medium"
                     />
-                    <Button color="error" variant="text" onClick={() => deleteAnswer(answer.id)}>
-                      Delete
-                    </Button>
                   </Stack>
                 ))}
               </Stack>
