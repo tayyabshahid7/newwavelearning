@@ -29,7 +29,6 @@ const EditPictureChoiceQuestionStep = () => {
     description: "",
     feedback: false,
     answers: [],
-    pictures: [],
   });
 
   useEffect(() => {
@@ -37,11 +36,7 @@ const EditPictureChoiceQuestionStep = () => {
       setLoading(true);
       try {
         const response = await getStepDetails(stepId);
-        let newPictures = new Array<any>();
-        response.fields.answers.forEach(
-          (answer: any) => (newPictures[answer.id] = response.fields.pictures[answer.picture_name])
-        );
-        setStepData({ ...response.fields, pictures: newPictures });
+        setStepData(response.fields);
       } catch (error: any) {
         console.log(error);
       }
@@ -57,20 +52,15 @@ const EditPictureChoiceQuestionStep = () => {
     }
     let newAnswers = stepData.answers;
     newAnswers.push({ id: newIndex, text: "", correct: false, picture_name: null });
-    const newPictures = stepData.pictures;
-    newPictures[newIndex] = null;
-    setStepData({ ...stepData, answers: newAnswers, pictures: newPictures });
+    setStepData({ ...stepData, answers: newAnswers });
   };
 
   const handlePictureChange = (event: any) => {
     const answerId = parseInt(event.target.id.split("-")[1]);
-    let newPictures = stepData.pictures;
     let newAnswers = stepData.answers;
     const answerIndex = newAnswers.findIndex((a: any) => a.id === answerId);
-    const newPicture = event.target.files[0];
-    newPictures[newPicture.name] = newPicture;
-    newAnswers[answerIndex].picture_name = newPicture.name;
-    setStepData({ ...stepData, answers: newAnswers, pictures: newPictures });
+    newAnswers[answerIndex].picture = event.target.files[0];
+    setStepData({ ...stepData, answers: newAnswers });
   };
 
   const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -83,11 +73,7 @@ const EditPictureChoiceQuestionStep = () => {
 
   const deleteAnswer = (answerId: number) => {
     let newAnswers = stepData.answers.filter((answer: any) => answer.id !== answerId);
-    let newPictures = stepData.pictures;
-    if (newPictures.length > 0) {
-      delete newPictures[stepData.answers[answerId].picture_name];
-    }
-    setStepData({ ...stepData, answers: newAnswers, pictures: newPictures });
+    setStepData({ ...stepData, answers: newAnswers });
   };
 
   const updateFiles = (newImages: File[]) => {
@@ -119,23 +105,16 @@ const EditPictureChoiceQuestionStep = () => {
     const data = new FormData();
     data.append("step_type", "picture_choice_question");
 
-    const fields = {
-      question: stepData.question,
-      description: stepData.description,
-      feedback: stepData.feedback,
-      answers: stepData.answers,
-      pictures: stepData.pictures,
-      background_image: stepData.background_image,
-    };
-
-    if (stepData.pictures instanceof Object) {
-      for (const prop in stepData.pictures) {
-        if (stepData.pictures[prop] instanceof File) {
-          data.append("pictures", stepData.pictures[prop]);
-          fields.pictures[prop] = stepData.pictures[prop].name;
-        }
+    let fields = JSON.parse(JSON.stringify(stepData)); // DEEP COPY
+  
+    stepData.answers.forEach((a: any) => {
+      if(a.picture instanceof File) { // because there may be strings from non-edited pictures
+        data.append("pictures", a.picture);
+        let modifiedAnswer = fields.answers.find((ma: any) => ma.id === a.id);
+        modifiedAnswer.picture = a.picture.name;
       }
-    }
+    });
+
     if (backgroundImage.length > 0) {
       backgroundImage.map((image: File) => data.append("background_image", image));
     }
@@ -188,13 +167,13 @@ const EditPictureChoiceQuestionStep = () => {
                 {stepData.answers.map((answer: any) => (
                   <Stack key={answer.id} direction="column" textAlign="center" spacing={1}>
                     <Paper variant="outlined" sx={{ p: 2, minHeight: "280px" }}>
-                      {stepData.pictures[answer.picture_name] ? (
+                      {answer.picture ? (
                         <Stack spacing={1}>
                           <img
                             src={
-                              stepData.pictures[answer.id] instanceof File
-                                ? URL.createObjectURL(stepData.pictures[answer.picture_name])
-                                : stepData.pictures[answer.picture_name]
+                              answer.picture instanceof File
+                                ? URL.createObjectURL(answer.picture)
+                                : answer.picture
                             }
                             width={200}
                             height={200}

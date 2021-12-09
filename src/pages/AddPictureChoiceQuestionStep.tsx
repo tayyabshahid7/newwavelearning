@@ -28,7 +28,6 @@ const AddPictureChoiceQuestionStep = () => {
     description: "",
     feedback: false,
     answers: [],
-    pictures: [],
   });
 
   const handleAddChoice = () => {
@@ -43,13 +42,10 @@ const AddPictureChoiceQuestionStep = () => {
 
   const handlePictureChange = (event: any) => {
     const answerId = parseInt(event.target.id.split("-")[1]);
-    let newPictures = stepData.pictures;
     let newAnswers = stepData.answers;
     const answerIndex = newAnswers.findIndex((a: any) => a.id === answerId);
-    const newPicture = event.target.files[0];
-    newPictures[newPicture.name] = newPicture;
-    newAnswers[answerIndex].picture_name = newPicture.name;
-    setStepData({ ...stepData, answers: newAnswers, pictures: newPictures });
+    newAnswers[answerIndex].picture = event.target.files[0];
+    setStepData({ ...stepData, answers: newAnswers });
   };
 
   const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -62,11 +58,7 @@ const AddPictureChoiceQuestionStep = () => {
 
   const deleteAnswer = (answerId: number) => {
     let newAnswers = stepData.answers.filter((answer: any) => answer.id !== answerId);
-    let newPictures = stepData.pictures;
-    if (newPictures.length > 0) {
-      delete newPictures[stepData.answers[answerId].picture_name];
-    }
-    setStepData({ ...stepData, answers: newAnswers, pictures: newPictures });
+    setStepData({ ...stepData, answers: newAnswers });
   };
 
   const updateFiles = (newImages: File[]) => {
@@ -94,17 +86,14 @@ const AddPictureChoiceQuestionStep = () => {
     data.append("step_type", "picture_choice_question");
     data.append("number", "0");
     data.append("section", sectionId);
-    for (const picture in Object.values(stepData.pictures)) {
-      data.append("pictures", picture);
-    }
-    const fields = {
-      question: stepData.question,
-      description: stepData.description,
-      feedback: stepData.feedback,
-      answers: stepData.answers,
-    };
+    let fields = JSON.parse(JSON.stringify(stepData)); // DEEP COPY
+    stepData.answers.forEach((a: any) => {
+      data.append("pictures", a.picture);
+      let modifiedAnswer = fields.answers.find((ma: any) => ma.id === a.id);
+      modifiedAnswer.picture = a.picture.name;
+    });
     data.append("fields", JSON.stringify(fields));
-    backgroundImage.map((image: File) => data.append("background_image", image));
+    backgroundImage.forEach((image: File) => data.append("background_image", image));
 
     try {
       await addStep(data);
@@ -155,10 +144,10 @@ const AddPictureChoiceQuestionStep = () => {
                       Delete
                     </Button>
                     <Paper variant="outlined" sx={{ p: 2, minHeight: "280px" }}>
-                      {stepData.pictures[answer.picture_name] ? (
+                      {answer.picture ? (
                         <Stack spacing={1}>
                           <img
-                            src={URL.createObjectURL(stepData.pictures[answer.picture_name])}
+                            src={URL.createObjectURL(answer.picture)}
                             width={200}
                             height={200}
                             alt="choice"
