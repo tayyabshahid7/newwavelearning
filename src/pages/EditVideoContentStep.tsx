@@ -6,7 +6,7 @@ import FileDropZone from "components/FileDropZone";
 import { EditStepParams } from "common/types";
 import { editStep, getStepDetails } from "services/common";
 import { UploadFile } from "@mui/icons-material";
-import Video from "components/Video";
+import Player from "components/Player";
 
 const EditVideoContentStep = () => {
   const { stepId } = useParams<EditStepParams>();
@@ -110,7 +110,7 @@ const EditVideoContentStep = () => {
                   <Paper variant="outlined" sx={{ p: 2, minHeight: "280px" }}>
                     {videoFile ? (
                       <Stack spacing={1}>
-                        <Video videoFile={videoFile} />
+                        <Player source={videoFile} fileType="video" />
                         <label htmlFor="video">
                           <input
                             accept="video/*"
