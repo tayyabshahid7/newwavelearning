@@ -28,6 +28,8 @@ import AddPictureChoiceQuestionStep from "pages/AddPictureChoiceQuestionStep";
 import EditPictureChoiceQuestionStep from "pages/EditPictureChoiceQuestionStep";
 import AddVideoContentStep from "pages/AddVideoContentStep";
 import EditVideoContentStep from "pages/EditVideoContentStep";
+import AddAudioContent from "pages/steps/AddAudioContent";
+import EditAudioContent from "pages/steps/EditAudioContent";
 
 function App() {
   return (
@@ -97,6 +99,16 @@ function App() {
           exact
           path="/sections/:sectionId/steps/:stepId/edit-video"
           component={EditVideoContentStep}
+        />
+        <ProtectedRoute
+          exact
+          path="/sections/:sectionId/steps/add-audio"
+          component={AddAudioContent}
+        />
+        <ProtectedRoute
+          exact
+          path="/sections/:sectionId/steps/:stepId/edit-audio"
+          component={EditAudioContent}
         />
         <ProtectedRoute exact path="/feedback" component={FeedbackPage} />
         <ProtectedRoute exact path="/users" component={UsersPage} />
