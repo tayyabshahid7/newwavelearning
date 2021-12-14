@@ -30,6 +30,8 @@ import AddVideoContentStep from "pages/AddVideoContentStep";
 import EditVideoContentStep from "pages/EditVideoContentStep";
 import AddAudioContent from "pages/steps/AddAudioContent";
 import EditAudioContent from "pages/steps/EditAudioContent";
+import AddToggleQuestion from "pages/steps/AddToggleQuestion";
+import EditToggleQuestion from "pages/steps/EditToggleQuestion";
 
 function App() {
   return (
@@ -109,6 +111,16 @@ function App() {
           exact
           path="/sections/:sectionId/steps/:stepId/edit-audio"
           component={EditAudioContent}
+        />
+        <ProtectedRoute
+          exact
+          path="/sections/:sectionId/steps/add-toggle"
+          component={AddToggleQuestion}
+        />
+        <ProtectedRoute
+          exact
+          path="/sections/:sectionId/steps/:stepId/edit-toggle"
+          component={EditToggleQuestion}
         />
         <ProtectedRoute exact path="/feedback" component={FeedbackPage} />
         <ProtectedRoute exact path="/users" component={UsersPage} />
