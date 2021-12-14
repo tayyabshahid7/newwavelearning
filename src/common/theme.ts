@@ -90,6 +90,15 @@ let theme = createTheme({
         },
       },
     },
+    MuiAutocomplete: {
+      styleOverrides: {
+        tag: {
+          backgroundColor: "#22B9D4",
+          color: "#FFFFFF",
+          borderRadius: "5px",
+        },
+      },
+    },
   },
 });
 
