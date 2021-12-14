@@ -19,3 +19,7 @@ export const LIVE_SESSION_TYPES = [
   { value: GROUP_SESSION_TYPE, text: "Group Session" },
   { value: COHORT_SESSION_TYPE, text: "Cohort Session" },
 ];
+
+
+export const HOURS = [...Array(25).keys()];
+export const MINUTES = [...Array(61).keys()];

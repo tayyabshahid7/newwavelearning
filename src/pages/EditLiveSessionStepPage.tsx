@@ -13,7 +13,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { LIVE_SESSION_TYPES } from "common/constants";
+import { HOURS, LIVE_SESSION_TYPES, MINUTES } from "common/constants";
 import { useHistory, useParams } from "react-router";
 import { editStep, getStepDetails } from "services/common";
 import { EditStepParams } from "common/types";
@@ -26,7 +26,8 @@ const EditLiveSessionStepPage = () => {
     description: "",
     step_description: "",
     session_type: "",
-    session_duration: "",
+    hours: "",
+    minutes: "",
   });
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -40,7 +41,8 @@ const EditLiveSessionStepPage = () => {
           description: response.fields.description,
           step_description: response.fields.step_description,
           session_type: response.fields.session_type,
-          session_duration: response.fields.session_duration,
+          hours: response.fields.hours,
+          minutes: response.fields.minutes,
         });
       } catch (error: any) {
         console.log(error);
@@ -121,22 +123,41 @@ const EditLiveSessionStepPage = () => {
                   ))}
                 </Select>
               </FormControl>
-              <FormControl fullWidth>
-                <InputLabel id="session-duration">Session Duration</InputLabel>
-                <Select
-                  labelId="session-duration"
-                  name="session_duration"
-                  value={stepData.session_duration}
-                  label="Session Type"
-                  onChange={handleSelectChange}
-                >
-                  {[1, 2, 3, 4, 5, 6].map((duration, index) => (
-                    <MenuItem key={index} value={duration}>
-                      {duration} hour{duration === 1 ? "" : "s"}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+              <Typography variant="body2">Session Duration</Typography>
+              <Stack direction="row" spacing={1}>
+                <FormControl fullWidth>
+                  <InputLabel id="session-hours">Hours</InputLabel>
+                  <Select
+                    labelId="session-hours"
+                    name="hours"
+                    value={stepData.hours}
+                    label="Hours"
+                    onChange={handleSelectChange}
+                  >
+                    {HOURS.map((duration, index) => (
+                      <MenuItem key={`h-${index}`} value={duration}>
+                        {duration} hour{duration === 1 ? "" : "s"}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <FormControl fullWidth>
+                  <InputLabel id="session-minutes">Minutes</InputLabel>
+                  <Select
+                    labelId="session-minutes"
+                    name="minutes"
+                    value={stepData.minutes}
+                    label="Minutes"
+                    onChange={handleSelectChange}
+                  >
+                    {MINUTES.map((duration, index) => (
+                      <MenuItem key={`m-${index}`} value={duration}>
+                        {duration} minute{duration === 1 ? "" : "s"}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Stack>
             </Stack>
           </Grid>
           <Grid item xs={12}>
