@@ -1,7 +1,6 @@
-import React, { BaseSyntheticEvent, useState } from "react";
+import React, { BaseSyntheticEvent, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
 import {
-  Autocomplete,
   Button,
   Grid,
   Paper,
@@ -12,23 +11,44 @@ import {
 } from "@mui/material";
 import DashboardLayout from "components/DashboardLayout";
 import FileDropZone from "components/FileDropZone";
-import { AddStepParams } from "common/types";
-import { addStep } from "services/common";
+import { EditStepParams } from "common/types";
+import { editStep, getStepDetails } from "services/common";
 
-const AddKeywordQuestion = () => {
-  const { sectionId } = useParams<AddStepParams>();
+const EditModelAnswerQuestion = () => {
+  const { stepId } = useParams<EditStepParams>();
   const history = useHistory();
   const [loading, setLoading] = useState<boolean>(false);
   const [backgroundImage, setBackgroundImage] = useState<File | null>(null);
+  const [changeBackground, setChangeBackground] = useState<boolean>(false);
   const [stepData, setStepData] = useState<any>({
     question: "",
     description: "",
-    keywords: [],
+    model_answer: "",
     feedback: false,
+    background_image: false,
   });
+
+  useEffect(() => {
+    const fetchStepData = async () => {
+      setLoading(true);
+      try {
+        const response = await getStepDetails(stepId);
+        setStepData(response.fields);
+      } catch (error: any) {
+        console.log(error);
+      }
+      setLoading(false);
+    };
+    fetchStepData();
+  }, [stepId]);
 
   const updateFiles = (newImages: File[]) => {
     setBackgroundImage(newImages[0]);
+  };
+
+  const cancelChangeBackground = () => {
+    setBackgroundImage(null);
+    setChangeBackground(false);
   };
 
   const handleTextChange = (e: BaseSyntheticEvent) => {
@@ -42,16 +62,15 @@ const AddKeywordQuestion = () => {
   const handleSave = async () => {
     setLoading(true);
     const data = new FormData();
-    data.append("step_type", "keyword_question");
-    data.append("number", "0");
-    data.append("section", sectionId);
-    data.append("fields", JSON.stringify(stepData));
+    data.append("step_type", "model_answer_question");
+    let fields = stepData;
+    data.append("fields", JSON.stringify(fields));
     if (backgroundImage) {
       data.append("background_image", backgroundImage);
     }
 
     try {
-      await addStep(data);
+      await editStep(stepId, data);
     } catch (error: any) {
       console.log(error);
     }
@@ -64,7 +83,7 @@ const AddKeywordQuestion = () => {
       <Paper>
         <Grid container sx={{ p: 8 }} spacing={6}>
           <Grid item xs={12}>
-            <Typography variant="h4">Add Keyword Question</Typography>
+            <Typography variant="h4">Edit Model Answer Question</Typography>
           </Grid>
           <Grid item xs={6}>
             <Stack spacing={2}>
@@ -82,33 +101,40 @@ const AddKeywordQuestion = () => {
                 minRows={3}
                 onChange={handleTextChange}
               />
-              <Autocomplete
-                multiple
-                freeSolo
-                id="keywords"
-                options={[]}
-                value={stepData.keywords}
-                onChange={(event, newValue) => setStepData({ ...stepData, keywords: newValue })}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    label="Keywords"
-                    placeholder="Press 'Enter' to add keywords"
-                  />
-                )}
+              <TextField
+                name="model_answer"
+                value={stepData.model_answer}
+                multiline
+                label="Model Answer"
+                minRows={3}
+                onChange={handleTextChange}
               />
             </Stack>
           </Grid>
           <Grid item xs={6}>
             <Stack spacing={2}>
               <Typography>Background Image</Typography>
-              <FileDropZone
-                accept="image/*"
-                addFilesCallback={updateFiles}
-                helpText="You can upload just 1 image file"
-                maxFiles={1}
-                showPreview
-              />
+              {stepData.background_image && !changeBackground ? (
+                <>
+                  <img src={stepData.background_image} alt="step background" width={250} />
+                  <Button variant="text" onClick={() => setChangeBackground(true)}>
+                    Change background image
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <FileDropZone
+                    accept="image/*"
+                    addFilesCallback={updateFiles}
+                    helpText="You can upload just 1 image file"
+                    maxFiles={1}
+                    showPreview
+                  />
+                  <Button variant="text" color="error" onClick={cancelChangeBackground}>
+                    Cancel change
+                  </Button>
+                </>
+              )}
             </Stack>
           </Grid>
           <Grid item xs={6} alignItems="flex-end">
@@ -133,4 +159,4 @@ const AddKeywordQuestion = () => {
   );
 };
 
-export default AddKeywordQuestion;
+export default EditModelAnswerQuestion;

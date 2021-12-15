@@ -1,21 +1,12 @@
 import React, { BaseSyntheticEvent, useState } from "react";
 import { useHistory, useParams } from "react-router";
-import {
-  Autocomplete,
-  Button,
-  Grid,
-  Paper,
-  Stack,
-  Switch,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, Grid, Paper, Stack, Switch, TextField, Typography } from "@mui/material";
 import DashboardLayout from "components/DashboardLayout";
 import FileDropZone from "components/FileDropZone";
 import { AddStepParams } from "common/types";
 import { addStep } from "services/common";
 
-const AddKeywordQuestion = () => {
+const AddModelAnswerQuestion = () => {
   const { sectionId } = useParams<AddStepParams>();
   const history = useHistory();
   const [loading, setLoading] = useState<boolean>(false);
@@ -23,7 +14,7 @@ const AddKeywordQuestion = () => {
   const [stepData, setStepData] = useState<any>({
     question: "",
     description: "",
-    keywords: [],
+    model_answer: "",
     feedback: false,
   });
 
@@ -42,7 +33,7 @@ const AddKeywordQuestion = () => {
   const handleSave = async () => {
     setLoading(true);
     const data = new FormData();
-    data.append("step_type", "keyword_question");
+    data.append("step_type", "model_answer_question");
     data.append("number", "0");
     data.append("section", sectionId);
     data.append("fields", JSON.stringify(stepData));
@@ -64,7 +55,7 @@ const AddKeywordQuestion = () => {
       <Paper>
         <Grid container sx={{ p: 8 }} spacing={6}>
           <Grid item xs={12}>
-            <Typography variant="h4">Add Keyword Question</Typography>
+            <Typography variant="h4">Add Model Answer Question</Typography>
           </Grid>
           <Grid item xs={6}>
             <Stack spacing={2}>
@@ -82,20 +73,13 @@ const AddKeywordQuestion = () => {
                 minRows={3}
                 onChange={handleTextChange}
               />
-              <Autocomplete
-                multiple
-                freeSolo
-                id="keywords"
-                options={[]}
-                value={stepData.keywords}
-                onChange={(event, newValue) => setStepData({ ...stepData, keywords: newValue })}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    label="Keywords"
-                    placeholder="Press 'Enter' to add keywords"
-                  />
-                )}
+              <TextField
+                name="model_answer"
+                value={stepData.model_answer}
+                multiline
+                label="Model Answer"
+                minRows={3}
+                onChange={handleTextChange}
               />
             </Stack>
           </Grid>
@@ -133,4 +117,4 @@ const AddKeywordQuestion = () => {
   );
 };
 
-export default AddKeywordQuestion;
+export default AddModelAnswerQuestion;
