@@ -32,7 +32,8 @@ import AddAudioContent from "pages/steps/AddAudioContent";
 import EditAudioContent from "pages/steps/EditAudioContent";
 import AddToggleQuestion from "pages/steps/AddToggleQuestion";
 import EditToggleQuestion from "pages/steps/EditToggleQuestion";
-import AddKeywordTriggerQuestion from "pages/steps/AddKeywordTriggerQuestion";
+import AddKeywordTriggerQuestion from "pages/steps/AddKeywordQuestion";
+import EditKeywordQuestion from "pages/steps/EditKeywordQuestion";
 
 function App() {
   return (
@@ -131,7 +132,7 @@ function App() {
         <ProtectedRoute
           exact
           path="/sections/:sectionId/steps/:stepId/edit-keyword_question"
-          component={AddKeywordTriggerQuestion}
+          component={EditKeywordQuestion}
         />
         <ProtectedRoute exact path="/feedback" component={FeedbackPage} />
         <ProtectedRoute exact path="/users" component={UsersPage} />
