@@ -18,8 +18,8 @@ import ProgrammeDetailsPage from "pages/ProgrammeDetailsPage";
 import AddProgrammePage from "pages/AddProgrammePage";
 import SectionDetailsPage from "pages/SectionDetailsPage";
 import NotFoundPage from "pages/NotFoundPage";
-import AddTextContentPage from "pages/AddTextContentStepPage";
-import EditTextContentPage from "pages/EditTextContentStepPage";
+import AddTextContent from "pages/steps/AddTextContent";
+import EditTextContent from "pages/steps/EditTextContent";
 import AddLiveSessionStepPage from "pages/AddLiveSessionStepPage";
 import EditLiveSessionStepPage from "pages/EditLiveSessionStepPage";
 import AddMultipleChoiceQuestionStep from "pages/AddMultipleChoiceQuestionStepPage";
@@ -59,12 +59,12 @@ function App() {
         <ProtectedRoute
           exact
           path="/sections/:sectionId/steps/add-text-content"
-          component={AddTextContentPage}
+          component={AddTextContent}
         />
         <ProtectedRoute
           exact
           path="/sections/:sectionId/steps/:stepId/edit-text_content"
-          component={EditTextContentPage}
+          component={EditTextContent}
         />
         <ProtectedRoute
           exact
