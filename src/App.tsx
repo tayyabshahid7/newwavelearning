@@ -26,8 +26,8 @@ import AddMultipleChoice from "pages/steps/AddMultipleChoiceQuestion";
 import EditMultipleChoice from "pages/steps/EditMultipleChoiceQuestion";
 import AddPictureChoiceQuestion from "pages/steps/AddPictureChoiceQuestion";
 import EditPictureChoiceQuestion from "pages/steps/EditPictureChoiceQuestion";
-import AddVideoContentStep from "pages/AddVideoContentStep";
-import EditVideoContentStep from "pages/EditVideoContentStep";
+import AddVideoContent from "pages/steps/AddVideoContentStep";
+import EditVideoContent from "pages/steps/EditVideoContentStep";
 import AddAudioContent from "pages/steps/AddAudioContent";
 import EditAudioContent from "pages/steps/EditAudioContent";
 import AddToggleQuestion from "pages/steps/AddToggleQuestion";
@@ -99,12 +99,12 @@ function App() {
         <ProtectedRoute
           exact
           path="/sections/:sectionId/steps/add-video"
-          component={AddVideoContentStep}
+          component={AddVideoContent}
         />
         <ProtectedRoute
           exact
           path="/sections/:sectionId/steps/:stepId/edit-video"
-          component={EditVideoContentStep}
+          component={EditVideoContent}
         />
         <ProtectedRoute
           exact
