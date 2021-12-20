@@ -18,7 +18,7 @@ import { useHistory, useParams } from "react-router";
 import { editStep, getStepDetails } from "services/common";
 import { EditStepParams } from "common/types";
 
-const EditLiveSessionStepPage = () => {
+const EditLiveSession = () => {
   const history = useHistory();
   const { stepId } = useParams<EditStepParams>();
   const [stepData, setStepData] = useState<any>({
@@ -176,4 +176,4 @@ const EditLiveSessionStepPage = () => {
   );
 };
 
-export default EditLiveSessionStepPage;
+export default EditLiveSession;

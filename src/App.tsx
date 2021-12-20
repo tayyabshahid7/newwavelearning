@@ -20,8 +20,8 @@ import SectionDetailsPage from "pages/SectionDetailsPage";
 import NotFoundPage from "pages/NotFoundPage";
 import AddTextContent from "pages/steps/AddTextContent";
 import EditTextContent from "pages/steps/EditTextContent";
-import AddLiveSessionStepPage from "pages/AddLiveSessionStepPage";
-import EditLiveSessionStepPage from "pages/EditLiveSessionStepPage";
+import AddLiveSession from "pages/steps/AddLiveSession";
+import EditLiveSession from "pages/steps/EditLiveSession";
 import AddMultipleChoiceQuestionStep from "pages/AddMultipleChoiceQuestionStepPage";
 import EditMultipleChoiceQuestionStep from "pages/EditMultipleChoiceQuestionStepPage";
 import AddPictureChoiceQuestionStep from "pages/AddPictureChoiceQuestionStep";
@@ -69,12 +69,12 @@ function App() {
         <ProtectedRoute
           exact
           path="/sections/:sectionId/steps/add-live-session"
-          component={AddLiveSessionStepPage}
+          component={AddLiveSession}
         />
         <ProtectedRoute
           exact
           path="/sections/:sectionId/steps/:stepId/edit-live_session"
-          component={EditLiveSessionStepPage}
+          component={EditLiveSession}
         />
         <ProtectedRoute
           exact

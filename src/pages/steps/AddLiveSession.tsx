@@ -18,7 +18,7 @@ import { useHistory, useParams } from "react-router";
 import { addStep } from "services/common";
 import { AddStepParams } from "common/types";
 
-const AddLiveSessionStepPage = () => {
+const AddLiveSession = () => {
   const { sectionId } = useParams<AddStepParams>();
   const [stepData, setStepData] = useState<any>({
     title: "",
@@ -158,4 +158,4 @@ const AddLiveSessionStepPage = () => {
   );
 };
 
-export default AddLiveSessionStepPage;
+export default AddLiveSession;
