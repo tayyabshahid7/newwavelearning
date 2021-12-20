@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent, ChangeEvent, useState } from "react";
+import React, { BaseSyntheticEvent, ChangeEvent, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
 import {
   Button,
@@ -13,21 +13,36 @@ import {
 } from "@mui/material";
 import DashboardLayout from "components/DashboardLayout";
 import FileDropZone from "components/FileDropZone";
-import { AddStepParams } from "common/types";
-import { addStep } from "services/common";
+import { EditStepParams } from "common/types";
+import { editStep, getStepDetails } from "services/common";
 import { Delete } from "@mui/icons-material";
 
-const AddMultipleChoiceQuestionStep = () => {
-  const { sectionId } = useParams<AddStepParams>();
+const EditMultipleChoiceQuestion = () => {
+  const { stepId } = useParams<EditStepParams>();
   const history = useHistory();
   const [loading, setLoading] = useState<boolean>(false);
-  const [stepData, setStepData] = useState<any>({
+  const [changeBackground, setChangeBackground] = useState<boolean>(false);
+  const [images, setImages] = useState<File[]>([]);
+  const [stepForm, setStepForm] = useState<any>({
     question: "",
     description: "",
     feedback: false,
     answers: [],
   });
-  const [images, setImages] = useState<File[]>([]);
+
+  useEffect(() => {
+    const fetchStepData = async () => {
+      setLoading(true);
+      try {
+        const response = await getStepDetails(stepId);
+        setStepForm(response.fields);
+      } catch (error: any) {
+        console.log(error);
+      }
+      setLoading(false);
+    };
+    fetchStepData();
+  }, [stepId]);
 
   const updateFiles = (newImages: File[]) => {
     setImages(newImages);
@@ -35,52 +50,58 @@ const AddMultipleChoiceQuestionStep = () => {
 
   const handleAddChoice = () => {
     let newIndex = 0;
-    if (stepData.answers.length > 0) {
-      newIndex = stepData.answers[stepData.answers.length - 1].id + 1;
+    if (stepForm.answers.length > 0) {
+      newIndex = stepForm.answers[stepForm.answers.length - 1].id + 1;
     }
-    let newAnswers = stepData.answers;
+    let newAnswers = stepForm.answers;
     newAnswers.push({ id: newIndex, text: "", correct: false });
-    setStepData({ ...stepData, answers: newAnswers });
+    setStepForm({ ...stepForm, answers: newAnswers });
   };
 
   const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
     const selectedId = parseInt(e.target.value);
-    let answerIndex = stepData.answers.findIndex((answer: any) => answer.id === selectedId);
-    let newAnswers = stepData.answers;
+    let answerIndex = stepForm.answers.findIndex((answer: any) => answer.id === selectedId);
+    let newAnswers = stepForm.answers;
     newAnswers[answerIndex].correct = e.target.checked;
-    setStepData({ ...stepData, answers: newAnswers });
+    setStepForm({ ...stepForm, answers: newAnswers });
   };
 
   const handleTextChange = (e: BaseSyntheticEvent) => {
-    setStepData({ ...stepData, [e.target.name]: e.target.value });
+    setStepForm({ ...stepForm, [e.target.name]: e.target.value });
   };
 
   const handleAnswerTextChange = (e: BaseSyntheticEvent) => {
-    let newAnswers = stepData.answers;
+    let newAnswers = stepForm.answers;
     const answerId = newAnswers.findIndex((a: any) => a.id === parseInt(e.target.id));
     newAnswers[answerId].text = e.target.value;
-    setStepData({ ...stepData, answers: newAnswers });
+    setStepForm({ ...stepForm, answers: newAnswers });
   };
 
   const handleFeedbackChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setStepData({ ...stepData, feedback: event.target.checked });
+    setStepForm({ ...stepForm, feedback: event.target.checked });
+  };
+
+  const cancelChangeBackground = () => {
+    setImages([]);
+    setChangeBackground(false);
   };
 
   const deleteAnswer = (answerId: number) => {
-    let newAnswers = stepData.answers.filter((answer: any) => answer.id !== answerId);
-    setStepData({ ...stepData, answers: newAnswers });
+    let newAnswers = stepForm.answers.filter((answer: any) => answer.id !== answerId);
+    setStepForm({ ...stepForm, answers: newAnswers });
   };
 
   const handleSave = async () => {
     setLoading(true);
     const data = new FormData();
     data.append("step_type", "multiple_choice_question");
-    data.append("number", "0");
-    data.append("section", sectionId);
-    data.append("fields", JSON.stringify(stepData));
-    images.map((image: File) => data.append("background_image", image));
+    data.append("fields", JSON.stringify(stepForm));
+    if (images.length > 0) {
+      images.map((image: File) => data.append("background_image", image));
+    }
+
     try {
-      await addStep(data);
+      await editStep(stepId, data);
     } catch (error: any) {
       console.log(error);
     }
@@ -93,19 +114,19 @@ const AddMultipleChoiceQuestionStep = () => {
       <Paper>
         <Grid container sx={{ p: 8 }} spacing={6}>
           <Grid item xs={12}>
-            <Typography variant="h4">Add Multiple Choice Question</Typography>
+            <Typography variant="h4">Edit Multiple Choice Question</Typography>
           </Grid>
           <Grid item xs={6}>
             <Stack spacing={2}>
               <TextField
                 name="question"
-                value={stepData.question}
+                value={stepForm.question}
                 label="Question"
                 onChange={handleTextChange}
               />
               <TextField
                 name="description"
-                value={stepData.description}
+                value={stepForm.description}
                 multiline
                 label="Description"
                 minRows={3}
@@ -115,7 +136,7 @@ const AddMultipleChoiceQuestionStep = () => {
               <Typography variant="body2">
                 Use the checkboxes to mark the answers as correct
               </Typography>
-              {stepData.answers.map((answer: any) => (
+              {stepForm.answers.map((answer: any) => (
                 <Stack key={answer.id} direction="row">
                   <IconButton
                     aria-label="delete answer"
@@ -145,13 +166,27 @@ const AddMultipleChoiceQuestionStep = () => {
           <Grid item xs={6}>
             <Stack spacing={2}>
               <Typography>Background Image</Typography>
-              <FileDropZone
-                accept="image/*"
-                addFilesCallback={updateFiles}
-                helpText="You can upload just 1 image file"
-                maxFiles={1}
-                showPreview
-              />
+              {stepForm.background_image && !changeBackground ? (
+                <>
+                  <img src={stepForm.background_image} alt="step background" width={250} />
+                  <Button variant="text" onClick={() => setChangeBackground(true)}>
+                    Change background image
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <FileDropZone
+                    accept="image/*"
+                    addFilesCallback={updateFiles}
+                    helpText="You can upload just 1 image file"
+                    maxFiles={1}
+                    showPreview
+                  />
+                  <Button variant="text" color="error" onClick={cancelChangeBackground}>
+                    Cancel change
+                  </Button>
+                </>
+              )}
             </Stack>
           </Grid>
           <Grid item xs={6} alignItems="flex-end">
@@ -163,7 +198,7 @@ const AddMultipleChoiceQuestionStep = () => {
             <Stack direction="row" spacing={4} justifyContent="flex-end">
               <Stack direction="row" alignItems="center">
                 <Typography> Facilitator Feedback</Typography>
-                <Switch checked={stepData.feedback} onChange={handleFeedbackChange} />
+                <Switch checked={stepForm.feedback} onChange={handleFeedbackChange} />
               </Stack>
               <Button size="large" onClick={handleSave}>
                 Save
@@ -176,4 +211,4 @@ const AddMultipleChoiceQuestionStep = () => {
   );
 };
 
-export default AddMultipleChoiceQuestionStep;
+export default EditMultipleChoiceQuestion;

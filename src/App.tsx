@@ -22,8 +22,8 @@ import AddTextContent from "pages/steps/AddTextContent";
 import EditTextContent from "pages/steps/EditTextContent";
 import AddLiveSession from "pages/steps/AddLiveSession";
 import EditLiveSession from "pages/steps/EditLiveSession";
-import AddMultipleChoiceQuestionStep from "pages/AddMultipleChoiceQuestionStepPage";
-import EditMultipleChoiceQuestionStep from "pages/EditMultipleChoiceQuestionStepPage";
+import AddMultipleChoice from "pages/steps/AddMultipleChoiceQuestion";
+import EditMultipleChoice from "pages/steps/EditMultipleChoiceQuestion";
 import AddPictureChoiceQuestionStep from "pages/AddPictureChoiceQuestionStep";
 import EditPictureChoiceQuestionStep from "pages/EditPictureChoiceQuestionStep";
 import AddVideoContentStep from "pages/AddVideoContentStep";
@@ -79,12 +79,12 @@ function App() {
         <ProtectedRoute
           exact
           path="/sections/:sectionId/steps/add-multiple-choice-question"
-          component={AddMultipleChoiceQuestionStep}
+          component={AddMultipleChoice}
         />
         <ProtectedRoute
           exact
           path="/sections/:sectionId/steps/:stepId/edit-multiple_choice_question"
-          component={EditMultipleChoiceQuestionStep}
+          component={EditMultipleChoice}
         />
         <ProtectedRoute
           exact
