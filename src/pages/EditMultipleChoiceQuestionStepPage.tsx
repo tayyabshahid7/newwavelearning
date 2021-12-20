@@ -134,7 +134,7 @@ const EditMultipleChoiceQuestionStep = () => {
               />
               <Typography variant="h6">Answers</Typography>
               <Typography variant="body2">
-                Use the checkboxes to mark the asnwers as correct
+                Use the checkboxes to mark the answers as correct
               </Typography>
               {stepForm.answers.map((answer: any) => (
                 <Stack key={answer.id} direction="row">
