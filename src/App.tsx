@@ -18,18 +18,24 @@ import ProgrammeDetailsPage from "pages/ProgrammeDetailsPage";
 import AddProgrammePage from "pages/AddProgrammePage";
 import SectionDetailsPage from "pages/SectionDetailsPage";
 import NotFoundPage from "pages/NotFoundPage";
-import AddTextContentPage from "pages/AddTextContentStepPage";
-import EditTextContentPage from "pages/EditTextContentStepPage";
-import AddLiveSessionStepPage from "pages/AddLiveSessionStepPage";
-import EditLiveSessionStepPage from "pages/EditLiveSessionStepPage";
-import AddMultipleChoiceQuestionStep from "pages/AddMultipleChoiceQuestionStepPage";
-import EditMultipleChoiceQuestionStep from "pages/EditMultipleChoiceQuestionStepPage";
-import AddPictureChoiceQuestionStep from "pages/AddPictureChoiceQuestionStep";
-import EditPictureChoiceQuestionStep from "pages/EditPictureChoiceQuestionStep";
-import AddVideoContentStep from "pages/AddVideoContentStep";
-import EditVideoContentStep from "pages/EditVideoContentStep";
+import AddTextContent from "pages/steps/AddTextContent";
+import EditTextContent from "pages/steps/EditTextContent";
+import AddLiveSession from "pages/steps/AddLiveSession";
+import EditLiveSession from "pages/steps/EditLiveSession";
+import AddMultipleChoice from "pages/steps/AddMultipleChoiceQuestion";
+import EditMultipleChoice from "pages/steps/EditMultipleChoiceQuestion";
+import AddPictureChoiceQuestion from "pages/steps/AddPictureChoiceQuestion";
+import EditPictureChoiceQuestion from "pages/steps/EditPictureChoiceQuestion";
+import AddVideoContent from "pages/steps/AddVideoContentStep";
+import EditVideoContent from "pages/steps/EditVideoContentStep";
 import AddAudioContent from "pages/steps/AddAudioContent";
 import EditAudioContent from "pages/steps/EditAudioContent";
+import AddToggleQuestion from "pages/steps/AddToggleQuestion";
+import EditToggleQuestion from "pages/steps/EditToggleQuestion";
+import AddKeywordQuestion from "pages/steps/AddKeywordQuestion";
+import EditKeywordQuestion from "pages/steps/EditKeywordQuestion";
+import AddModelAnswerQuestion from "pages/steps/AddModelAnswerQuestion";
+import EditModelAnswerQuestion from "pages/steps/EditModelAnswerQuestion";
 
 function App() {
   return (
@@ -53,52 +59,52 @@ function App() {
         <ProtectedRoute
           exact
           path="/sections/:sectionId/steps/add-text-content"
-          component={AddTextContentPage}
+          component={AddTextContent}
         />
         <ProtectedRoute
           exact
           path="/sections/:sectionId/steps/:stepId/edit-text_content"
-          component={EditTextContentPage}
+          component={EditTextContent}
         />
         <ProtectedRoute
           exact
           path="/sections/:sectionId/steps/add-live-session"
-          component={AddLiveSessionStepPage}
+          component={AddLiveSession}
         />
         <ProtectedRoute
           exact
           path="/sections/:sectionId/steps/:stepId/edit-live_session"
-          component={EditLiveSessionStepPage}
+          component={EditLiveSession}
         />
         <ProtectedRoute
           exact
           path="/sections/:sectionId/steps/add-multiple-choice-question"
-          component={AddMultipleChoiceQuestionStep}
+          component={AddMultipleChoice}
         />
         <ProtectedRoute
           exact
           path="/sections/:sectionId/steps/:stepId/edit-multiple_choice_question"
-          component={EditMultipleChoiceQuestionStep}
+          component={EditMultipleChoice}
         />
         <ProtectedRoute
           exact
           path="/sections/:sectionId/steps/add-picture-choice-question"
-          component={AddPictureChoiceQuestionStep}
+          component={AddPictureChoiceQuestion}
         />
         <ProtectedRoute
           exact
           path="/sections/:sectionId/steps/:stepId/edit-picture_choice_question"
-          component={EditPictureChoiceQuestionStep}
+          component={EditPictureChoiceQuestion}
         />
         <ProtectedRoute
           exact
           path="/sections/:sectionId/steps/add-video"
-          component={AddVideoContentStep}
+          component={AddVideoContent}
         />
         <ProtectedRoute
           exact
           path="/sections/:sectionId/steps/:stepId/edit-video"
-          component={EditVideoContentStep}
+          component={EditVideoContent}
         />
         <ProtectedRoute
           exact
@@ -109,6 +115,36 @@ function App() {
           exact
           path="/sections/:sectionId/steps/:stepId/edit-audio"
           component={EditAudioContent}
+        />
+        <ProtectedRoute
+          exact
+          path="/sections/:sectionId/steps/add-toggle"
+          component={AddToggleQuestion}
+        />
+        <ProtectedRoute
+          exact
+          path="/sections/:sectionId/steps/:stepId/edit-toggle"
+          component={EditToggleQuestion}
+        />
+        <ProtectedRoute
+          exact
+          path="/sections/:sectionId/steps/add-keyword-question"
+          component={AddKeywordQuestion}
+        />
+        <ProtectedRoute
+          exact
+          path="/sections/:sectionId/steps/:stepId/edit-keyword_question"
+          component={EditKeywordQuestion}
+        />
+        <ProtectedRoute
+          exact
+          path="/sections/:sectionId/steps/add-model-answer-question"
+          component={AddModelAnswerQuestion}
+        />
+        <ProtectedRoute
+          exact
+          path="/sections/:sectionId/steps/:stepId/edit-model_answer_question"
+          component={EditModelAnswerQuestion}
         />
         <ProtectedRoute exact path="/feedback" component={FeedbackPage} />
         <ProtectedRoute exact path="/users" component={UsersPage} />

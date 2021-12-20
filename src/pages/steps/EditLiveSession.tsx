@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent, useState } from "react";
+import React, { BaseSyntheticEvent, useEffect, useState } from "react";
 import DashboardLayout from "components/DashboardLayout";
 import {
   Button,
@@ -13,22 +13,44 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { LIVE_SESSION_TYPES } from "common/constants";
+import { HOURS, LIVE_SESSION_TYPES, MINUTES } from "common/constants";
 import { useHistory, useParams } from "react-router";
-import { addStep } from "services/common";
-import { AddStepParams } from "common/types";
+import { editStep, getStepDetails } from "services/common";
+import { EditStepParams } from "common/types";
 
-const AddLiveSessionStepPage = () => {
-  const { sectionId } = useParams<AddStepParams>();
+const EditLiveSession = () => {
+  const history = useHistory();
+  const { stepId } = useParams<EditStepParams>();
   const [stepData, setStepData] = useState<any>({
     title: "",
     description: "",
     step_description: "",
     session_type: "",
-    session_duration: "",
+    hours: "",
+    minutes: "",
   });
   const [loading, setLoading] = useState<boolean>(false);
-  const history = useHistory();
+
+  useEffect(() => {
+    const fetchStepData = async () => {
+      setLoading(true);
+      try {
+        const response = await getStepDetails(stepId);
+        setStepData({
+          title: response.fields.title,
+          description: response.fields.description,
+          step_description: response.fields.step_description,
+          session_type: response.fields.session_type,
+          hours: response.fields.hours,
+          minutes: response.fields.minutes,
+        });
+      } catch (error: any) {
+        console.log(error);
+      }
+      setLoading(false);
+    };
+    fetchStepData();
+  }, [stepId]);
 
   const handleSelectChange = (event: SelectChangeEvent) => {
     setStepData({ ...stepData, [event.target.name]: event.target.value });
@@ -42,11 +64,8 @@ const AddLiveSessionStepPage = () => {
     setLoading(true);
     try {
       const data = new FormData();
-      data.append("step_type", "live_session");
-      data.append("section", sectionId);
-      data.append("number", "0");
       data.append("fields", JSON.stringify(stepData));
-      await addStep(data);
+      await editStep(stepId, data);
       history.goBack();
     } catch (error: any) {
       console.log(error);
@@ -59,7 +78,7 @@ const AddLiveSessionStepPage = () => {
       <Paper>
         <Grid container sx={{ p: 8 }} spacing={6}>
           <Grid item xs={12}>
-            <Typography variant="h4">Add Live Session</Typography>
+            <Typography variant="h4">Edit Live Session</Typography>
           </Grid>
           <Grid item xs={6}>
             <Stack spacing={2}>
@@ -104,22 +123,41 @@ const AddLiveSessionStepPage = () => {
                   ))}
                 </Select>
               </FormControl>
-              <FormControl fullWidth>
-                <InputLabel id="session-duration">Session Duration</InputLabel>
-                <Select
-                  labelId="session-duration"
-                  name="session_duration"
-                  value={stepData.session_duration}
-                  label="Session Type"
-                  onChange={handleSelectChange}
-                >
-                  {[1, 2, 3, 4, 5, 6].map((duration, index) => (
-                    <MenuItem key={index} value={duration}>
-                      {duration} hour{duration === 1 ? "" : "s"}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+              <Typography variant="body2">Session Duration</Typography>
+              <Stack direction="row" spacing={1}>
+                <FormControl fullWidth>
+                  <InputLabel id="session-hours">Hours</InputLabel>
+                  <Select
+                    labelId="session-hours"
+                    name="hours"
+                    value={stepData.hours}
+                    label="Hours"
+                    onChange={handleSelectChange}
+                  >
+                    {HOURS.map((duration, index) => (
+                      <MenuItem key={`h-${index}`} value={duration}>
+                        {duration} hour{duration === 1 ? "" : "s"}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <FormControl fullWidth>
+                  <InputLabel id="session-minutes">Minutes</InputLabel>
+                  <Select
+                    labelId="session-minutes"
+                    name="minutes"
+                    value={stepData.minutes}
+                    label="Minutes"
+                    onChange={handleSelectChange}
+                  >
+                    {MINUTES.map((duration, index) => (
+                      <MenuItem key={`m-${index}`} value={duration}>
+                        {duration} minute{duration === 1 ? "" : "s"}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Stack>
             </Stack>
           </Grid>
           <Grid item xs={12}>
@@ -138,4 +176,4 @@ const AddLiveSessionStepPage = () => {
   );
 };
 
-export default AddLiveSessionStepPage;
+export default EditLiveSession;

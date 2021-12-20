@@ -119,7 +119,7 @@ const ProgrammeEditDialog = ({
                 showPreview
               />
             ) : deleteBackground ? (
-              <Typography>Background marked to be deleted after pressig "Edit"</Typography>
+              <Typography>Background marked to be deleted after pressing "Save"</Typography>
             ) : (
               <>
                 <Typography variant="body2">Programme background</Typography>

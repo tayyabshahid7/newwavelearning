@@ -18,7 +18,7 @@ import { EditStepParams } from "common/types";
 import { editStep, getStepDetails } from "services/common";
 import { UploadFile } from "@mui/icons-material";
 
-const EditPictureChoiceQuestionStep = () => {
+const EditPictureChoiceQuestion = () => {
   const { stepId } = useParams<EditStepParams>();
   const history = useHistory();
   const [loading, setLoading] = useState<boolean>(false);
@@ -289,4 +289,4 @@ const EditPictureChoiceQuestionStep = () => {
   );
 };
 
-export default EditPictureChoiceQuestionStep;
+export default EditPictureChoiceQuestion;
