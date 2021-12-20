@@ -18,7 +18,7 @@ import { AddStepParams } from "common/types";
 import { addStep } from "services/common";
 import { UploadFile } from "@mui/icons-material";
 
-const AddPictureChoiceQuestionStep = () => {
+const AddPictureChoiceQuestion = () => {
   const { sectionId } = useParams<AddStepParams>();
   const history = useHistory();
   const [loading, setLoading] = useState<boolean>(false);
@@ -245,4 +245,4 @@ const AddPictureChoiceQuestionStep = () => {
   );
 };
 
-export default AddPictureChoiceQuestionStep;
+export default AddPictureChoiceQuestion;
