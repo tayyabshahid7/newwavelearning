@@ -20,8 +20,8 @@ const AddTextContentPage = () => {
     title: "",
     content: "",
     feedback: false,
-    images: [],
-    bgImages: [],
+    image: "",
+    bgImage: "",
   });
 
   const handleTextChange = (e: BaseSyntheticEvent) => {
@@ -34,13 +34,13 @@ const AddTextContentPage = () => {
   };
 
   const handleAddBackgroundImage = (addedFiles: File[]) => {
-    setFormData({ ...formData, bgImages: addedFiles });
-    setFormErrors({ ...formErrors, bgImages: false });
+    setFormData({ ...formData, bgImage: addedFiles[0] });
+    setFormErrors({ ...formErrors, bgImage: false });
   };
 
   const handleAddImage = (addedFiles: File[]) => {
-    setFormData({ ...formData, images: addedFiles });
-    setFormErrors({ ...formErrors, images: false });
+    setFormData({ ...formData, image: addedFiles[0] });
+    setFormErrors({ ...formErrors, image: false });
   };
 
   const isFormValid = () => {
@@ -51,14 +51,6 @@ const AddTextContentPage = () => {
     }
     if (formData.content.length < 1) {
       setFormErrors({ ...formErrors, content: true });
-      valid = false;
-    }
-    if (formData.bgImages.length < 1) {
-      setFormErrors({ ...formErrors, bgImages: true });
-      valid = false;
-    }
-    if (formData.images.length < 1) {
-      setFormErrors({ ...formErrors, images: true });
       valid = false;
     }
     return valid;
@@ -80,8 +72,8 @@ const AddTextContentPage = () => {
       data.append("step_type", "text_content");
       data.append("section", sectionId);
       data.append("number", "0");
-      formData.images.map((image: File) => data.append("image", image));
-      formData.bgImages.map((image: File) => data.append("background_image", image));
+      data.append("image", formData.image);
+      data.append("background_image", formData.bgImage);
       try {
         await addStep(data);
         history.goBack();
