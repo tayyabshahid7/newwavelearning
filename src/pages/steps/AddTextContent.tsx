@@ -20,8 +20,8 @@ const AddTextContentPage = () => {
     title: "",
     content: "",
     feedback: false,
-    image: "",
-    bgImage: "",
+    image: null,
+    bgImage: null,
   });
 
   const handleTextChange = (e: BaseSyntheticEvent) => {

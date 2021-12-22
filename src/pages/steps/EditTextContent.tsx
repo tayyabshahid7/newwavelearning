@@ -98,6 +98,14 @@ const EditTextContentPage = () => {
     setFormData({ ...formData, image: stepData.image });
   };
 
+  const handleRemoveBgImage = () => {
+    setFormData({ ...formData, bgImage: null });
+  };
+
+  const handleCancelRemoveBgImage = () => {
+    setFormData({ ...formData, bgImage: stepData.bgImage });
+  };
+
   const isFormValid = () => {
     let valid = true;
     if (formData.title.length < 1) {
@@ -219,7 +227,14 @@ const EditTextContentPage = () => {
                   <Button variant="text" onClick={handleChangeBgImage}>
                     Change background image
                   </Button>
+                  <Button variant="text" color="error" onClick={handleRemoveBgImage}>
+                    Remove background image
+                  </Button>
                 </>
+              ) : stepData.bgImage != null ? (
+                <Button variant="text" color="error" onClick={handleCancelRemoveBgImage}>
+                  Cancel Remove image
+                </Button>
               ) : (
                 <Button variant="text" onClick={handleChangeBgImage}>
                   Add background image
