@@ -18,8 +18,8 @@ const EditTextContentPage = () => {
     title: "",
     content: "",
     feedback: false,
-    image: "",
-    bgImage: "",
+    image: null,
+    bgImage: null,
   });
   const [changeBgImage, setChangeBgImage] = useState<boolean>(false);
   const [changeImage, setChangeImage] = useState<boolean>(false);

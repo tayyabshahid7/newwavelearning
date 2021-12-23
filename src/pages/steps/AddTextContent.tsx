@@ -72,8 +72,12 @@ const AddTextContentPage = () => {
       data.append("step_type", "text_content");
       data.append("section", sectionId);
       data.append("number", "0");
-      data.append("image", formData.image);
-      data.append("background_image", formData.bgImage);
+      if (formData.image instanceof File) {
+        data.append("image", formData.image);
+      }
+      if (formData.bgImage instanceof File) {
+        data.append("background_image", formData.bgImage);
+      }
       try {
         await addStep(data);
         history.goBack();
