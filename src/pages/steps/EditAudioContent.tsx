@@ -14,6 +14,7 @@ const EditAudioContent = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [backgroundImage, setBackgroundImage] = useState<File | null>(null);
   const [changeBackground, setChangeBackground] = useState<boolean>(false);
+  const [deleteBackground, setDeleteBackground] = useState<boolean>(false);
   const [audioFile, setAudioFile] = useState<File | null>(null);
   const [stepData, setStepData] = useState<any>({
     title: "",
@@ -45,6 +46,7 @@ const EditAudioContent = () => {
   const cancelChangeBackground = () => {
     setBackgroundImage(null);
     setChangeBackground(false);
+    setDeleteBackground(false);
   };
 
   const handleTextChange = (e: BaseSyntheticEvent) => {
@@ -63,14 +65,17 @@ const EditAudioContent = () => {
     setLoading(true);
     const data = new FormData();
     data.append("step_type", "audio");
-    let fields = stepData;
-    data.append("fields", JSON.stringify(fields));
     if (audioFile instanceof File) {
       data.append("audio", audioFile);
     }
-    if (backgroundImage) {
+    let fields = stepData;
+    if (deleteBackground) {
+      fields.background_image = null;
+    } else if (backgroundImage) {
       data.append("background_image", backgroundImage);
+      fields.background_image = backgroundImage.name;
     }
+    data.append("fields", JSON.stringify(fields));
 
     try {
       await editStep(stepId, data);
@@ -157,11 +162,21 @@ const EditAudioContent = () => {
           <Grid item xs={6}>
             <Stack spacing={2}>
               <Typography>Background Image</Typography>
-              {stepData.background_image && !changeBackground ? (
+              {stepData.background_image && !changeBackground && !deleteBackground ? (
                 <>
                   <img src={stepData.background_image} alt="step background" width={250} />
                   <Button variant="text" onClick={() => setChangeBackground(true)}>
                     Change background image
+                  </Button>
+                  <Button variant="text" color="error" onClick={() => setDeleteBackground(true)}>
+                    Delete background image
+                  </Button>
+                </>
+              ) : deleteBackground ? (
+                <>
+                  <Typography>Background will be deleted when "Save" button is pressed</Typography>
+                  <Button variant="text" color="error" onClick={() => setDeleteBackground(false)}>
+                    Cancel Delete Background
                   </Button>
                 </>
               ) : (
@@ -173,9 +188,11 @@ const EditAudioContent = () => {
                     maxFiles={1}
                     showPreview
                   />
-                  <Button variant="text" color="error" onClick={cancelChangeBackground}>
-                    Cancel change
-                  </Button>
+                  {backgroundImage && stepData.background_image && (
+                    <Button variant="text" color="error" onClick={cancelChangeBackground}>
+                      Cancel change
+                    </Button>
+                  )}
                 </>
               )}
             </Stack>
