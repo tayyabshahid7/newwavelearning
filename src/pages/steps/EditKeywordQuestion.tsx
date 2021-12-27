@@ -71,6 +71,7 @@ const EditKeywordQuestion = () => {
       fields.background_image = null;
     } else if (backgroundImage) {
       data.append("background_image", backgroundImage);
+      fields.background_image = backgroundImage.name;
     }
     data.append("fields", JSON.stringify(fields));
 
