@@ -188,7 +188,7 @@ const EditAudioContent = () => {
                     maxFiles={1}
                     showPreview
                   />
-                  {backgroundImage && stepData.background_image && (
+                  {stepData.background_image && (
                     <Button variant="text" color="error" onClick={cancelChangeBackground}>
                       Cancel change
                     </Button>
