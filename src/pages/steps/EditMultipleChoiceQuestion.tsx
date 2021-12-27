@@ -22,8 +22,9 @@ const EditMultipleChoiceQuestion = () => {
   const history = useHistory();
   const [loading, setLoading] = useState<boolean>(false);
   const [changeBackground, setChangeBackground] = useState<boolean>(false);
-  const [images, setImages] = useState<File[]>([]);
-  const [stepForm, setStepForm] = useState<any>({
+  const [deleteBackground, setDeleteBackground] = useState<boolean>(false);
+  const [backgroundImage, setBackgroundImage] = useState<File | null>(null);
+  const [stepData, setStepData] = useState<any>({
     question: "",
     description: "",
     feedback: false,
@@ -35,7 +36,7 @@ const EditMultipleChoiceQuestion = () => {
       setLoading(true);
       try {
         const response = await getStepDetails(stepId);
-        setStepForm(response.fields);
+        setStepData(response.fields);
       } catch (error: any) {
         console.log(error);
       }
@@ -45,60 +46,65 @@ const EditMultipleChoiceQuestion = () => {
   }, [stepId]);
 
   const updateFiles = (newImages: File[]) => {
-    setImages(newImages);
+    setBackgroundImage(newImages[0]);
   };
 
   const handleAddChoice = () => {
     let newIndex = 0;
-    if (stepForm.answers.length > 0) {
-      newIndex = stepForm.answers[stepForm.answers.length - 1].id + 1;
+    if (stepData.answers.length > 0) {
+      newIndex = stepData.answers[stepData.answers.length - 1].id + 1;
     }
-    let newAnswers = stepForm.answers;
+    let newAnswers = stepData.answers;
     newAnswers.push({ id: newIndex, text: "", correct: false });
-    setStepForm({ ...stepForm, answers: newAnswers });
+    setStepData({ ...stepData, answers: newAnswers });
   };
 
   const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
     const selectedId = parseInt(e.target.value);
-    let answerIndex = stepForm.answers.findIndex((answer: any) => answer.id === selectedId);
-    let newAnswers = stepForm.answers;
+    let answerIndex = stepData.answers.findIndex((answer: any) => answer.id === selectedId);
+    let newAnswers = stepData.answers;
     newAnswers[answerIndex].correct = e.target.checked;
-    setStepForm({ ...stepForm, answers: newAnswers });
+    setStepData({ ...stepData, answers: newAnswers });
   };
 
   const handleTextChange = (e: BaseSyntheticEvent) => {
-    setStepForm({ ...stepForm, [e.target.name]: e.target.value });
+    setStepData({ ...stepData, [e.target.name]: e.target.value });
   };
 
   const handleAnswerTextChange = (e: BaseSyntheticEvent) => {
-    let newAnswers = stepForm.answers;
+    let newAnswers = stepData.answers;
     const answerId = newAnswers.findIndex((a: any) => a.id === parseInt(e.target.id));
     newAnswers[answerId].text = e.target.value;
-    setStepForm({ ...stepForm, answers: newAnswers });
+    setStepData({ ...stepData, answers: newAnswers });
   };
 
   const handleFeedbackChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setStepForm({ ...stepForm, feedback: event.target.checked });
+    setStepData({ ...stepData, feedback: event.target.checked });
   };
 
   const cancelChangeBackground = () => {
-    setImages([]);
+    setBackgroundImage(null);
     setChangeBackground(false);
+    setDeleteBackground(false);
   };
 
   const deleteAnswer = (answerId: number) => {
-    let newAnswers = stepForm.answers.filter((answer: any) => answer.id !== answerId);
-    setStepForm({ ...stepForm, answers: newAnswers });
+    let newAnswers = stepData.answers.filter((answer: any) => answer.id !== answerId);
+    setStepData({ ...stepData, answers: newAnswers });
   };
 
   const handleSave = async () => {
     setLoading(true);
     const data = new FormData();
     data.append("step_type", "multiple_choice_question");
-    data.append("fields", JSON.stringify(stepForm));
-    if (images.length > 0) {
-      images.map((image: File) => data.append("background_image", image));
+    let fields = stepData;
+    if (deleteBackground) {
+      fields.background_image = null;
+    } else if (backgroundImage) {
+      data.append("background_image", backgroundImage);
+      fields.background_image = backgroundImage.name;
     }
+    data.append("fields", JSON.stringify(fields));
 
     try {
       await editStep(stepId, data);
@@ -120,13 +126,13 @@ const EditMultipleChoiceQuestion = () => {
             <Stack spacing={2}>
               <TextField
                 name="question"
-                value={stepForm.question}
+                value={stepData.question}
                 label="Question"
                 onChange={handleTextChange}
               />
               <TextField
                 name="description"
-                value={stepForm.description}
+                value={stepData.description}
                 multiline
                 label="Description"
                 minRows={3}
@@ -136,7 +142,7 @@ const EditMultipleChoiceQuestion = () => {
               <Typography variant="body2">
                 Use the checkboxes to mark the answers as correct
               </Typography>
-              {stepForm.answers.map((answer: any) => (
+              {stepData.answers.map((answer: any) => (
                 <Stack key={answer.id} direction="row">
                   <IconButton
                     aria-label="delete answer"
@@ -166,11 +172,21 @@ const EditMultipleChoiceQuestion = () => {
           <Grid item xs={6}>
             <Stack spacing={2}>
               <Typography>Background Image</Typography>
-              {stepForm.background_image && !changeBackground ? (
+              {stepData.background_image && !changeBackground && !deleteBackground ? (
                 <>
-                  <img src={stepForm.background_image} alt="step background" width={250} />
+                  <img src={stepData.background_image} alt="step background" width={250} />
                   <Button variant="text" onClick={() => setChangeBackground(true)}>
                     Change background image
+                  </Button>
+                  <Button variant="text" color="error" onClick={() => setDeleteBackground(true)}>
+                    Delete background image
+                  </Button>
+                </>
+              ) : deleteBackground ? (
+                <>
+                  <Typography>Background will be deleted when "Save" button is pressed</Typography>
+                  <Button variant="text" color="error" onClick={() => setDeleteBackground(false)}>
+                    Cancel Delete Background
                   </Button>
                 </>
               ) : (
@@ -182,9 +198,11 @@ const EditMultipleChoiceQuestion = () => {
                     maxFiles={1}
                     showPreview
                   />
-                  <Button variant="text" color="error" onClick={cancelChangeBackground}>
-                    Cancel change
-                  </Button>
+                  {stepData.background_image && (
+                    <Button variant="text" color="error" onClick={cancelChangeBackground}>
+                      Cancel change
+                    </Button>
+                  )}
                 </>
               )}
             </Stack>
@@ -198,7 +216,7 @@ const EditMultipleChoiceQuestion = () => {
             <Stack direction="row" spacing={4} justifyContent="flex-end">
               <Stack direction="row" alignItems="center">
                 <Typography> Facilitator Feedback</Typography>
-                <Switch checked={stepForm.feedback} onChange={handleFeedbackChange} />
+                <Switch checked={stepData.feedback} onChange={handleFeedbackChange} />
               </Stack>
               <Button size="large" onClick={handleSave}>
                 Save
