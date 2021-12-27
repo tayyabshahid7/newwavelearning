@@ -22,12 +22,14 @@ const EditPictureChoiceQuestion = () => {
   const { stepId } = useParams<EditStepParams>();
   const history = useHistory();
   const [loading, setLoading] = useState<boolean>(false);
-  const [backgroundImage, setBackgroundImage] = useState<File[]>([]);
+  const [backgroundImage, setBackgroundImage] = useState<File | null>(null);
   const [changeBackground, setChangeBackground] = useState<boolean>(false);
+  const [deleteBackground, setDeleteBackground] = useState<boolean>(false);
   const [stepData, setStepData] = useState<any>({
     question: "",
     description: "",
     feedback: false,
+    background_image: null,
     answers: [],
   });
 
@@ -77,7 +79,7 @@ const EditPictureChoiceQuestion = () => {
   };
 
   const updateFiles = (newImages: File[]) => {
-    setBackgroundImage(newImages);
+    setBackgroundImage(newImages[0]);
   };
 
   const handleTextChange = (e: BaseSyntheticEvent) => {
@@ -96,8 +98,9 @@ const EditPictureChoiceQuestion = () => {
   };
 
   const cancelChangeBackground = () => {
-    setBackgroundImage([]);
+    setBackgroundImage(null);
     setChangeBackground(false);
+    setDeleteBackground(false);
   };
 
   const handleSave = async () => {
@@ -106,17 +109,21 @@ const EditPictureChoiceQuestion = () => {
     data.append("step_type", "picture_choice_question");
 
     let fields = JSON.parse(JSON.stringify(stepData)); // DEEP COPY
-  
+
     stepData.answers.forEach((a: any) => {
-      if(a.picture instanceof File) { // because there may be strings from non-edited pictures
+      if (a.picture instanceof File) {
+        // because there may be strings from non-edited pictures
         data.append("pictures", a.picture);
         let modifiedAnswer = fields.answers.find((ma: any) => ma.id === a.id);
         modifiedAnswer.picture = a.picture.name;
       }
     });
 
-    if (backgroundImage.length > 0) {
-      backgroundImage.map((image: File) => data.append("background_image", image));
+    if (deleteBackground) {
+      fields.background_image = null;
+    } else if (backgroundImage) {
+      data.append("background_image", backgroundImage);
+      fields.background_image = backgroundImage.name;
     }
 
     data.append("fields", JSON.stringify(fields));
@@ -244,11 +251,21 @@ const EditPictureChoiceQuestion = () => {
           <Grid item xs={6}>
             <Stack spacing={2}>
               <Typography>Background Image</Typography>
-              {stepData.background_image && !changeBackground ? (
+              {stepData.background_image && !changeBackground && !deleteBackground ? (
                 <>
                   <img src={stepData.background_image} alt="step background" width={250} />
                   <Button variant="text" onClick={() => setChangeBackground(true)}>
                     Change background image
+                  </Button>
+                  <Button variant="text" color="error" onClick={() => setDeleteBackground(true)}>
+                    Delete background image
+                  </Button>
+                </>
+              ) : deleteBackground ? (
+                <>
+                  <Typography>Background will be deleted when "Save" button is pressed</Typography>
+                  <Button variant="text" color="error" onClick={() => setDeleteBackground(false)}>
+                    Cancel Delete Background
                   </Button>
                 </>
               ) : (
@@ -260,9 +277,11 @@ const EditPictureChoiceQuestion = () => {
                     maxFiles={1}
                     showPreview
                   />
-                  <Button variant="text" color="error" onClick={cancelChangeBackground}>
-                    Cancel change
-                  </Button>
+                  {stepData.background_image && (
+                    <Button variant="text" color="error" onClick={cancelChangeBackground}>
+                      Cancel change
+                    </Button>
+                  )}
                 </>
               )}
             </Stack>
