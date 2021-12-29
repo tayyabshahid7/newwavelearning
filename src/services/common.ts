@@ -35,7 +35,7 @@ export const deleteProgramme = async (programmeId: number | string) => {
   }
 };
 
-export const editProgramme = async (programmeId: number, data: FormData) => {
+export const editProgramme = async (programmeId: number, data: any) => {
   try {
     const response = await axs.patch<ResponseData>(`/programmes/${programmeId}/`, data, {
       timeout: 15000,
