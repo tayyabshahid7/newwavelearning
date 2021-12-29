@@ -14,7 +14,7 @@ import {
 import PromptDialog from "components/PromptDialog";
 import { useHistory } from "react-router";
 import { StepData } from "common/types";
-import { deleteStep, editSection, getSectionSteps } from "services/common";
+import { deleteStep, duplicateStep, editSection, getSectionSteps } from "services/common";
 import AddStepDialog from "components/AddStepDialog";
 import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
 import { DragHandle } from "@mui/icons-material";
@@ -92,7 +92,22 @@ const SectionStepsTable = ({ sectionId, stepOrder }: SectionStepsTableProps) => 
     }
   };
 
-  console.log(order);
+  const openDuplicateStepDialog = (step: any) => {
+    setDialog({ step: step, open: "duplicate" });
+  };
+
+  const handleDuplicateStep = async () => {
+    try {
+      const result = await duplicateStep(dialog.step.id);
+      setSteps([...steps, result]);
+      if (result.id) {
+        setOrder([...order, result.id]);
+      }
+    } catch (error: any) {
+      console.log(error);
+    }
+    setDialog({ section: null, open: false });
+  };
 
   return (
     <>
@@ -143,6 +158,13 @@ const SectionStepsTable = ({ sectionId, stepOrder }: SectionStepsTableProps) => 
                                     Edit
                                   </Button>
                                   <Button
+                                    size="small"
+                                    variant="text"
+                                    onClick={() => openDuplicateStepDialog(step)}
+                                  >
+                                    Duplicate
+                                  </Button>
+                                  <Button
                                     variant="text"
                                     color="error"
                                     size="small"
@@ -176,11 +198,20 @@ const SectionStepsTable = ({ sectionId, stepOrder }: SectionStepsTableProps) => 
       <PromptDialog
         open={dialog.open === "prompt"}
         title="Are you sure you would like to delete the following step?"
-        content={`Step: ${dialog.step?.number}`}
+        content={`Step: ${dialog.step?.step_type}`}
         okButtonText="Yes"
         cancelButtonText="No"
         confirmCallback={handleConfirm}
         closeCallback={closeDialog}
+      />
+      <PromptDialog
+        open={dialog.open === "duplicate"}
+        title="Are you sure you would like to duplicate this step?"
+        content={`Step: ${dialog.step?.step_type}`}
+        okButtonText="Yes"
+        cancelButtonText="No"
+        closeCallback={closeDialog}
+        confirmCallback={handleDuplicateStep}
       />
       <AddStepDialog
         open={dialog.open === "add"}

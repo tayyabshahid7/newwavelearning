@@ -138,6 +138,15 @@ export const getStepDetails = async (stepId: number | string) => {
   }
 };
 
+export const duplicateStep = async (stepId: number | string) => {
+  try {
+    const response = await axs.post<StepData>(`/steps/${stepId}/duplicate-step/`);
+    return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
 export const getProgrammeDetails = async (programmeId: number | string) => {
   try {
     const response = await axs.get<ResponseData>(`programmes/${programmeId}/`);
