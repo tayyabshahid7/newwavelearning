@@ -81,7 +81,7 @@ const SectionDetailsPage = () => {
           </Grid>
 
           <Divider />
-          <SectionStepsTable sectionId={section?.id} />
+          {section && <SectionStepsTable sectionId={section.id} stepOrder={section.step_order} />}
         </Stack>
       </DashboardLayout>
       <SectionEditDialog

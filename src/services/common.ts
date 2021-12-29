@@ -55,7 +55,7 @@ export const addSection = async (data: FormData) => {
   }
 };
 
-export const editSection = async (sectionId: number | string, data: FormData) => {
+export const editSection = async (sectionId: number | string, data: any) => {
   try {
     const response = await axs.patch<ResponseData>(`sections/${sectionId}/`, data, {
       timeout: 15000,
