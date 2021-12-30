@@ -165,6 +165,15 @@ export const getProgrammeDetails = async (programmeId: number | string) => {
   }
 };
 
+export const duplicateProgramme = async (programmeId: number | string) => {
+  try {
+    const response = await axs.post<ProgrammeData>(`programmes/${programmeId}/duplicate/`);
+    return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
 export const getFacilitators = async () => {
   try {
     const response = await axs.get<ResponseData>("/users/facilitators/");
