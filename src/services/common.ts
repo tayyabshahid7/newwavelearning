@@ -84,6 +84,15 @@ export const getSection = async (sectionId: number | string) => {
   }
 };
 
+export const duplicateSection = async (sectionId: number | string) => {
+  try {
+    const response = await axs.post<SectionData>(`sections/${sectionId}/duplicate/`);
+    return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
 export const getProgrammeSections = async (programmeId: number) => {
   try {
     const response = await axs.get<SectionData[]>(`/programmes/${programmeId}/sections`);

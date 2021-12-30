@@ -14,7 +14,7 @@ import {
 import PromptDialog from "components/PromptDialog";
 import { useHistory } from "react-router";
 import AddSectionDialog from "components/AddSectionDialog";
-import { deleteSection, editProgramme, getProgrammeSections } from "services/common";
+import { deleteSection, duplicateSection, editProgramme, getProgrammeSections } from "services/common";
 import { SectionData } from "common/types";
 import { useSnackbar } from "notistack";
 import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
@@ -51,11 +51,6 @@ const ProgrammeSectionsTable = ({ programmeId, sectionOrder }: ProgrammeSections
     setDialog({ section: section, open: "prompt" });
   };
 
-  const handleDuplicateSection = (section: SectionData) => {
-    //  TODO: implement duplicate section (Implies duplication of all steps from that section)
-    console.log(`Duplicate section ${section.id} NOT IMPLEMENTED`);
-  };
-
   const handleConfirmDelete = async () => {
     try {
       await deleteSection(dialog.section.id);
@@ -69,6 +64,23 @@ const ProgrammeSectionsTable = ({ programmeId, sectionOrder }: ProgrammeSections
       console.log(error);
       enqueueSnackbar(error.response?.data.detail);
     }
+  };
+
+  const openDuplicateSectionDialog = (section: SectionData) => {
+    setDialog({ section: section, open: "duplicate" });
+  };
+
+  const handleDuplicateSection = async () => {
+    try {
+      const newSection = await duplicateSection(dialog.section.id);
+      setSections([...sections, newSection]);
+      if (newSection.id) {
+        setSectionsOrder([...sectionsOrder, newSection.id]);
+      }
+    } catch (error: any) {
+      console.log(error);
+    }
+    setDialog({ section: null, open: false });
   };
 
   const openAddSectionDialog = () => {
@@ -156,7 +168,7 @@ const ProgrammeSectionsTable = ({ programmeId, sectionOrder }: ProgrammeSections
                                   </Button>
                                   <Button
                                     variant="text"
-                                    onClick={() => handleDuplicateSection(section)}
+                                    onClick={() => openDuplicateSectionDialog(section)}
                                   >
                                     Duplicate
                                   </Button>
@@ -197,6 +209,15 @@ const ProgrammeSectionsTable = ({ programmeId, sectionOrder }: ProgrammeSections
         okButtonText="Yes"
         cancelButtonText="No"
         confirmCallback={handleConfirmDelete}
+        closeCallback={closeDialog}
+      />
+      <PromptDialog
+        open={dialog.open === "duplicate"}
+        title="Are you sure you would like to duplicate the following section?"
+        content={`Section: ${dialog.section?.title}`}
+        okButtonText="Yes"
+        cancelButtonText="No"
+        confirmCallback={handleDuplicateSection}
         closeCallback={closeDialog}
       />
       <AddSectionDialog
