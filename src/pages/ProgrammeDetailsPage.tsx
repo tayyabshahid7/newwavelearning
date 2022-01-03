@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Button, Divider, Grid, Paper, Stack, Typography } from "@mui/material";
 import DashboardLayout from "components/DashboardLayout";
-import { useParams } from "react-router";
+import { useParams, useHistory } from "react-router";
 import { Box } from "@mui/system";
 import ProgrammeEditDialog from "components/ProgrammeEditDialog";
 import { getProgrammeDetails } from "services/common";
 
 import ProgrammeSectionsTable from "components/ProgrammeSectionsTable";
+import { ArrowBack } from "@mui/icons-material";
 
 interface ProgrammePageParams {
   programmeId: string;
 }
 
 const ProgrammeDetailsPage = () => {
+  const history = useHistory();
   const { programmeId } = useParams<ProgrammePageParams>();
   const [programme, setProgramme] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -42,6 +44,14 @@ const ProgrammeDetailsPage = () => {
   };
   return (
     <DashboardLayout selectedPage={"programmes"} loading={loading}>
+      <Button
+        variant="text"
+        size="large"
+        startIcon={<ArrowBack fontSize="large" />}
+        onClick={() => history.push("/programmes")}
+      >
+        Back to programmes
+      </Button>
       {programme && (
         <>
           <Stack spacing={3}>

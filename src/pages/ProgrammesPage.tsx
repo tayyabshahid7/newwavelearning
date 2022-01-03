@@ -14,6 +14,7 @@ import {
   TableCell,
   TableContainer,
   TableHead,
+  TablePagination,
   TableRow,
 } from "@mui/material";
 import { getProgrammes, deleteProgramme, duplicateProgramme } from "services/common";
@@ -28,12 +29,24 @@ const ProgrammesPage = () => {
     open: false,
     programme: null,
   });
+  const [pagination, setPagination] = useState<any>({
+    current: 0,
+    next: null,
+    previous: null,
+    count: 0,
+  });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await getProgrammes();
         setProgrammes(response.data.results);
+        setPagination({
+          count: response.data.count,
+          next: response.data.next,
+          previous: response.data.previous,
+          current: 0,
+        });
       } catch (error) {
         console.log(error);
       }
@@ -55,6 +68,7 @@ const ProgrammesPage = () => {
         (programme: any) => programme.id !== dialog.programme.id
       );
       setProgrammes(newProgrammes);
+      setPagination({ ...pagination, count: pagination.count - 1 });
     } catch (error: any) {
       console.log(error);
       enqueueSnackbar(error.response?.data.detail, { variant: "warning" });
@@ -66,11 +80,37 @@ const ProgrammesPage = () => {
     try {
       const newProgramme = await duplicateProgramme(dialog.programme.id);
       setProgrammes([...programmes, newProgramme]);
+      setPagination({ ...pagination, count: pagination.count + 1 });
     } catch (error: any) {
       console.log(error);
       enqueueSnackbar(error.response?.data.detail, { variant: "error" });
     }
     setDialog({ ...dialog, open: false });
+  };
+
+  const handlePageChange = async (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null,
+    page: number
+  ) => {
+    try {
+      let response = null;
+      if (page > pagination.current) {
+        response = await getProgrammes(pagination.next);
+      } else if (page < pagination.current) {
+        response = await getProgrammes(pagination.previous);
+      }
+      if (response !== null) {
+        setProgrammes(response.data.results);
+        setPagination({
+          count: response.data.count,
+          next: response.data.next,
+          previous: response.data.previous,
+          current: page,
+        });
+      }
+    } catch (error: any) {
+      console.log(error);
+    }
   };
   return (
     <DashboardLayout selectedPage={"programmes"}>
@@ -133,6 +173,14 @@ const ProgrammesPage = () => {
             </TableBody>
           </Table>
         </TableContainer>
+        <TablePagination
+          component="div"
+          count={pagination.count}
+          onPageChange={handlePageChange}
+          page={pagination.current}
+          rowsPerPage={10}
+          rowsPerPageOptions={[10]}
+        />
       </Stack>
       <PromptDialog
         open={dialog.open === "delete"}
