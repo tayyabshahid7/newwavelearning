@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent, ChangeEvent, useState } from "react";
+import React, { BaseSyntheticEvent, ChangeEvent, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
 import {
   Button,
@@ -13,24 +13,40 @@ import {
 } from "@mui/material";
 import DashboardLayout from "components/DashboardLayout";
 import FileDropZone from "components/FileDropZone";
-import { AddStepParams } from "common/types";
-import { addStep } from "services/common";
+import { EditStepParams } from "common/types";
+import { editStep, getStepDetails } from "services/common";
 import { Delete } from "@mui/icons-material";
 
-const AddMultipleChoiceQuestionStep = () => {
-  const { sectionId } = useParams<AddStepParams>();
+const EditMultipleChoiceQuestion = () => {
+  const { stepId } = useParams<EditStepParams>();
   const history = useHistory();
   const [loading, setLoading] = useState<boolean>(false);
+  const [changeBackground, setChangeBackground] = useState<boolean>(false);
+  const [deleteBackground, setDeleteBackground] = useState<boolean>(false);
+  const [backgroundImage, setBackgroundImage] = useState<File | null>(null);
   const [stepData, setStepData] = useState<any>({
     question: "",
     description: "",
     feedback: false,
     answers: [],
   });
-  const [images, setImages] = useState<File[]>([]);
+
+  useEffect(() => {
+    const fetchStepData = async () => {
+      setLoading(true);
+      try {
+        const response = await getStepDetails(stepId);
+        setStepData(response.fields);
+      } catch (error: any) {
+        console.log(error);
+      }
+      setLoading(false);
+    };
+    fetchStepData();
+  }, [stepId]);
 
   const updateFiles = (newImages: File[]) => {
-    setImages(newImages);
+    setBackgroundImage(newImages[0]);
   };
 
   const handleAddChoice = () => {
@@ -66,6 +82,12 @@ const AddMultipleChoiceQuestionStep = () => {
     setStepData({ ...stepData, feedback: event.target.checked });
   };
 
+  const cancelChangeBackground = () => {
+    setBackgroundImage(null);
+    setChangeBackground(false);
+    setDeleteBackground(false);
+  };
+
   const deleteAnswer = (answerId: number) => {
     let newAnswers = stepData.answers.filter((answer: any) => answer.id !== answerId);
     setStepData({ ...stepData, answers: newAnswers });
@@ -75,12 +97,17 @@ const AddMultipleChoiceQuestionStep = () => {
     setLoading(true);
     const data = new FormData();
     data.append("step_type", "multiple_choice_question");
-    data.append("number", "0");
-    data.append("section", sectionId);
-    data.append("fields", JSON.stringify(stepData));
-    images.map((image: File) => data.append("background_image", image));
+    let fields = stepData;
+    if (deleteBackground) {
+      fields.background_image = null;
+    } else if (backgroundImage) {
+      data.append("background_image", backgroundImage);
+      fields.background_image = backgroundImage.name;
+    }
+    data.append("fields", JSON.stringify(fields));
+
     try {
-      await addStep(data);
+      await editStep(stepId, data);
     } catch (error: any) {
       console.log(error);
     }
@@ -93,7 +120,7 @@ const AddMultipleChoiceQuestionStep = () => {
       <Paper>
         <Grid container sx={{ p: 8 }} spacing={6}>
           <Grid item xs={12}>
-            <Typography variant="h4">Add Multiple Choice Question</Typography>
+            <Typography variant="h4">Edit Multiple Choice Question</Typography>
           </Grid>
           <Grid item xs={6}>
             <Stack spacing={2}>
@@ -113,7 +140,7 @@ const AddMultipleChoiceQuestionStep = () => {
               />
               <Typography variant="h6">Answers</Typography>
               <Typography variant="body2">
-                Use the checkboxes to mark the asnwers as correct
+                Use the checkboxes to mark the answers as correct
               </Typography>
               {stepData.answers.map((answer: any) => (
                 <Stack key={answer.id} direction="row">
@@ -145,13 +172,39 @@ const AddMultipleChoiceQuestionStep = () => {
           <Grid item xs={6}>
             <Stack spacing={2}>
               <Typography>Background Image</Typography>
-              <FileDropZone
-                accept="image/*"
-                addFilesCallback={updateFiles}
-                helpText="You can upload just 1 image file"
-                maxFiles={1}
-                showPreview
-              />
+              {stepData.background_image && !changeBackground && !deleteBackground ? (
+                <>
+                  <img src={stepData.background_image} alt="step background" width={250} />
+                  <Button variant="text" onClick={() => setChangeBackground(true)}>
+                    Change background image
+                  </Button>
+                  <Button variant="text" color="error" onClick={() => setDeleteBackground(true)}>
+                    Delete background image
+                  </Button>
+                </>
+              ) : deleteBackground ? (
+                <>
+                  <Typography>Background will be deleted when "Save" button is pressed</Typography>
+                  <Button variant="text" color="error" onClick={() => setDeleteBackground(false)}>
+                    Cancel Delete Background
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <FileDropZone
+                    accept="image/*"
+                    addFilesCallback={updateFiles}
+                    helpText="You can upload just 1 image file"
+                    maxFiles={1}
+                    showPreview
+                  />
+                  {stepData.background_image && (
+                    <Button variant="text" color="error" onClick={cancelChangeBackground}>
+                      Cancel change
+                    </Button>
+                  )}
+                </>
+              )}
             </Stack>
           </Grid>
           <Grid item xs={6} alignItems="flex-end">
@@ -176,4 +229,4 @@ const AddMultipleChoiceQuestionStep = () => {
   );
 };
 
-export default AddMultipleChoiceQuestionStep;
+export default EditMultipleChoiceQuestion;

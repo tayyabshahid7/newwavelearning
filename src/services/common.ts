@@ -35,7 +35,7 @@ export const deleteProgramme = async (programmeId: number | string) => {
   }
 };
 
-export const editProgramme = async (programmeId: number, data: FormData) => {
+export const editProgramme = async (programmeId: number, data: any) => {
   try {
     const response = await axs.patch<ResponseData>(`/programmes/${programmeId}/`, data, {
       timeout: 15000,
@@ -55,7 +55,7 @@ export const addSection = async (data: FormData) => {
   }
 };
 
-export const editSection = async (sectionId: number | string, data: FormData) => {
+export const editSection = async (sectionId: number | string, data: any) => {
   try {
     const response = await axs.patch<ResponseData>(`sections/${sectionId}/`, data, {
       timeout: 15000,
@@ -78,6 +78,15 @@ export const deleteSection = async (sectionId: number | string) => {
 export const getSection = async (sectionId: number | string) => {
   try {
     const response = await axs.get<SectionData>(`sections/${sectionId}/`);
+    return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const duplicateSection = async (sectionId: number | string) => {
+  try {
+    const response = await axs.post<SectionData>(`sections/${sectionId}/duplicate/`);
     return response.data;
   } catch (error: any) {
     throw error;
@@ -138,11 +147,29 @@ export const getStepDetails = async (stepId: number | string) => {
   }
 };
 
+export const duplicateStep = async (stepId: number | string) => {
+  try {
+    const response = await axs.post<StepData>(`/steps/${stepId}/duplicate-step/`);
+    return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
 export const getProgrammeDetails = async (programmeId: number | string) => {
   try {
     const response = await axs.get<ResponseData>(`programmes/${programmeId}/`);
     return response;
   } catch (error) {
+    throw error;
+  }
+};
+
+export const duplicateProgramme = async (programmeId: number | string) => {
+  try {
+    const response = await axs.post<ProgrammeData>(`programmes/${programmeId}/duplicate/`);
+    return response.data;
+  } catch (error: any) {
     throw error;
   }
 };

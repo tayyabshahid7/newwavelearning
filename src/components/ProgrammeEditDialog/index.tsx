@@ -37,13 +37,22 @@ const ProgrammeEditDialog = ({
   const [name, setName] = useState<string>(programme.name);
   const [loading, setLoading] = useState<boolean>(false);
   const [validationFields, setValidationFields] = useState<any>(initialErrors);
-  const [dropzoneOpen, setDropzoneOpen] = useState<boolean>(programme.image === null);
-  const [files, setFiles] = useState<File[] | null>(null);
-  const [deleteBackground, setDeleteBackground] = useState<boolean>(false);
+  const [dropzoneOpen, setDropzoneOpen] = useState<any>({
+    image: false,
+    bgImage: false,
+  });
+  const [image, setImage] = useState<File | null>(null);
+  const [defaultBgImage, SetDefaultBgImage] = useState<File | null>(null);
+  const [deleteImage, setDeleteImage] = useState<boolean>(false);
+  const [deleteBgImage, setDeleteBgImage] = useState<boolean>(false);
 
   useEffect(() => {
-    setDropzoneOpen(programme.image === null);
-    setDeleteBackground(false);
+    setDropzoneOpen({
+      image: programme.image === null,
+      bgImage: programme.background_image === null,
+    });
+    setDeleteImage(false);
+    setDeleteBgImage(false);
     setName(programme.name);
   }, [programme, open]);
 
@@ -71,10 +80,15 @@ const ProgrammeEditDialog = ({
     if (isFormValid()) {
       const data = new FormData();
       data.append("name", name);
-      if (deleteBackground) {
+      if (deleteImage) {
         data.append("image", "");
-      } else {
-        files?.map(file => data.append("image", file));
+      } else if (image) {
+        data.append("image", image);
+      }
+      if (deleteBgImage) {
+        data.append("background_image", "");
+      } else if (defaultBgImage) {
+        data.append("background_image", defaultBgImage);
       }
       try {
         const response = await editProgramme(programme.id, data);
@@ -87,8 +101,12 @@ const ProgrammeEditDialog = ({
     programme.image && setDropzoneOpen(false);
   };
 
-  const handleAddFiles = (files: File[]) => {
-    setFiles(files);
+  const handleAddImage = (files: File[]) => {
+    setImage(files[0]);
+  };
+
+  const handleAddBgImage = (files: File[]) => {
+    SetDefaultBgImage(files[0]);
   };
 
   const handleCancelButton = () => {
@@ -111,24 +129,60 @@ const ProgrammeEditDialog = ({
               error={validationFields.name.error}
               helperText={validationFields.name.error && validationFields.name.message}
             />
-            {dropzoneOpen ? (
-              <FileDropZone
-                accept="image/*"
-                addFilesCallback={handleAddFiles}
-                maxFiles={2}
-                showPreview
-              />
-            ) : deleteBackground ? (
-              <Typography>Background marked to be deleted after pressig "Edit"</Typography>
+            {dropzoneOpen.image ? (
+              <>
+                <Typography>Image</Typography>
+                <FileDropZone
+                  accept="image/*"
+                  addFilesCallback={handleAddImage}
+                  maxFiles={2}
+                  showPreview
+                />
+              </>
+            ) : deleteImage ? (
+              <Typography>Background marked to be deleted after pressing "Save"</Typography>
             ) : (
               <>
                 <Typography variant="body2">Programme background</Typography>
                 <img src={programme.image} width={150} alt="background" />
-                <Button variant="text" color="primary" onClick={() => setDropzoneOpen(true)}>
+                <Button
+                  variant="text"
+                  color="primary"
+                  onClick={() => setDropzoneOpen({ ...dropzoneOpen, image: true })}
+                >
                   Change Background
                 </Button>
-                <Button variant="text" color="error" onClick={() => setDeleteBackground(true)}>
+                <Button variant="text" color="error" onClick={() => setDeleteImage(true)}>
                   Mark to Delete Background
+                </Button>
+              </>
+            )}
+            {/* BACKGROUND IMAGE */}
+            {dropzoneOpen.bgImage ? (
+              <>
+                <Typography>Default Background Image</Typography>
+                <FileDropZone
+                  accept="image/*"
+                  addFilesCallback={handleAddBgImage}
+                  maxFiles={2}
+                  showPreview
+                />
+              </>
+            ) : deleteBgImage ? (
+              <Typography>Default Background marked to be deleted after pressing "Save"</Typography>
+            ) : (
+              <>
+                <Typography variant="body2">Default background</Typography>
+                <img src={programme.background_image} width={150} alt="background" />
+                <Button
+                  variant="text"
+                  color="primary"
+                  onClick={() => setDropzoneOpen({ ...dropzoneOpen, bgImage: true })}
+                >
+                  Change Default Background
+                </Button>
+                <Button variant="text" color="error" onClick={() => setDeleteBgImage(true)}>
+                  Mark to Delete Default Background
                 </Button>
               </>
             )}

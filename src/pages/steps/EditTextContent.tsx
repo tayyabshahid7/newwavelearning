@@ -6,8 +6,6 @@ import { useHistory, useParams } from "react-router";
 import { editStep, getStepDetails } from "services/common";
 import { EditStepParams } from "common/types";
 
-
-
 const EditTextContentPage = () => {
   const { stepId } = useParams<EditStepParams>();
   const history = useHistory();
@@ -20,8 +18,8 @@ const EditTextContentPage = () => {
     title: "",
     content: "",
     feedback: false,
-    images: [],
-    bgImages: [],
+    image: null,
+    bgImage: null,
   });
   const [changeBgImage, setChangeBgImage] = useState<boolean>(false);
   const [changeImage, setChangeImage] = useState<boolean>(false);
@@ -35,19 +33,19 @@ const EditTextContentPage = () => {
           title: response.fields.title,
           content: response.fields.content,
           feedback: response.fields.feedback,
-          images: response.fields.image,
-          bgImages: response.fields.background_image,
+          image: response.fields.image || null,
+          bgImage: response.fields.background_image || null,
         };
         setStepData(data);
         setFormData({
           title: data.title,
           content: data.content,
           feedback: data.feedback,
-          images: [],
-          bgImages: [],
+          image: data.image,
+          bgImage: data.bgImage,
         });
-        setChangeBgImage(response.fields.background_image === null);
-        setChangeImage(response.fields.image === null);
+        setChangeBgImage(response.fields.background_image instanceof String);
+        setChangeImage(response.fields.image instanceof String);
       } catch (error: any) {
         console.log(error);
       }
@@ -65,31 +63,47 @@ const EditTextContentPage = () => {
   };
 
   const handleAddBackgroundImage = (addedFiles: File[]) => {
-    setFormData({ ...formData, bgImages: addedFiles });
+    setFormData({ ...formData, bgImage: addedFiles[0] });
   };
 
   const handleAddImage = (addedFiles: File[]) => {
-    setFormData({ ...formData, images: addedFiles });
+    setFormData({ ...formData, image: addedFiles[0] });
   };
 
   const handleChangeBgImage = () => {
-    setFormData({ ...formData, bgImages: null });
+    setFormData({ ...formData, bgImage: null });
     setChangeBgImage(true);
   };
 
   const handleCangelChangeBgImage = () => {
-    setFormData({ ...formData, bgImages: stepData.bgImages });
+    setFormData({ ...formData, bgImage: stepData.bgImage });
     setChangeBgImage(false);
   };
 
   const handleChangeImage = () => {
-    setFormData({ ...formData, images: null });
+    setFormData({ ...formData, image: null });
     setChangeImage(true);
   };
 
   const handleCancelChangeImage = () => {
-    setFormData({ ...formData, images: stepData.images });
+    setFormData({ ...formData, image: stepData.image });
     setChangeImage(false);
+  };
+
+  const handleRemoveImage = () => {
+    setFormData({ ...formData, image: null });
+  };
+
+  const handleCancelRemoveImage = () => {
+    setFormData({ ...formData, image: stepData.image });
+  };
+
+  const handleRemoveBgImage = () => {
+    setFormData({ ...formData, bgImage: null });
+  };
+
+  const handleCancelRemoveBgImage = () => {
+    setFormData({ ...formData, bgImage: stepData.bgImage });
   };
 
   const isFormValid = () => {
@@ -113,12 +127,16 @@ const EditTextContentPage = () => {
         title: formData.title,
         content: formData.content,
         feedback: formData.feedback,
-        image: stepData.images,
-        background_image: stepData.bgImages,
+        image: formData.image,
+        background_image: formData.bgImage,
       };
       data.append("fields", JSON.stringify(fields));
-      formData.images.map((image: File) => data.append("image", image));
-      formData.bgImages.map((image: File) => data.append("background_image", image));
+      if (formData.image instanceof File) {
+        data.append("image", formData.image);
+      }
+      if (formData.bgImage instanceof File) {
+        data.append("background_image", formData.bgImage);
+      }
       try {
         await editStep(stepId, data);
         history.goBack();
@@ -165,19 +183,29 @@ const EditTextContentPage = () => {
                     showPreview
                     helpText={"You can only upload image files"}
                   />
-                  {stepData.images !== null && (
-                    <Button variant="text" color="error" onClick={handleCancelChangeImage}>
-                      Cancel image change
-                    </Button>
-                  )}
+
+                  <Button variant="text" color="error" onClick={handleCancelChangeImage}>
+                    Cancel image change
+                  </Button>
                 </>
-              ) : (
+              ) : formData.image !== null ? (
                 <>
-                  <img src={stepData.images} width={150} alt="step" />
+                  <img src={formData.image} width={150} alt="step" />
                   <Button variant="text" onClick={handleChangeImage}>
                     Change image
                   </Button>
+                  <Button variant="text" color="error" onClick={handleRemoveImage}>
+                    Remove image
+                  </Button>
                 </>
+              ) : stepData.image !== null ? (
+                <Button variant="text" color="error" onClick={handleCancelRemoveImage}>
+                  Cancel Remove image
+                </Button>
+              ) : (
+                <Button variant="text" onClick={handleChangeImage}>
+                  Add image
+                </Button>
               )}
               <Typography>Background Image</Typography>
               {changeBgImage ? (
@@ -193,13 +221,24 @@ const EditTextContentPage = () => {
                     Cancel background image change
                   </Button>
                 </>
-              ) : (
+              ) : formData.bgImage !== null ? (
                 <>
-                  <img src={stepData.bgImages} width={150} alt="step" />
+                  <img src={formData.bgImage} width={150} alt="step" />
                   <Button variant="text" onClick={handleChangeBgImage}>
                     Change background image
                   </Button>
+                  <Button variant="text" color="error" onClick={handleRemoveBgImage}>
+                    Remove background image
+                  </Button>
                 </>
+              ) : stepData.bgImage != null ? (
+                <Button variant="text" color="error" onClick={handleCancelRemoveBgImage}>
+                  Cancel Remove image
+                </Button>
+              ) : (
+                <Button variant="text" onClick={handleChangeBgImage}>
+                  Add background image
+                </Button>
               )}
             </Stack>
           </Grid>

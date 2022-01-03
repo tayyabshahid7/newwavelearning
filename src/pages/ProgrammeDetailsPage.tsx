@@ -54,11 +54,7 @@ const ProgrammeDetailsPage = () => {
                   </Box>
                   <Box sx={{ ml: 2 }}>
                     {programme.image ? (
-                      <img
-                        src={programme.image}
-                        width={150}
-                        alt="programme background"
-                      />
+                      <img src={programme.image} width={150} alt="programme background" />
                     ) : (
                       <Typography>None</Typography>
                     )}
@@ -70,7 +66,10 @@ const ProgrammeDetailsPage = () => {
               </Grid>
             </Grid>
             <Divider />
-            <ProgrammeSectionsTable programmeId={programme.id} />
+            <ProgrammeSectionsTable
+              programmeId={programme.id}
+              sectionOrder={programme.section_order}
+            />
           </Stack>
           <ProgrammeEditDialog
             open={editDialogOpen}

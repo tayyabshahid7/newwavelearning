@@ -16,7 +16,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { getProgrammes, deleteProgramme } from "services/common";
+import { getProgrammes, deleteProgramme, duplicateProgramme } from "services/common";
 import PromptDialog from "components/PromptDialog";
 import { useSnackbar } from "notistack";
 
@@ -41,9 +41,9 @@ const ProgrammesPage = () => {
     fetchData();
   }, []);
 
-  const openDeletePrompt = (programme: any) => {
+  const openPropmt = (programme: any, action = "") => {
     setDialog({
-      open: true,
+      open: action,
       programme: programme,
     });
   };
@@ -58,6 +58,17 @@ const ProgrammesPage = () => {
     } catch (error: any) {
       console.log(error);
       enqueueSnackbar(error.response?.data.detail, { variant: "warning" });
+    }
+    setDialog({ ...dialog, open: false });
+  };
+
+  const handleDuplicateProgramme = async () => {
+    try {
+      const newProgramme = await duplicateProgramme(dialog.programme.id);
+      setProgrammes([...programmes, newProgramme]);
+    } catch (error: any) {
+      console.log(error);
+      enqueueSnackbar(error.response?.data.detail, { variant: "error" });
     }
     setDialog({ ...dialog, open: false });
   };
@@ -102,7 +113,14 @@ const ProgrammesPage = () => {
                       View Programme
                     </Button>
                     <Button
-                      onClick={() => openDeletePrompt(programme)}
+                      onClick={() => openPropmt(programme, "duplicate")}
+                      variant="text"
+                      sx={{ mr: 5 }}
+                    >
+                      Duplicate
+                    </Button>
+                    <Button
+                      onClick={() => openPropmt(programme, "delete")}
                       variant="text"
                       color="error"
                       sx={{ mr: 5 }}
@@ -117,12 +135,21 @@ const ProgrammesPage = () => {
         </TableContainer>
       </Stack>
       <PromptDialog
-        open={dialog.open}
+        open={dialog.open === "delete"}
         title="Are you sure you would like to delete the following programme?"
         content={`Programme: ${dialog.programme?.name}`}
         okButtonText="Yes"
         cancelButtonText="No"
         confirmCallback={handleDeleteProgramme}
+        closeCallback={() => setDialog({ ...dialog, open: false })}
+      />
+      <PromptDialog
+        open={dialog.open === "duplicate"}
+        title="Are you sure you would like to duplicate the following programme? (Cohorts will not be copied)"
+        content={`Programme: ${dialog.programme?.name}`}
+        okButtonText="Yes"
+        cancelButtonText="No"
+        confirmCallback={handleDuplicateProgramme}
         closeCallback={() => setDialog({ ...dialog, open: false })}
       />
     </DashboardLayout>

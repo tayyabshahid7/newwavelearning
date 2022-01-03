@@ -22,10 +22,14 @@ const AddProgrammePage = () => {
   const [validationFields, setValidationFields] = useState<any>(initialErrors);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const [files, setFiles] = useState<File[] | null>(null);
+  const [image, setImage] = useState<File | null>(null);
+  const [defaultBgImage, setDefaultBgImage] = useState<File | null>(null);
 
-  const handleAddFiles = (files: File[]) => {
-    setFiles(files);
+  const handleAddImage = (files: File[]) => {
+    setImage(files[0]);
+  };
+  const handleAddBgImage = (files: File[]) => {
+    setDefaultBgImage(files[0]);
   };
   const [programmeName, setProgrammeName] = useState<string>("");
 
@@ -45,7 +49,12 @@ const AddProgrammePage = () => {
       try {
         const data = new FormData();
         data.append("name", programmeName);
-        files?.map(file => data.append("image", file));
+        if (image) {
+          data.append("image", image);
+        }
+        if (defaultBgImage) {
+          data.append("background_image", defaultBgImage);
+        }
         const addedProgramme = await addProgramme(data);
         history.push(`/programmes/${addedProgramme.id}`);
       } catch (error) {
@@ -91,8 +100,15 @@ const AddProgrammePage = () => {
               <Typography>Image</Typography>
               <FileDropZone
                 accept="image/*"
-                addFilesCallback={handleAddFiles}
-                maxFiles={2}
+                addFilesCallback={handleAddImage}
+                maxFiles={1}
+                showPreview
+              />
+              <Typography>Default Background Image</Typography>
+              <FileDropZone
+                accept="image/*"
+                addFilesCallback={handleAddBgImage}
+                maxFiles={1}
                 showPreview
               />
             </Stack>

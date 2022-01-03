@@ -1,52 +1,27 @@
-import React, { BaseSyntheticEvent, useEffect, useState } from "react";
+import React, { BaseSyntheticEvent, useState } from "react";
 import { useHistory, useParams } from "react-router";
 import { Box, Button, Grid, Paper, Stack, Switch, TextField, Typography } from "@mui/material";
 import DashboardLayout from "components/DashboardLayout";
 import FileDropZone from "components/FileDropZone";
-import { EditStepParams } from "common/types";
-import { editStep, getStepDetails } from "services/common";
+import { AddStepParams } from "common/types";
+import { addStep } from "services/common";
 import { UploadFile } from "@mui/icons-material";
 import Player from "components/Player";
 
-const EditAudioContent = () => {
-  const { stepId } = useParams<EditStepParams>();
+const AddVideoContent = () => {
+  const { sectionId } = useParams<AddStepParams>();
   const history = useHistory();
   const [loading, setLoading] = useState<boolean>(false);
   const [backgroundImage, setBackgroundImage] = useState<File | null>(null);
-  const [changeBackground, setChangeBackground] = useState<boolean>(false);
-  const [deleteBackground, setDeleteBackground] = useState<boolean>(false);
-  const [audioFile, setAudioFile] = useState<File | null>(null);
+  const [videoFile, setVideoFile] = useState<File | null>(null);
   const [stepData, setStepData] = useState<any>({
     title: "",
     description: "",
     feedback: false,
-    audio: false,
-    background_image: false,
   });
-
-  useEffect(() => {
-    const fetchStepData = async () => {
-      setLoading(true);
-      try {
-        const response = await getStepDetails(stepId);
-        setStepData(response.fields);
-        setAudioFile(response.fields.audio);
-      } catch (error: any) {
-        console.log(error);
-      }
-      setLoading(false);
-    };
-    fetchStepData();
-  }, [stepId]);
 
   const updateFiles = (newImages: File[]) => {
     setBackgroundImage(newImages[0]);
-  };
-
-  const cancelChangeBackground = () => {
-    setBackgroundImage(null);
-    setChangeBackground(false);
-    setDeleteBackground(false);
   };
 
   const handleTextChange = (e: BaseSyntheticEvent) => {
@@ -57,28 +32,27 @@ const EditAudioContent = () => {
     setStepData({ ...stepData, feedback: event.target.checked });
   };
 
-  const handleAddAudio = (event: any) => {
-    setAudioFile(event.target.files[0]);
+  const handleAddVideo = (event: any) => {
+    setVideoFile(event.target.files[0]);
   };
 
   const handleSave = async () => {
     setLoading(true);
     const data = new FormData();
-    data.append("step_type", "audio");
-    if (audioFile instanceof File) {
-      data.append("audio", audioFile);
-    }
+    data.append("step_type", "video");
+    data.append("number", "0");
+    data.append("section", sectionId);
     let fields = stepData;
-    if (deleteBackground) {
-      fields.background_image = null;
-    } else if (backgroundImage) {
-      data.append("background_image", backgroundImage);
-      fields.background_image = backgroundImage.name;
-    }
     data.append("fields", JSON.stringify(fields));
+    if (videoFile) {
+      data.append("video", videoFile);
+    }
+    if (backgroundImage) {
+      data.append("background_image", backgroundImage);
+    }
 
     try {
-      await editStep(stepId, data);
+      await addStep(data);
     } catch (error: any) {
       console.log(error);
     }
@@ -91,41 +65,42 @@ const EditAudioContent = () => {
       <Paper>
         <Grid container sx={{ p: 8 }} spacing={6}>
           <Grid item xs={12}>
-            <Typography variant="h4">Edit Audio Content</Typography>
+            <Typography variant="h4">Add Video Content</Typography>
           </Grid>
           <Grid item xs={6}>
             <Stack spacing={2}>
               <TextField
                 name="title"
                 value={stepData.title}
-                label="Audio Title"
+                label="Video Title"
                 onChange={handleTextChange}
               />
               <TextField
                 name="description"
                 value={stepData.description}
                 multiline
-                label="Audio Description"
+                label="Video Description"
                 minRows={3}
                 onChange={handleTextChange}
               />
 
               <Stack direction="row" spacing={2}>
                 <Stack direction="column" textAlign="center" spacing={1}>
-                  <Paper variant="outlined" sx={{ p: 2 }}>
-                    {audioFile ? (
+                  <Paper variant="outlined" sx={{ p: 2, minHeight: "280px" }}>
+                    {videoFile ? (
                       <Stack spacing={1}>
-                        <Player source={audioFile} fileType="audio" />
-                        <label htmlFor="audio">
+                        <Player source={videoFile} fileType="video" />
+
+                        <label htmlFor="video">
                           <input
-                            accept="audio/*"
-                            id="audio"
+                            accept="video/*"
+                            id="video"
                             type="file"
                             hidden
-                            onChange={handleAddAudio}
+                            onChange={handleAddVideo}
                           />
                           <Button variant="text" component="span" fullWidth>
-                            Change audio
+                            Change video
                           </Button>
                         </label>
                       </Stack>
@@ -135,14 +110,15 @@ const EditAudioContent = () => {
                         alignItems="center"
                         justifyContent="center"
                         minWidth="200px"
+                        minHeight="200px"
                       >
-                        <label htmlFor="audio">
+                        <label htmlFor="video">
                           <input
-                            accept="audio/*"
-                            id="audio"
+                            accept="video/*"
+                            id="video"
                             type="file"
                             hidden
-                            onChange={handleAddAudio}
+                            onChange={handleAddVideo}
                           />
                           <Button
                             variant="text"
@@ -162,39 +138,13 @@ const EditAudioContent = () => {
           <Grid item xs={6}>
             <Stack spacing={2}>
               <Typography>Background Image</Typography>
-              {stepData.background_image && !changeBackground && !deleteBackground ? (
-                <>
-                  <img src={stepData.background_image} alt="step background" width={250} />
-                  <Button variant="text" onClick={() => setChangeBackground(true)}>
-                    Change background image
-                  </Button>
-                  <Button variant="text" color="error" onClick={() => setDeleteBackground(true)}>
-                    Delete background image
-                  </Button>
-                </>
-              ) : deleteBackground ? (
-                <>
-                  <Typography>Background will be deleted when "Save" button is pressed</Typography>
-                  <Button variant="text" color="error" onClick={() => setDeleteBackground(false)}>
-                    Cancel Delete Background
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <FileDropZone
-                    accept="image/*"
-                    addFilesCallback={updateFiles}
-                    helpText="You can upload just 1 image file"
-                    maxFiles={1}
-                    showPreview
-                  />
-                  {stepData.background_image && (
-                    <Button variant="text" color="error" onClick={cancelChangeBackground}>
-                      Cancel change
-                    </Button>
-                  )}
-                </>
-              )}
+              <FileDropZone
+                accept="image/*"
+                addFilesCallback={updateFiles}
+                helpText="You can upload just 1 image file"
+                maxFiles={1}
+                showPreview
+              />
             </Stack>
           </Grid>
           <Grid item xs={6} alignItems="flex-end">
@@ -219,4 +169,4 @@ const EditAudioContent = () => {
   );
 };
 
-export default EditAudioContent;
+export default AddVideoContent;

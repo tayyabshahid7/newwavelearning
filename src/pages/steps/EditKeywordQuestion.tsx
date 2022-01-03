@@ -1,26 +1,32 @@
 import React, { BaseSyntheticEvent, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
-import { Box, Button, Grid, Paper, Stack, Switch, TextField, Typography } from "@mui/material";
+import {
+  Autocomplete,
+  Button,
+  Grid,
+  Paper,
+  Stack,
+  Switch,
+  TextField,
+  Typography,
+} from "@mui/material";
 import DashboardLayout from "components/DashboardLayout";
 import FileDropZone from "components/FileDropZone";
 import { EditStepParams } from "common/types";
 import { editStep, getStepDetails } from "services/common";
-import { UploadFile } from "@mui/icons-material";
-import Player from "components/Player";
 
-const EditAudioContent = () => {
+const EditKeywordQuestion = () => {
   const { stepId } = useParams<EditStepParams>();
   const history = useHistory();
   const [loading, setLoading] = useState<boolean>(false);
   const [backgroundImage, setBackgroundImage] = useState<File | null>(null);
   const [changeBackground, setChangeBackground] = useState<boolean>(false);
   const [deleteBackground, setDeleteBackground] = useState<boolean>(false);
-  const [audioFile, setAudioFile] = useState<File | null>(null);
   const [stepData, setStepData] = useState<any>({
-    title: "",
+    question: "",
     description: "",
+    keywords: [],
     feedback: false,
-    audio: false,
     background_image: false,
   });
 
@@ -30,7 +36,6 @@ const EditAudioContent = () => {
       try {
         const response = await getStepDetails(stepId);
         setStepData(response.fields);
-        setAudioFile(response.fields.audio);
       } catch (error: any) {
         console.log(error);
       }
@@ -57,17 +62,10 @@ const EditAudioContent = () => {
     setStepData({ ...stepData, feedback: event.target.checked });
   };
 
-  const handleAddAudio = (event: any) => {
-    setAudioFile(event.target.files[0]);
-  };
-
   const handleSave = async () => {
     setLoading(true);
     const data = new FormData();
-    data.append("step_type", "audio");
-    if (audioFile instanceof File) {
-      data.append("audio", audioFile);
-    }
+    data.append("step_type", "keyword_question");
     let fields = stepData;
     if (deleteBackground) {
       fields.background_image = null;
@@ -91,72 +89,39 @@ const EditAudioContent = () => {
       <Paper>
         <Grid container sx={{ p: 8 }} spacing={6}>
           <Grid item xs={12}>
-            <Typography variant="h4">Edit Audio Content</Typography>
+            <Typography variant="h4">Edit Keyword Question</Typography>
           </Grid>
           <Grid item xs={6}>
             <Stack spacing={2}>
               <TextField
-                name="title"
-                value={stepData.title}
-                label="Audio Title"
+                name="question"
+                value={stepData.question}
+                label="Question"
                 onChange={handleTextChange}
               />
               <TextField
                 name="description"
                 value={stepData.description}
                 multiline
-                label="Audio Description"
+                label="Description"
                 minRows={3}
                 onChange={handleTextChange}
               />
-
-              <Stack direction="row" spacing={2}>
-                <Stack direction="column" textAlign="center" spacing={1}>
-                  <Paper variant="outlined" sx={{ p: 2 }}>
-                    {audioFile ? (
-                      <Stack spacing={1}>
-                        <Player source={audioFile} fileType="audio" />
-                        <label htmlFor="audio">
-                          <input
-                            accept="audio/*"
-                            id="audio"
-                            type="file"
-                            hidden
-                            onChange={handleAddAudio}
-                          />
-                          <Button variant="text" component="span" fullWidth>
-                            Change audio
-                          </Button>
-                        </label>
-                      </Stack>
-                    ) : (
-                      <Box
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        minWidth="200px"
-                      >
-                        <label htmlFor="audio">
-                          <input
-                            accept="audio/*"
-                            id="audio"
-                            type="file"
-                            hidden
-                            onChange={handleAddAudio}
-                          />
-                          <Button
-                            variant="text"
-                            component="span"
-                            startIcon={<UploadFile fontSize="large" />}
-                          >
-                            Upload
-                          </Button>
-                        </label>
-                      </Box>
-                    )}
-                  </Paper>
-                </Stack>
-              </Stack>
+              <Autocomplete
+                multiple
+                freeSolo
+                id="keywords"
+                options={[]}
+                value={stepData.keywords}
+                onChange={(event, newValue) => setStepData({ ...stepData, keywords: newValue })}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Keywords"
+                    placeholder="Type and press 'Enter' to add keywords"
+                  />
+                )}
+              />
             </Stack>
           </Grid>
           <Grid item xs={6}>
@@ -219,4 +184,4 @@ const EditAudioContent = () => {
   );
 };
 
-export default EditAudioContent;
+export default EditKeywordQuestion;
