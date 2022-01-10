@@ -323,3 +323,12 @@ export const getFeedbackFiltersData = async () => {
     throw error;
   }
 };
+
+export const getStepAnswer = async (answerId: string | number) => {
+  try {
+    const response = await axs.get<ResponseData>(`/stepanswers/${answerId}/`);
+    return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+};

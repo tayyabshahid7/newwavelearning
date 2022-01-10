@@ -70,6 +70,14 @@ export interface Learner {
   last_login: string;
 }
 
+export interface Feedback {
+  step_answer: number;
+  description: string;
+  cohort: number;
+  step_type?: string;
+  learner?: string;
+}
+
 export interface AddStepParams {
   sectionId: string;
 }

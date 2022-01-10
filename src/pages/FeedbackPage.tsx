@@ -19,8 +19,13 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import AddFeedbackDialog from "components/AddFeedbackDialog";
 
 const FeedbackPage = () => {
+  const [dialog, setDialog] = useState<any>({
+    open: false,
+    feedback: null,
+  });
   const [feedbackList, setFeedbackList] = useState<any>([]);
   const [cohortList, setCohortList] = useState<any>([]);
   const [learnerList, setLearnerList] = useState<any>([]);
@@ -69,6 +74,10 @@ const FeedbackPage = () => {
 
   const handleLearnerFilterChange = (event: SelectChangeEvent) => {
     setFilters({ ...filters, learnerId: event.target.value });
+  };
+
+  const openFeedbackDialog = (feedback: any) => {
+    setDialog({ feedback: feedback, open: true });
   };
 
   return (
@@ -130,7 +139,9 @@ const FeedbackPage = () => {
                   <TableCell>{feedback.step_type}</TableCell>
                   <TableCell align="right">
                     <Stack direction="row" justifyContent={"end"} spacing={2}>
-                      <Button variant="text">More Info</Button>
+                      <Button variant="text" onClick={() => openFeedbackDialog(feedback)}>
+                        More Info
+                      </Button>
                       <Button>Feedback</Button>
                     </Stack>
                   </TableCell>
@@ -140,6 +151,11 @@ const FeedbackPage = () => {
           </Table>
         </TableContainer>
       </Stack>
+      <AddFeedbackDialog
+        open={dialog.open}
+        feedback={dialog.feedback}
+        closeCallback={() => setDialog({ ...dialog, open: false })}
+      />
     </DashboardLayout>
   );
 };
