@@ -284,3 +284,51 @@ export const downloadLearnersCSV = async (cohortId: string) => {
     throw error;
   }
 };
+
+export const getCohortFeedbackList = async (cohortId: string | number) => {
+  try {
+    const response = await axs.get<ResponseData>(`/feedback/?cohort_idf=${cohortId}`);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const getFilteredFeedbackList = async (
+  cohortId: string | null = null,
+  learnerId: string | null = null
+) => {
+  try {
+    let url = `/feedback/filtered-feedback/`;
+    if (cohortId !== null && cohortId !== "0") {
+      url = url + `?cohort_id=${cohortId}`;
+      if (learnerId !== null && learnerId !== "0") {
+        url = url + `&learner_id=${learnerId}`;
+      }
+    } else if (learnerId !== null && learnerId !== "0") {
+      url = url + `?learner_id=${learnerId}`;
+    }
+    const response = await axs.get<ResponseData>(url);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const getFeedbackFiltersData = async () => {
+  try {
+    const response = await axs.get<ResponseData>(`/feedback/filters-data/`);
+    return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const getStepAnswer = async (answerId: string | number) => {
+  try {
+    const response = await axs.get<ResponseData>(`/stepanswers/${answerId}/`);
+    return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+};

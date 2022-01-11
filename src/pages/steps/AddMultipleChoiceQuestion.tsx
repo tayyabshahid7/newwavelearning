@@ -25,6 +25,7 @@ const AddMultipleChoiceQuestion = () => {
     question: "",
     description: "",
     feedback: false,
+    correct_anwsers: 1,
     answers: [],
   });
   const [images, setImages] = useState<File[]>([]);
@@ -109,6 +110,13 @@ const AddMultipleChoiceQuestion = () => {
                 multiline
                 label="Description"
                 minRows={3}
+                onChange={handleTextChange}
+              />
+              <TextField
+                name="correct_answers"
+                value={stepData.correct_answers}
+                type="number"
+                label="Number or correct answers"
                 onChange={handleTextChange}
               />
               <Typography variant="h6">Answers</Typography>

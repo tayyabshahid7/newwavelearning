@@ -30,6 +30,7 @@ const EditPictureChoiceQuestion = () => {
     description: "",
     feedback: false,
     background_image: null,
+    correct_answers: 1,
     answers: [],
   });
 
@@ -158,6 +159,13 @@ const EditPictureChoiceQuestion = () => {
                 multiline
                 label="Description"
                 minRows={3}
+                onChange={handleTextChange}
+              />
+              <TextField
+                name="correct_answers"
+                value={stepData.correct_answers}
+                type="number"
+                label="Number or correct answers"
                 onChange={handleTextChange}
               />
               <Stack direction="row">
