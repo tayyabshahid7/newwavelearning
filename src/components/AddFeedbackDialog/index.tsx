@@ -29,7 +29,7 @@ const AddFeedbackDialog = ({ feedback, open, closeCallback }: AddFeedbackDialogP
       <Dialog open={open} onClose={closeCallback} fullWidth maxWidth="lg">
         <DialogTitle>Feedback</DialogTitle>
         <DialogContent>
-          <Stack spacing={2}>
+          <Stack spacing={3}>
             <Typography>Content Type: {feedback?.step_type}</Typography>
             <Typography>Learner: {feedback?.learner}</Typography>
             <StepAnswerBody stepType={feedback?.step_type} stepAnswer={stepAnswer} />
