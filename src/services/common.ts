@@ -332,3 +332,18 @@ export const getStepAnswer = async (answerId: string | number) => {
     throw error;
   }
 };
+
+export const submitFeedback = async (
+  feedbackId: number | string | null = null,
+  feedbackText: string
+) => {
+  try {
+    if (feedbackId === null) throw new Error("Feedback id not found");
+    const response = await axs.patch<ResponseData>(`/feedback/${feedbackId}/`, {
+      description: feedbackText,
+    });
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
