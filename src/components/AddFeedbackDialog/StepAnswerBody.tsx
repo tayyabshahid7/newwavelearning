@@ -1,5 +1,6 @@
 import React from "react";
 import KeywordQuestionFeedback from "./KeywordQuestionFeedback";
+import ModelAnswerQuestionFeedback from "./ModelAnswerQuestionFeedback";
 import MultipleChoiceStepAnswer from "./MultipleChoiceStepAnswer";
 
 interface StepAnswerBodyProps {
@@ -15,6 +16,9 @@ const StepAnswerBody = ({ stepAnswer, stepType }: StepAnswerBodyProps) => {
       break;
     case "keyword_question":
       stepBody = <KeywordQuestionFeedback stepAnswer={stepAnswer} />;
+      break;
+    case "model_answer_question":
+      stepBody = <ModelAnswerQuestionFeedback stepAnswer={stepAnswer} />;
       break;
     default:
       break;

@@ -16,13 +16,11 @@ const AddFeedbackDialog = ({ feedback, open, closeCallback }: AddFeedbackDialogP
   useEffect(() => {
     const fetchAnswer = async () => {
       const response = await getStepAnswer(feedback.step_answer);
-      console.log(response);
       setStepAnswer(response);
     };
     if (feedback) {
       fetchAnswer();
     }
-    console.log(feedback);
   }, [feedback]);
   return (
     <>
