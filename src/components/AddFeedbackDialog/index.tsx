@@ -17,21 +17,22 @@ import StepAnswerBody from "./StepAnswerBody";
 interface AddFeedbackDialogProps {
   feedback: Feedback;
   open: boolean;
-  closeCallback: () => any;
+  closeCallback: (confirm?: boolean, addedFeedback?: Feedback) => any;
 }
 
 const AddFeedbackDialog = ({ feedback, open, closeCallback }: AddFeedbackDialogProps) => {
   const [stepAnswer, setStepAnswer] = useState<any>(null);
-  const [feedbackText, setFeedbackText] = useState<string>("");
+  const [feedbackText, setFeedbackText] = useState<string>(feedback?.description || "");
   useEffect(() => {
     const fetchAnswer = async () => {
       const response = await getStepAnswer(feedback.step_answer);
       setStepAnswer(response);
-      setFeedbackText("");
+      setFeedbackText(feedback.description);
     };
     if (feedback) {
       fetchAnswer();
     }
+    console.log(feedback);
   }, [feedback]);
 
   const handleChange = (e: BaseSyntheticEvent) => {
@@ -40,9 +41,9 @@ const AddFeedbackDialog = ({ feedback, open, closeCallback }: AddFeedbackDialogP
 
   const handleSubmitFeedback = async () => {
     try {
-      await submitFeedback(feedback.id, feedbackText);
+      const addedFeedback = await submitFeedback(feedback.id, feedbackText);
       setFeedbackText("");
-      closeCallback();
+      closeCallback(true, addedFeedback);
     } catch (error: any) {
       console.log(error);
     }
@@ -55,7 +56,7 @@ const AddFeedbackDialog = ({ feedback, open, closeCallback }: AddFeedbackDialogP
 
   return (
     <>
-      <Dialog open={open} onClose={closeCallback} fullWidth maxWidth="lg">
+      <Dialog open={open} onClose={handleCancel} fullWidth maxWidth="lg">
         <DialogTitle>Feedback</DialogTitle>
         <DialogContent>
           <Stack spacing={3}>

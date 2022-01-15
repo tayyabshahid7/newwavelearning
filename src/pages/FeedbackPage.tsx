@@ -20,6 +20,7 @@ import {
   TableRow,
 } from "@mui/material";
 import AddFeedbackDialog from "components/AddFeedbackDialog";
+import { Feedback } from "common/types";
 
 const FeedbackPage = () => {
   const [dialog, setDialog] = useState<any>({
@@ -78,6 +79,24 @@ const FeedbackPage = () => {
 
   const openFeedbackDialog = (feedback: any) => {
     setDialog({ feedback: feedback, open: true });
+  };
+
+  const handleCloseFeedbackDialog = (
+    confirm: boolean = false,
+    addedFeedback: Feedback | null = null
+  ) => {
+    if (confirm && addedFeedback !== null) {
+      const oldFeedback = feedbackList.find((f: any) => f.id === addedFeedback.id);
+      const newFeedback = Object.assign(oldFeedback, addedFeedback);
+      const newFeedbackList = [...feedbackList];
+      newFeedbackList.splice(
+        feedbackList.findIndex((f: any) => f.id === addedFeedback.id),
+        1,
+        newFeedback
+      );
+      setFeedbackList(newFeedbackList);
+    }
+    setDialog({ ...dialog, open: false });
   };
 
   return (
@@ -139,10 +158,13 @@ const FeedbackPage = () => {
                   <TableCell>{feedback.step_type}</TableCell>
                   <TableCell align="right">
                     <Stack direction="row" justifyContent={"end"} spacing={2}>
-                      <Button variant="text" onClick={() => openFeedbackDialog(feedback)}>
-                        More Info
-                      </Button>
-                      <Button>Feedback</Button>
+                      {feedback.done ? (
+                        <Button variant="text" onClick={() => openFeedbackDialog(feedback)}>
+                          Edit Feedback
+                        </Button>
+                      ) : (
+                        <Button onClick={() => openFeedbackDialog(feedback)}>Feedback</Button>
+                      )}
                     </Stack>
                   </TableCell>
                 </TableRow>
@@ -154,7 +176,7 @@ const FeedbackPage = () => {
       <AddFeedbackDialog
         open={dialog.open}
         feedback={dialog.feedback}
-        closeCallback={() => setDialog({ ...dialog, open: false })}
+        closeCallback={handleCloseFeedbackDialog}
       />
     </DashboardLayout>
   );

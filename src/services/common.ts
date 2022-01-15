@@ -1,5 +1,6 @@
 import {
   CohortData,
+  Feedback,
   ProgrammeData,
   ResponseData,
   SectionData,
@@ -335,14 +336,16 @@ export const getStepAnswer = async (answerId: string | number) => {
 
 export const submitFeedback = async (
   feedbackId: number | string | null = null,
-  feedbackText: string
+  feedbackText: string,
+  markDone: boolean = true
 ) => {
   try {
     if (feedbackId === null) throw new Error("Feedback id not found");
-    const response = await axs.patch<ResponseData>(`/feedback/${feedbackId}/`, {
+    const response = await axs.patch<Feedback>(`/feedback/${feedbackId}/`, {
       description: feedbackText,
+      done: markDone,
     });
-    return response;
+    return response.data;
   } catch (error: any) {
     throw error;
   }

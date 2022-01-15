@@ -9,7 +9,7 @@ const KeywordQuestionFeedback = ({ stepAnswer }: any) => {
       <Stack direction="row" spacing={1}>
         <Typography>Keywords:</Typography>
         {stepAnswer?.step.fields.keywords?.map((keyword: any) => (
-          <Chip color="primary" sx={{ color: "white" }} label={keyword} />
+          <Chip key={keyword} color="primary" sx={{ color: "white" }} label={keyword} />
         ))}
       </Stack>
       <Typography>Learner Answer:</Typography>
