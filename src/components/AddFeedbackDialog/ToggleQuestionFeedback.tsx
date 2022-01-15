@@ -1,12 +1,17 @@
-import { Paper, Typography } from "@mui/material";
 import React from "react";
+import { Paper, Stack, Typography } from "@mui/material";
 
 const ToggleQuestionFeedback = ({ stepAnswer }: any) => {
   return (
     <Paper variant="outlined" sx={{ p: 2 }}>
-      <Typography>Question: {stepAnswer?.step.fields.question}</Typography>
-      <Typography>Description: {stepAnswer?.step.fields.description}</Typography>
-      <Typography>Student Answer: {stepAnswer?.answer.value}</Typography>
+      <Stack spacing={2}>
+        <Typography variant="h6">Question </Typography>
+        <Typography>{stepAnswer?.step.fields.question}</Typography>
+        <Typography variant="h6">Description</Typography>
+        <Typography> {stepAnswer?.step.fields.description}</Typography>
+        <Typography variant="h6">Student Answer</Typography>
+        <Typography> {stepAnswer?.answer.value}</Typography>
+      </Stack>
     </Paper>
   );
 };

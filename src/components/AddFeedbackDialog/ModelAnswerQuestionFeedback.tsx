@@ -1,16 +1,22 @@
 import React from "react";
-import { Paper, Typography } from "@mui/material";
+import { Paper, Stack, Typography } from "@mui/material";
 
 const ModelAnswerQuestionFeedback = ({ stepAnswer }: any) => {
   return (
     <Paper variant="outlined" sx={{ p: 2 }}>
-      <Typography>Question: {stepAnswer?.step.fields.question}</Typography>
-      <Typography>Description: {stepAnswer?.step.fields.description}</Typography>
-      <Typography>Model Answer: {stepAnswer?.step.fields.model_answer}</Typography>
-      <Typography>
-        Student Marked as: {stepAnswer?.answer.correct ? "Correct" : "Incorrect"}
-      </Typography>
-      <Typography>Student Answer: {stepAnswer?.answer.text}</Typography>
+      <Stack spacing={2}>
+        <Typography variant="h6">Question</Typography>
+        <Typography> {stepAnswer?.step.fields.question}</Typography>
+        <Typography variant="h6">Description</Typography>
+        <Typography> {stepAnswer?.step.fields.description}</Typography>
+        <Typography variant="h6">Model Answer</Typography>
+        <Typography>{stepAnswer?.step.fields.model_answer}</Typography>
+        <Typography variant="h6">Student Answer</Typography>
+        <Typography> {stepAnswer?.answer.text}</Typography>
+        <Typography variant="button">
+          Student Marked as: {stepAnswer?.answer.correct ? "Correct" : "Incorrect"}
+        </Typography>
+      </Stack>
     </Paper>
   );
 };
