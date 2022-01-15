@@ -21,6 +21,7 @@ import {
 } from "@mui/material";
 import AddFeedbackDialog from "components/AddFeedbackDialog";
 import { Feedback } from "common/types";
+import { Warning } from "@mui/icons-material";
 
 const FeedbackPage = () => {
   const [dialog, setDialog] = useState<any>({
@@ -147,7 +148,7 @@ const FeedbackPage = () => {
                 <TableCell>Name</TableCell>
                 <TableCell>Cohort</TableCell>
                 <TableCell>Question type</TableCell>
-                <TableCell></TableCell>
+                <TableCell colSpan={2}></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -156,6 +157,14 @@ const FeedbackPage = () => {
                   <TableCell>{feedback.learner}</TableCell>
                   <TableCell>{feedback.cohort_name}</TableCell>
                   <TableCell>{feedback.step_type}</TableCell>
+                  <TableCell>
+                    {!feedback.done && (
+                      <Stack direction="row" spacing={1}>
+                        <Warning sx={{ color: "#FD773B" }} />
+                        <Typography>Feedback needed</Typography>
+                      </Stack>
+                    )}
+                  </TableCell>
                   <TableCell align="right">
                     <Stack direction="row" justifyContent={"end"} spacing={2}>
                       {feedback.done ? (
