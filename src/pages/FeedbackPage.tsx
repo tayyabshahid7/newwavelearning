@@ -20,6 +20,8 @@ import {
   TableRow,
 } from "@mui/material";
 import AddFeedbackDialog from "components/AddFeedbackDialog";
+import { Feedback } from "common/types";
+import { Warning } from "@mui/icons-material";
 
 const FeedbackPage = () => {
   const [dialog, setDialog] = useState<any>({
@@ -80,6 +82,24 @@ const FeedbackPage = () => {
     setDialog({ feedback: feedback, open: true });
   };
 
+  const handleCloseFeedbackDialog = (
+    confirm: boolean = false,
+    addedFeedback: Feedback | null = null
+  ) => {
+    if (confirm && addedFeedback !== null) {
+      const oldFeedback = feedbackList.find((f: any) => f.id === addedFeedback.id);
+      const newFeedback = Object.assign(oldFeedback, addedFeedback);
+      const newFeedbackList = [...feedbackList];
+      newFeedbackList.splice(
+        feedbackList.findIndex((f: any) => f.id === addedFeedback.id),
+        1,
+        newFeedback
+      );
+      setFeedbackList(newFeedbackList);
+    }
+    setDialog({ ...dialog, open: false });
+  };
+
   return (
     <DashboardLayout selectedPage={"feedback"}>
       <Typography variant="h2">Feedback</Typography>
@@ -128,7 +148,7 @@ const FeedbackPage = () => {
                 <TableCell>Name</TableCell>
                 <TableCell>Cohort</TableCell>
                 <TableCell>Question type</TableCell>
-                <TableCell></TableCell>
+                <TableCell colSpan={2}></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -137,12 +157,23 @@ const FeedbackPage = () => {
                   <TableCell>{feedback.learner}</TableCell>
                   <TableCell>{feedback.cohort_name}</TableCell>
                   <TableCell>{feedback.step_type}</TableCell>
+                  <TableCell>
+                    {!feedback.done && (
+                      <Stack direction="row" spacing={1}>
+                        <Warning sx={{ color: "#FD773B" }} />
+                        <Typography>Feedback needed</Typography>
+                      </Stack>
+                    )}
+                  </TableCell>
                   <TableCell align="right">
                     <Stack direction="row" justifyContent={"end"} spacing={2}>
-                      <Button variant="text" onClick={() => openFeedbackDialog(feedback)}>
-                        More Info
-                      </Button>
-                      <Button>Feedback</Button>
+                      {feedback.done ? (
+                        <Button variant="text" onClick={() => openFeedbackDialog(feedback)}>
+                          Edit Feedback
+                        </Button>
+                      ) : (
+                        <Button onClick={() => openFeedbackDialog(feedback)}>Feedback</Button>
+                      )}
                     </Stack>
                   </TableCell>
                 </TableRow>
@@ -154,7 +185,7 @@ const FeedbackPage = () => {
       <AddFeedbackDialog
         open={dialog.open}
         feedback={dialog.feedback}
-        closeCallback={() => setDialog({ ...dialog, open: false })}
+        closeCallback={handleCloseFeedbackDialog}
       />
     </DashboardLayout>
   );

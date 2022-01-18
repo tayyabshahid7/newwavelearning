@@ -71,6 +71,7 @@ export interface Learner {
 }
 
 export interface Feedback {
+  id?: number;
   step_answer: number;
   description: string;
   cohort: number;
