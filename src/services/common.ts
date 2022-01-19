@@ -350,3 +350,43 @@ export const submitFeedback = async (
     throw error;
   }
 };
+
+export const getUsers = async (role: string | null = null, searchText: string | null = null) => {
+  try {
+    let queryParams = "";
+
+    if (searchText && searchText.length > 0) {
+      queryParams = `?search=${searchText}`;
+    }
+    if (role && role !== "all") {
+      queryParams += `${searchText && searchText.length > 0 ? "&" : "?"}role=${role}`;
+    }
+
+    const response = await axs.get<any>(`/users/${queryParams}`);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const getUsersPage = async (pageUrl: string | null = null) => {
+  try {
+    if (pageUrl !== null) {
+      const response = await axs.get<ResponseData>(pageUrl);
+      return response;
+    } else {
+      throw new Error("Page not found");
+    }
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const getUserTypes = async () => {
+  try {
+    const response = await axs.get<string[]>(`/users/types/`);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
