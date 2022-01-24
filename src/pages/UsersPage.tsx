@@ -21,9 +21,18 @@ import {
   TableRow,
   TextField,
 } from "@mui/material";
-import { getUsers, getUsersPage, getUserTypes } from "services/common";
+import { deleteUser, getUsers, getUsersPage, getUserTypes } from "services/common";
+import PromptDialog from "components/PromptDialog";
+import { useSnackbar } from "notistack";
+import AddUserDialog from "components/AddUserDialog/inedx";
 
 const UsersPage = () => {
+  const { enqueueSnackbar } = useSnackbar();
+  const [deleteDialog, setDeleteDialog] = useState<any>({
+    open: false,
+    user: null,
+  });
+  const [addDialogOpen, setAddDialogOpen] = useState<boolean>(false);
   const [roles, setRoles] = useState<string[]>(["all"]);
   const [userList, setUserList] = useState<any>([]);
   const [filters, setFilters] = useState<any>({
@@ -108,6 +117,31 @@ const UsersPage = () => {
       console.log(error);
     }
   };
+  const handleDeleteUser = (user: any) => {
+    setDeleteDialog({
+      open: true,
+      user: user,
+    });
+  };
+
+  const confirmDeleteUser = async () => {
+    try {
+      await deleteUser(deleteDialog.user.id);
+      const newUserList = userList.filter((u: any) => u.id !== deleteDialog.user.id);
+      setUserList(newUserList);
+      setPagination({ ...pagination, count: pagination.count - 1 });
+    } catch (error: any) {
+      enqueueSnackbar("Could not delete user. Try deleting all data related to this user.", {
+        variant: "error",
+      });
+    }
+    setDeleteDialog({ open: false, user: null });
+  };
+
+  const handleAddUser = (user: any) => {
+    setUserList([user, ...userList]);
+    setAddDialogOpen(false);
+  };
   return (
     <DashboardLayout selectedPage={"users"}>
       <Typography variant="h2">Users</Typography>
@@ -139,6 +173,9 @@ const UsersPage = () => {
               fullWidth
             />
           </form>
+          <Button fullWidth onClick={() => setAddDialogOpen(true)}>
+            Add New User
+          </Button>
         </Stack>
         <TableContainer component={Paper}>
           <Table>
@@ -157,7 +194,7 @@ const UsersPage = () => {
                   <TableCell>{user.last_login || "-"}</TableCell>
                   <TableCell align="right">
                     <Button size="small">View</Button>
-                    <Button variant="text" color="error">
+                    <Button variant="text" color="error" onClick={() => handleDeleteUser(user)}>
                       Delete
                     </Button>
                   </TableCell>
@@ -184,6 +221,18 @@ const UsersPage = () => {
           </Table>
         </TableContainer>
       </Stack>
+      <PromptDialog
+        open={deleteDialog.open}
+        title={`Are you sure you want to delete the user?`}
+        content={`User: ${deleteDialog.user?.email}`}
+        confirmCallback={confirmDeleteUser}
+        closeCallback={() => setDeleteDialog({ open: false, user: null })}
+      />
+      <AddUserDialog
+        open={addDialogOpen}
+        addedUserCallback={handleAddUser}
+        cancelCallback={() => setAddDialogOpen(false)}
+      />
     </DashboardLayout>
   );
 };

@@ -390,3 +390,21 @@ export const getUserTypes = async () => {
     throw error;
   }
 };
+
+export const addUser = async (user: any) => {
+  try {
+    const response = await axs.post<ResponseData>("/users/", user);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const deleteUser = async (userId: string | number) => {
+  try {
+    const response = await axs.delete<ResponseData>(`/users/${userId}/`);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
