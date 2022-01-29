@@ -400,6 +400,15 @@ export const addUser = async (user: any) => {
   }
 };
 
+export const editUser = async (userData: any, userId: string | number) => {
+  try {
+    const response = await axs.patch<ResponseData>(`/users/${userId}/`, userData);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
 export const deleteUser = async (userId: string | number) => {
   try {
     const response = await axs.delete<ResponseData>(`/users/${userId}/`);

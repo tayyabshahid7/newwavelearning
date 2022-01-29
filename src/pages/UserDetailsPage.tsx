@@ -1,4 +1,5 @@
-import { ArrowBack, Expand, ExpandMore } from "@mui/icons-material";
+import React, { useEffect, useState } from "react";
+import { ArrowBack, ExpandMore } from "@mui/icons-material";
 import {
   Accordion,
   AccordionDetails,
@@ -9,12 +10,11 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import PictureChoiceQuestionDetails from "components/StepAnswerDetails/PictureChoiceQuestionDetails";
 import DashboardLayout from "components/DashboardLayout";
-import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { getUserDetails } from "services/common";
 import StepAnswerDetails from "components/StepAnswerDetails";
+import EditUserDialog from "components/EditUserDialog/inedx";
 
 interface UserDetailsPageParams {
   userId: string;
@@ -25,6 +25,8 @@ const UserDetailsPage = () => {
   const { userId } = useParams<UserDetailsPageParams>();
   const [loading, setLoading] = useState<boolean>(false);
   const [user, setUser] = useState<any>(null);
+  const [editDialogOpen, setEditDialogOpen] = useState<boolean>(false);
+
   useEffect(() => {
     const fetchUserDetails = async () => {
       setLoading(true);
@@ -39,6 +41,11 @@ const UserDetailsPage = () => {
     fetchUserDetails();
   }, [userId]);
 
+  const handleUpdateEditedUser = (editedUser: any) => {
+    setUser({ ...user, ...editedUser });
+    setEditDialogOpen(false);
+  };
+
   return (
     <DashboardLayout selectedPage={"users"} loading={loading}>
       <Button
@@ -52,9 +59,12 @@ const UserDetailsPage = () => {
       <Typography variant="h4">User Details</Typography>
       {user && (
         <Stack spacing={3} component={Paper} sx={{ p: 4 }}>
-          <Typography>
-            <b>Email:</b> {user.email}
-          </Typography>
+          <Stack direction="row" justifyContent="space-between">
+            <Typography>
+              <b>Email:</b> {user.email}
+            </Typography>
+            <Button onClick={() => setEditDialogOpen(true)}>Edit User</Button>
+          </Stack>
           <Typography>
             <b>Full name:</b> {user.first_name} {user.last_name}
           </Typography>
@@ -102,6 +112,12 @@ const UserDetailsPage = () => {
           </Paper>
         </Stack>
       )}
+      <EditUserDialog
+        user={user}
+        open={editDialogOpen}
+        cancelCallback={() => setEditDialogOpen(false)}
+        editedUserCallback={handleUpdateEditedUser}
+      />
     </DashboardLayout>
   );
 };
