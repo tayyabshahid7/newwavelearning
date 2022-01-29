@@ -1,7 +1,7 @@
 import { Paper, Stack, Typography } from "@mui/material";
 import React from "react";
 
-const PictureChoiceQuestionFeedback = ({ stepAnswer }: any) => {
+const PictureChoiceQuestionDetails = ({ stepAnswer }: any) => {
   return (
     <Paper variant="outlined" sx={{ p: 2 }}>
       <Stack spacing={2}>
@@ -32,4 +32,4 @@ const PictureChoiceQuestionFeedback = ({ stepAnswer }: any) => {
   );
 };
 
-export default PictureChoiceQuestionFeedback;
+export default PictureChoiceQuestionDetails;

@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { getStepAnswer, submitFeedback } from "services/common";
 import { Feedback } from "common/types";
-import StepAnswerBody from "./StepAnswerBody";
+import StepAnswerDetails from "../StepAnswerDetails";
 
 interface AddFeedbackDialogProps {
   feedback: Feedback;
@@ -62,7 +62,7 @@ const AddFeedbackDialog = ({ feedback, open, closeCallback }: AddFeedbackDialogP
           <Stack spacing={3}>
             <Typography>Content Type: {feedback?.step_type}</Typography>
             <Typography>Learner: {feedback?.learner}</Typography>
-            <StepAnswerBody stepType={feedback?.step_type} stepAnswer={stepAnswer} />
+            <StepAnswerDetails stepType={feedback?.step_type} stepAnswer={stepAnswer} />
             <TextField
               name="feedback"
               multiline

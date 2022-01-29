@@ -1,7 +1,7 @@
 import React from "react";
 import { Paper, Stack, Typography } from "@mui/material";
 
-const ToggleQuestionFeedback = ({ stepAnswer }: any) => {
+const ToggleQuestionDetails = ({ stepAnswer }: any) => {
   return (
     <Paper variant="outlined" sx={{ p: 2 }}>
       <Stack spacing={2}>
@@ -16,4 +16,4 @@ const ToggleQuestionFeedback = ({ stepAnswer }: any) => {
   );
 };
 
-export default ToggleQuestionFeedback;
+export default ToggleQuestionDetails;

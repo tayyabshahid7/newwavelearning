@@ -1,7 +1,7 @@
 import React from "react";
 import { Chip, Paper, Stack, Typography } from "@mui/material";
 
-const KeywordQuestionFeedback = ({ stepAnswer }: any) => {
+const KeywordQuestionDetails = ({ stepAnswer }: any) => {
   return (
     <Paper variant="outlined" sx={{ p: 2 }}>
       <Stack spacing={2}>
@@ -22,4 +22,4 @@ const KeywordQuestionFeedback = ({ stepAnswer }: any) => {
   );
 };
 
-export default KeywordQuestionFeedback;
+export default KeywordQuestionDetails;

@@ -1,7 +1,7 @@
 import React from "react";
 import { Paper, Stack, Typography } from "@mui/material";
 
-const ModelAnswerQuestionFeedback = ({ stepAnswer }: any) => {
+const ModelAnswerQuestionDetails = ({ stepAnswer }: any) => {
   return (
     <Paper variant="outlined" sx={{ p: 2 }}>
       <Stack spacing={2}>
@@ -21,4 +21,4 @@ const ModelAnswerQuestionFeedback = ({ stepAnswer }: any) => {
   );
 };
 
-export default ModelAnswerQuestionFeedback;
+export default ModelAnswerQuestionDetails;

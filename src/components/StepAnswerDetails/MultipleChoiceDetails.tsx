@@ -1,7 +1,7 @@
 import { Paper, Stack, Typography } from "@mui/material";
 import React from "react";
 
-const MultipleChoiceStepAnswer = ({ stepAnswer }: any) => {
+const MultipleChoiceDetails = ({ stepAnswer }: any) => {
   return (
     <Paper variant="outlined" sx={{ p: 2 }}>
       <Stack spacing={2}>
@@ -31,4 +31,4 @@ const MultipleChoiceStepAnswer = ({ stepAnswer }: any) => {
   );
 };
 
-export default MultipleChoiceStepAnswer;
+export default MultipleChoiceDetails;
