@@ -25,9 +25,11 @@ import { deleteUser, getUsers, getUsersPage, getUserTypes } from "services/commo
 import PromptDialog from "components/PromptDialog";
 import { useSnackbar } from "notistack";
 import AddUserDialog from "components/AddUserDialog/inedx";
+import { useHistory } from "react-router-dom";
 
 const UsersPage = () => {
   const { enqueueSnackbar } = useSnackbar();
+  const history = useHistory();
   const [deleteDialog, setDeleteDialog] = useState<any>({
     open: false,
     user: null,
@@ -183,6 +185,7 @@ const UsersPage = () => {
               <TableRow>
                 <TableCell>Email</TableCell>
                 <TableCell>Name</TableCell>
+                <TableCell>Role</TableCell>
                 <TableCell colSpan={2}>Last login</TableCell>
               </TableRow>
             </TableHead>
@@ -192,8 +195,11 @@ const UsersPage = () => {
                   <TableCell>{user.email}</TableCell>
                   <TableCell>{`${user.first_name} ${user.last_name}`}</TableCell>
                   <TableCell>{user.last_login || "-"}</TableCell>
+                  <TableCell>{user.role || "-"}</TableCell>
                   <TableCell align="right">
-                    <Button size="small">View</Button>
+                    <Button size="small" onClick={() => history.push(`/users/${user.id}/`)}>
+                      View
+                    </Button>
                     <Button variant="text" color="error" onClick={() => handleDeleteUser(user)}>
                       Delete
                     </Button>

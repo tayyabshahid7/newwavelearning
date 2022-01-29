@@ -408,3 +408,12 @@ export const deleteUser = async (userId: string | number) => {
     throw error;
   }
 };
+
+export const getUserDetails = async (userId: string | number) => {
+  try {
+    const response = await axs.get<ResponseData>(`/users/${userId}/get-details/`);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
