@@ -1,5 +1,6 @@
 import {
   CohortData,
+  Feedback,
   ProgrammeData,
   ResponseData,
   SectionData,
@@ -280,6 +281,147 @@ export const downloadLearnersCSV = async (cohortId: string) => {
   try {
     const response = await axs.get<ResponseData>(`/learners/download-csv/?cohort_id=${cohortId}`);
     return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const getCohortFeedbackList = async (cohortId: string | number) => {
+  try {
+    const response = await axs.get<ResponseData>(`/feedback/?cohort_idf=${cohortId}`);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const getFilteredFeedbackList = async (
+  cohortId: string | null = null,
+  learnerId: string | null = null
+) => {
+  try {
+    let url = `/feedback/filtered-feedback/`;
+    if (cohortId !== null && cohortId !== "0") {
+      url = url + `?cohort_id=${cohortId}`;
+      if (learnerId !== null && learnerId !== "0") {
+        url = url + `&learner_id=${learnerId}`;
+      }
+    } else if (learnerId !== null && learnerId !== "0") {
+      url = url + `?learner_id=${learnerId}`;
+    }
+    const response = await axs.get<ResponseData>(url);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const getFeedbackFiltersData = async () => {
+  try {
+    const response = await axs.get<ResponseData>(`/feedback/filters-data/`);
+    return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const getStepAnswer = async (answerId: string | number) => {
+  try {
+    const response = await axs.get<ResponseData>(`/stepanswers/${answerId}/`);
+    return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const submitFeedback = async (
+  feedbackId: number | string | null = null,
+  feedbackText: string,
+  markDone: boolean = true
+) => {
+  try {
+    if (feedbackId === null) throw new Error("Feedback id not found");
+    const response = await axs.patch<Feedback>(`/feedback/${feedbackId}/`, {
+      description: feedbackText,
+      done: markDone,
+    });
+    return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const getUsers = async (role: string | null = null, searchText: string | null = null) => {
+  try {
+    let queryParams = "";
+
+    if (searchText && searchText.length > 0) {
+      queryParams = `?search=${searchText}`;
+    }
+    if (role && role !== "all") {
+      queryParams += `${searchText && searchText.length > 0 ? "&" : "?"}role=${role}`;
+    }
+
+    const response = await axs.get<any>(`/users/${queryParams}`);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const getUsersPage = async (pageUrl: string | null = null) => {
+  try {
+    if (pageUrl !== null) {
+      const response = await axs.get<ResponseData>(pageUrl);
+      return response;
+    } else {
+      throw new Error("Page not found");
+    }
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const getUserTypes = async () => {
+  try {
+    const response = await axs.get<string[]>(`/users/types/`);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const addUser = async (user: any) => {
+  try {
+    const response = await axs.post<ResponseData>("/users/", user);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const editUser = async (userData: any, userId: string | number) => {
+  try {
+    const response = await axs.patch<ResponseData>(`/users/${userId}/`, userData);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const deleteUser = async (userId: string | number) => {
+  try {
+    const response = await axs.delete<ResponseData>(`/users/${userId}/`);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const getUserDetails = async (userId: string | number) => {
+  try {
+    const response = await axs.get<ResponseData>(`/users/${userId}/get-details/`);
+    return response;
   } catch (error: any) {
     throw error;
   }

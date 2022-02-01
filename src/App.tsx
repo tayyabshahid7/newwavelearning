@@ -36,6 +36,7 @@ import AddKeywordQuestion from "pages/steps/AddKeywordQuestion";
 import EditKeywordQuestion from "pages/steps/EditKeywordQuestion";
 import AddModelAnswerQuestion from "pages/steps/AddModelAnswerQuestion";
 import EditModelAnswerQuestion from "pages/steps/EditModelAnswerQuestion";
+import UserDetailsPage from "pages/UserDetailsPage";
 
 function App() {
   return (
@@ -148,6 +149,7 @@ function App() {
         />
         <ProtectedRoute exact path="/feedback" component={FeedbackPage} />
         <ProtectedRoute exact path="/users" component={UsersPage} />
+        <ProtectedRoute exact path="/users/:userId/" component={UserDetailsPage} />
         <ProtectedRoute exact path="/learners/:cohortId/add" component={AddLearnerPage} />
         <Route component={NotFoundPage} />
       </Switch>
