@@ -37,12 +37,18 @@ import EditKeywordQuestion from "pages/steps/EditKeywordQuestion";
 import AddModelAnswerQuestion from "pages/steps/AddModelAnswerQuestion";
 import EditModelAnswerQuestion from "pages/steps/EditModelAnswerQuestion";
 import UserDetailsPage from "pages/UserDetailsPage";
+import UserLogin from "userPages/pages/auth/UserLogin";
+import UserResetPassword from "userPages/pages/auth/UserResetPassword";
+import UserSetPassword from "./userPages/pages/auth/UserSetPassword";
 
 function App() {
   return (
     <Router>
       <Switch>
         <Route exact path={LOGIN_PAGE} component={LoginPage} />
+        <Route exact path={"/user-login"} component={UserLogin} />
+        <Route exact path={"/user-reset-password"} component={UserResetPassword} />
+        <Route path="/user-set-password/:signature/:token" component={UserSetPassword} />
         <Route exact path="/forgotten-password" component={ForgottenPassword} />
         <Route path="/reset-password/:signature/:token" component={PasswordReset} />
         <ProtectedRoute exact path="/dashboard" component={DashBoardPage} />
