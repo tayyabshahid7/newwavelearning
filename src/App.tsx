@@ -40,12 +40,16 @@ import UserDetailsPage from "pages/UserDetailsPage";
 import UserLogin from "userPages/pages/auth/UserLogin";
 import UserResetPassword from "userPages/pages/auth/UserResetPassword";
 import UserSetPassword from "./userPages/pages/auth/UserSetPassword";
+import Programmes from "./userPages/pages/programmes";
+import UserDashboard from "./userPages/pages/dashboard";
 
 function App() {
   return (
     <Router>
       <Switch>
         <Route exact path={LOGIN_PAGE} component={LoginPage} />
+        <Route exact path={"/programmes"} component={Programmes} />
+        <Route exact path={"/user-dashboard"} component={UserDashboard} />
         <Route exact path={"/user-login"} component={UserLogin} />
         <Route exact path={"/user-reset-password"} component={UserResetPassword} />
         <Route path="/user-set-password/:signature/:token" component={UserSetPassword} />

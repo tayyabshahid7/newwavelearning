@@ -1,0 +1,53 @@
+.dashboard{
+  font-family: 'Montserrat', sans-serif;
+  p, h1, h2, h3, h4, h5, h6{
+    font-family: 'Montserrat', sans-serif;
+  }
+  .dashboard-card{
+    cursor: pointer;
+    padding: 73px 0 0 0;
+    margin: 10px;
+    max-width: 45% !important;
+    border: 1px solid rgba(0, 59, 80, 0.15);
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);
+    border-radius: 4px;
+    height: 180px;
+  }
+  .dashboard-title{
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 27px;
+    text-transform: capitalize;
+    color: #003B50;
+    margin: 0;
+    padding-left: 10px;
+  }
+  .dashboard-description{
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 22px;
+    text-transform: capitalize;
+    color: #003B50;
+    margin: 3px 0 8px 0;
+    padding-left: 10px;
+    padding-right: 26px;
+  }
+  .slider{
+    position: relative;
+    width: 100%;
+    height: 4px;
+    background: #E8E6E6;
+    border-radius: 2px;
+    padding: 0 13px;
+  }
+  .slider-bar{
+    background: #FD773B;
+    width: 29%;
+    height: 10px;
+    border-radius: 5px;
+    position: absolute;
+    top: -3px;
+    left: 0;
+  }
+}

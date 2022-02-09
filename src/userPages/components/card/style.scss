@@ -1,0 +1,29 @@
+.custom-card{
+  &.card{
+    cursor: pointer;
+    margin: 0px 13px 15px 13px;
+    border: 1px solid rgba(0, 59, 80, 0.15);
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 4px;
+  }
+  .title{
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 27px;
+    text-transform: capitalize;
+    color: #003B50;
+    margin: 0;
+    padding-left: 10px;
+  }
+  .description{
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 22px;
+    text-transform: capitalize;
+    color: #003B50;
+    margin: 3px 0 8px 0;
+    padding-left: 10px;
+    padding-right: 20px;
+  }
+}
