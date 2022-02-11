@@ -34,7 +34,7 @@ const UserDashboard = () => {
         backgroundColor: "#FFFFFF",
         maxWidth: "420px",
         margin: "auto",
-        height: "100vh",
+        minHeight: "100vh",
         width: "100%",
       }}
     >
@@ -77,7 +77,7 @@ const UserDashboard = () => {
           </div>
         </div>
 
-        <Grid container spacing={0}>
+        <Grid container spacing={0} sx={{ marginBottom: "20px" }}>
           {dashboardData.map((item: any, index: number) => {
             return (
               <Grid className="dashboard-card" xs={6}>

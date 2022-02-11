@@ -31,7 +31,7 @@ const Programmes = () => {
         backgroundColor: "#FFFFFF",
         maxWidth: "420px",
         margin: "auto",
-        height: "100vh",
+        minHeight: "100vh",
         width: "100%",
       }}
     >
@@ -68,12 +68,12 @@ const Programmes = () => {
           );
         })}
         <Grid className="all-programmes" sx={{ display: "flex", alignItems: "center" }}>
-          <Grid>
+          <div>
             <p className={"programmes-title"}>All Programmes</p>
             <p className={"programmes-description"}>
               Lorem Ipsum is simply dummy text of the printing and typesetting industry.{" "}
             </p>
-          </Grid>
+          </div>
           <img
             style={{ marginRight: "20px", objectFit: "cover", borderRadius: "4px" }}
             src={ArrowRightIcon}
