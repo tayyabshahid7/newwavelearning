@@ -26,7 +26,7 @@ const Intro = () => {
       try {
         const response = await getStepDetails(stepId);
         setStepData(response.fields);
-        debugger;
+        console.log(response.fields);
       } catch (error: any) {
         console.log(error);
       }
@@ -40,7 +40,9 @@ const Intro = () => {
       container
       className="intro"
       style={{
-        background: stepData.background_image ? `url(${stepData.background_image})` : "#FFFFFF",
+        background: stepData.background_image
+          ? `url(${stepData.background_image}) 0 0 / cover no-repeat`
+          : "#FFFFFF",
         maxWidth: "420px",
         margin: "auto",
         minHeight: "100vh",
