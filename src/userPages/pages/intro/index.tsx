@@ -3,6 +3,7 @@ import { Grid, Typography, Button } from "@mui/material";
 import logo from "../../static/images/logo.png";
 import { getStepDetails } from "../../../services/common";
 import "./style.scss";
+import Loading from "../../../components/Loading";
 
 const Intro = () => {
   const [loading, setLoading] = useState(false);
@@ -40,6 +41,7 @@ const Intro = () => {
         width: "100%",
       }}
     >
+      <Loading loading={loading} />
       <Grid item container direction="column">
         <Grid
           item
@@ -54,7 +56,7 @@ const Intro = () => {
         >
           <img
             style={{ borderRadius: "50%" }}
-            src={stepData ? stepData.image : logo}
+            src={stepData.image && stepData.image}
             width="235px"
             height="235px"
             alt="New Wave Learning Logo"
