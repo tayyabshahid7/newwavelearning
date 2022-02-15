@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Typography, Button } from "@mui/material";
-import logo from "../../static/images/logo.png";
 import { getStepDetails } from "../../../services/common";
 import "./style.scss";
 import Loading from "../../../components/Loading";
+import { useParams } from "react-router-dom";
+
+type IntroParams = {
+  stepId: string;
+};
 
 const Intro = () => {
+  const { stepId } = useParams<IntroParams>();
   const [loading, setLoading] = useState(false);
   const [stepData, setStepData] = useState<any>({
     content: "",
@@ -17,7 +22,6 @@ const Intro = () => {
     const fetchStepData = async () => {
       setLoading(true);
       try {
-        let stepId = 211;
         const response = await getStepDetails(stepId);
         debugger;
         setStepData(response.fields);
