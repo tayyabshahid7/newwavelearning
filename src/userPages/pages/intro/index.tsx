@@ -4,6 +4,7 @@ import { getStepDetails } from "../../../services/common";
 import "./style.scss";
 import Loading from "../../../components/Loading";
 import { useParams } from "react-router-dom";
+import image from "../../../static/login-image.png";
 
 type IntroParams = {
   stepId: string;
@@ -16,6 +17,7 @@ const Intro = () => {
     content: "",
     image: "",
     title: "",
+    background_image: "",
   });
 
   useEffect(() => {
@@ -24,6 +26,7 @@ const Intro = () => {
       try {
         const response = await getStepDetails(stepId);
         setStepData(response.fields);
+        debugger;
       } catch (error: any) {
         console.log(error);
       }
@@ -37,7 +40,7 @@ const Intro = () => {
       container
       className="intro"
       style={{
-        backgroundColor: "#FFFFFF",
+        background: stepData.background_image ? `url(${stepData.background_image})` : "#FFFFFF",
         maxWidth: "420px",
         margin: "auto",
         minHeight: "100vh",
