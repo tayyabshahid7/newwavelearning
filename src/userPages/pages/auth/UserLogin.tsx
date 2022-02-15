@@ -3,7 +3,7 @@ import { Link as RouterLink, RouteComponentProps } from "react-router-dom";
 import { Grid, Typography, TextField, Button, Link } from "@mui/material";
 import nwLogo from "../../static/images/logo.png";
 import { isLoggedIn, loginUser } from "../../../services/auth";
-import { isValidEmail, isValidPassword } from "../../../common/utils";
+import { isValidEmail } from "../../../common/utils";
 import "./auth.scss";
 
 interface LoginPageProps {
@@ -27,7 +27,7 @@ const UserLogin = ({ history }: LoginPageProps) => {
       return;
     }
 
-    if (password.length <= 0 || !isValidPassword(password)) {
+    if (password.length <= 0) {
       setPasswordError(true);
       return;
     }
@@ -76,7 +76,7 @@ const UserLogin = ({ history }: LoginPageProps) => {
         backgroundColor: "#FFFFFF",
         maxWidth: "420px",
         margin: "auto",
-        height: "100vh",
+        minHeight: "100vh",
         width: "100%",
       }}
     >

@@ -49,7 +49,7 @@ const UserResetPassword = () => {
         backgroundColor: "#FFFFFF",
         maxWidth: "420px",
         margin: "auto",
-        height: "100vh",
+        minHeight: "100vh",
         width: "100%",
       }}
     >
