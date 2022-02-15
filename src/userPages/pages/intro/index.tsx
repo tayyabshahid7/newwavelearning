@@ -23,7 +23,6 @@ const Intro = () => {
       setLoading(true);
       try {
         const response = await getStepDetails(stepId);
-        debugger;
         setStepData(response.fields);
       } catch (error: any) {
         console.log(error);
