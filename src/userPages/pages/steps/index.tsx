@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Typography, Button } from "@mui/material";
-import { getStepDetails } from "../../../services/common";
+import { getSectionSteps, getStepDetails } from "../../../services/common";
 import "./style.scss";
 import Loading from "../../../components/Loading";
 import { useParams } from "react-router-dom";
@@ -10,19 +10,23 @@ import TextQuestion from "./TextQuestion";
 import PictureQuestion from "./PictureQuestion";
 import AudioQuestion from "./AudioQuestion";
 import VideoQuestion from "./VideoQuestion";
+import { StepData } from "../../../common/types";
+import { useHistory } from "react-router";
 
 type IntroParams = {
   stepId: string;
+  sectionId: any;
 };
 
 const Steps = () => {
-  const { stepId } = useParams<IntroParams>();
+  const history = useHistory();
+  const { stepId, sectionId } = useParams<IntroParams>();
   const [loading, setLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [selectedCount, setSelectedCount] = useState(0);
   const [totalAnswerCount, setTotalAnswerCount] = useState(0);
-  const [answerList, setAnswerList] = useState([]);
   const [stepType, setStepType] = useState("");
+  const [nextStepId, setNextStep] = useState("");
   const [stepData, setStepData] = useState<any>({
     content: "",
     image: "",
@@ -33,6 +37,23 @@ const Steps = () => {
     audio: "",
     video: "",
   });
+  const [steps, setSteps] = useState<StepData[]>([]);
+
+  useEffect(() => {
+    setLoading(true);
+    const fetchData = async () => {
+      try {
+        if (sectionId) {
+          const response = await getSectionSteps(sectionId);
+          setSteps(response.data);
+          setLoading(false);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, [sectionId]);
 
   useEffect(() => {
     const fetchStepData = async () => {
@@ -41,7 +62,6 @@ const Steps = () => {
         const response: any = await getStepDetails(stepId);
         setStepData(response.fields);
         setTotalAnswerCount(response.fields?.correct_answers);
-        setAnswerList(response.fields?.answers);
         setStepType(response?.step_type);
       } catch (error: any) {
         console.log(error);
@@ -49,7 +69,16 @@ const Steps = () => {
       setLoading(false);
     };
     fetchStepData();
-  }, []);
+  }, [stepId]);
+
+  const getNextStepId = () => {
+    let index = steps.findIndex((item: any) => Number(stepId) === item.id);
+    if (index > -1) {
+      if (steps[index + 1]) {
+        return steps[index + 1].id;
+      }
+    }
+  };
 
   return (
     <Grid
@@ -163,18 +192,37 @@ const Steps = () => {
       </Grid>
 
       <Grid item px="18px" width="100%">
-        <Button
-          sx={{ padding: "13.39px", fontSize: "16px", borderRadius: "16px", fontWeight: 500 }}
-          variant="contained"
-          fullWidth
-          size="large"
-          onClick={() => {
-            setIsSubmitted(true);
-          }}
-          disabled={loading || selectedCount < totalAnswerCount}
-        >
-          Next
-        </Button>
+        {!loading && !isSubmitted && stepType !== "audio" && stepType !== "video" ? (
+          <Button
+            sx={{ padding: "13.39px", fontSize: "16px", borderRadius: "16px", fontWeight: 500 }}
+            variant="contained"
+            fullWidth
+            size="large"
+            onClick={() => {
+              setIsSubmitted(true);
+            }}
+            disabled={loading || selectedCount < totalAnswerCount}
+          >
+            {stepType === "multiple_choice_question" || stepType === "picture_choice_question"
+              ? "Submit"
+              : "Next"}
+          </Button>
+        ) : !loading ? (
+          <Button
+            sx={{ padding: "13.39px", fontSize: "16px", borderRadius: "16px", fontWeight: 500 }}
+            variant="contained"
+            fullWidth
+            size="large"
+            onClick={() => {
+              const nextStepId = getNextStepId();
+              setIsSubmitted(false);
+              if (nextStepId) history.push(`/user-steps/${sectionId}/${nextStepId}`);
+            }}
+            disabled={loading || selectedCount < totalAnswerCount}
+          >
+            Next
+          </Button>
+        ) : null}
       </Grid>
     </Grid>
   );

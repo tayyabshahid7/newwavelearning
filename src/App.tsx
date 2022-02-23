@@ -58,7 +58,7 @@ function App() {
         <Route exact path="/forgotten-password" component={ForgottenPassword} />
         <Route path="/reset-password/:signature/:token" component={PasswordReset} />
         <ProtectedRoute exact path={"/user-intro/:stepId"} component={Intro} />
-        <ProtectedRoute exact path={"/user-steps/:stepId"} component={Steps} />
+        <ProtectedRoute exact path={"/user-steps/:sectionId/:stepId"} component={Steps} />
         <ProtectedRoute exact path="/dashboard" component={DashBoardPage} />
         <ProtectedRoute exact path="/cohorts" component={CohortsPage} />
         <ProtectedRoute exact path="/cohorts/add" component={AddCohortPage} />

@@ -4,7 +4,7 @@ import { Grid } from "@mui/material";
 const VideoQuestion = ({ video }: any) => {
   return (
     <>
-      <Grid sx={{ display: "flex", justifyContent: "center" }}>
+      <Grid sx={{ display: "flex", justifyContent: "center", paddingTop: "15%" }}>
         <video style={{ width: "90%", height: "100%" }} controls>
           <source src={video} type="video/mp4" />
           Your browser does not support HTML video.
