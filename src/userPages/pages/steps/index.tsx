@@ -83,7 +83,7 @@ const Steps = () => {
   return (
     <Grid
       container
-      className="steps"
+      className="steps "
       style={{
         background: stepData.background_image
           ? `url(${stepData.background_image}) 0 0 / cover no-repeat`
