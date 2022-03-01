@@ -26,9 +26,10 @@
     padding-left: 10px;
   }
   .dashboard-card{
+    justify-content: center;
     cursor: pointer;
-    margin: 10px;
-    max-width: 45% !important;
+    margin: 7px 7px 30px 7px;
+    max-width: 46% !important;
     box-sizing: border-box;
     border-radius: 8px;
     height: 180px;
@@ -44,7 +45,7 @@
     margin-top: 10px;
     margin-bottom: 0;
     font-weight: 600;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 27px;
     text-transform: capitalize;
     color: #003B50;

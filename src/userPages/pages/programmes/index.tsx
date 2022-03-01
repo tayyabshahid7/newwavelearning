@@ -30,7 +30,7 @@ const Programmes = () => {
       container
       style={{
         backgroundColor: "#F1F5FF",
-        maxWidth: "420px",
+        maxWidth: "450px",
         margin: "auto",
         minHeight: "100vh",
         width: "100%",
