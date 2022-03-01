@@ -23,26 +23,23 @@ const ProgrammeSection = () => {
     const fetchData = async () => {
       try {
         const response = await getProgrammeSections(Number(programmeId));
-        setSections(response.data);
+        const programmeDetails: any = await getProgrammeDetails(programmeId);
+        setProgramme(programmeDetails.data);
+        let arr: any = [];
+        programmeDetails.data.section_order.filter(function (order: any) {
+          return response.data.forEach(function (list: any) {
+            if (order === list.id) {
+              arr.push(list);
+            }
+          });
+        });
+        setSections(arr);
       } catch (error) {
         enqueueSnackbar("Could not fetch sections", { variant: "error" });
       }
     };
     fetchData();
   }, [programmeId, enqueueSnackbar]);
-
-  useEffect(() => {
-    const fetchProgrammeData = async () => {
-      try {
-        const programmeDetails = await getProgrammeDetails(programmeId);
-        setProgramme(programmeDetails.data);
-        debugger;
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchProgrammeData();
-  }, [programmeId]);
 
   return (
     <Grid
