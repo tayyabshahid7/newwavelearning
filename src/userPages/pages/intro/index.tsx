@@ -4,7 +4,6 @@ import { getStepDetails } from "../../../services/common";
 import "./style.scss";
 import Loading from "../../../components/Loading";
 import { useParams } from "react-router-dom";
-import image from "../../../static/login-image.png";
 
 type IntroParams = {
   stepId: string;
@@ -33,7 +32,7 @@ const Intro = () => {
       setLoading(false);
     };
     fetchStepData();
-  }, []);
+  }, [stepId]);
 
   return (
     <Grid

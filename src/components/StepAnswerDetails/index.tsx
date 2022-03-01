@@ -12,6 +12,7 @@ interface StepAnswerBodyProps {
 
 const StepAnswerDetails = ({ stepAnswer, stepType }: StepAnswerBodyProps) => {
   let stepBody = null;
+  debugger;
   switch (stepType) {
     case "multiple_choice_question":
       stepBody = <MultipleChoiceDetails stepAnswer={stepAnswer} />;

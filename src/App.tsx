@@ -44,6 +44,7 @@ import Programmes from "./userPages/pages/programmes";
 import UserDashboard from "./userPages/pages/dashboard";
 import Intro from "./userPages/pages/intro";
 import Steps from "./userPages/pages/steps";
+import ProgrammeSection from "./userPages/pages/programmes/programmes-sections";
 
 function App() {
   return (
@@ -51,7 +52,8 @@ function App() {
       <Switch>
         <Route exact path={LOGIN_PAGE} component={LoginPage} />
         <Route exact path={"/user-programmes"} component={Programmes} />
-        <Route exact path={"/user-dashboard"} component={UserDashboard} />
+        <Route exact path={"/user-programmes-section/:programmeId"} component={ProgrammeSection} />
+        <Route exact path={"/user-dashboard/:programmeId"} component={UserDashboard} />
         <Route exact path={"/user-login"} component={UserLogin} />
         <Route exact path={"/user-reset-password"} component={UserResetPassword} />
         <Route path="/user-set-password/:signature/:token" component={UserSetPassword} />

@@ -1,35 +1,51 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Typography, Button } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import selectedIcon from "../../../static/images/selected.png";
 import removeIcon from "../../../static/images/remove.png";
 
-const TextQuestion = ({ getTotalSelected, totalAnswerCount, isSubmitted, answers }: any) => {
+const TextQuestion = ({
+  selectedAnswerList,
+  getTotalSelected,
+  totalAnswerCount,
+  isSubmitted,
+  answers,
+}: any) => {
   const [selectedCount, setSelectedCount] = useState(0);
+  const [selectedIds, setSelectedIds] = useState([]);
   const [answerList, setAnswerList] = useState([]);
 
   useEffect(() => {
     if (answers.length > 0) {
       setAnswerList(answers);
     }
-  }, []);
+  }, [answers]);
 
   const selectHandler = (item: any, index: number) => {
+    const ids: any = [...selectedIds];
     if (!isSubmitted) {
       const data: any = [...answerList];
       if (selectedCount < totalAnswerCount && !data[index].isSelected) {
         data[index].isSelected = true;
         setAnswerList(data);
         setSelectedCount(selectedCount + 1);
+        ids.push(item.id);
         getTotalSelected(selectedCount + 1);
       } else {
+        debugger;
         if (data[index].isSelected) {
+          let indx = ids.findIndex((value: any) => item.id === value);
+          if (indx > -1) {
+            ids.splice(indx, 1);
+          }
           setSelectedCount(selectedCount - 1);
-          getTotalSelected(selectedCount - 1);
           data[index].isSelected = !data[index].isSelected;
           setAnswerList(data);
+          getTotalSelected(selectedCount - 1);
         }
       }
     }
+    setSelectedIds(ids);
+    selectedAnswerList(ids);
   };
 
   return (

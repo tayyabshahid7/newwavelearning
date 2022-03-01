@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Typography, Button } from "@mui/material";
-import { getSectionSteps, getStepDetails } from "../../../services/common";
+import { getSectionSteps, getStepDetails, submitStepAnswer } from "../../../services/common";
 import "./style.scss";
 import Loading from "../../../components/Loading";
 import { useParams } from "react-router-dom";
@@ -26,7 +26,7 @@ const Steps = () => {
   const [selectedCount, setSelectedCount] = useState(0);
   const [totalAnswerCount, setTotalAnswerCount] = useState(0);
   const [stepType, setStepType] = useState("");
-  const [nextStepId, setNextStep] = useState("");
+  const [selectedAnswerIds, setSelectedAnswerIds] = useState<any>([]);
   const [stepData, setStepData] = useState<any>({
     content: "",
     image: "",
@@ -78,6 +78,16 @@ const Steps = () => {
         return steps[index + 1].id;
       }
     }
+  };
+
+  const submitAnswer = async () => {
+    let user = JSON.parse(localStorage.getItem("user") || "");
+    let data = {
+      learner: user?.learner,
+      step: stepId,
+      answer: selectedAnswerIds,
+    };
+    await submitStepAnswer(data);
   };
 
   return (
@@ -169,6 +179,7 @@ const Steps = () => {
         <Grid sx={{ marginTop: "50px" }}>
           {stepType === "multiple_choice_question" ? (
             <TextQuestion
+              selectedAnswerList={(ids: any) => setSelectedAnswerIds(ids)}
               getTotalSelected={(count: number) => {
                 setSelectedCount(count);
               }}
@@ -178,6 +189,7 @@ const Steps = () => {
             />
           ) : stepType === "picture_choice_question" ? (
             <PictureQuestion
+              selectedAnswerList={(ids: any) => setSelectedAnswerIds(ids)}
               getTotalSelected={(count: number) => {
                 setSelectedCount(count);
               }}
@@ -200,6 +212,7 @@ const Steps = () => {
             size="large"
             onClick={() => {
               setIsSubmitted(true);
+              submitAnswer();
             }}
             disabled={loading || selectedCount < totalAnswerCount}
           >

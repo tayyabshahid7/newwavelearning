@@ -1,34 +1,35 @@
-import React from "react";
-import { Grid, Typography } from "@mui/material";
-// import { Link as RouterLink, RouteComponentProps, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Button, Grid, Typography } from "@mui/material";
 import burgerIcon from "../../static/images/burger-icon.svg";
-import Card from "../../components/card";
-import robotIcon from "../../static/images/robo.svg";
-import InspireIcon from "../../static/images/inspire.svg";
-import ArrowRightIcon from "../../static/images/arrow-right-icon.svg";
-import { ICard } from "../../interfaces/card";
+import ArrowRightIcon from "../../static/images/right-arrow.png";
+import ArrowWhiteIcon from "../../static/images/arrow-white.png";
 import "./style.scss";
-
-const programmesData: Array<ICard> = [
-  {
-    title: "BuildMe",
-    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    image: robotIcon,
-  },
-  {
-    title: "InspireMe",
-    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    image: InspireIcon,
-  },
-];
+import { getProgrammes } from "../../../services/common";
+import { useHistory } from "react-router";
 
 const Programmes = () => {
+  const [programmeList, setProgrammeList] = useState<any>(null);
+  const history = useHistory();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let response = await getProgrammes();
+        setProgrammeList(response.data.results);
+        debugger;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <Grid
       className="programmes"
       container
       style={{
-        backgroundColor: "#FFFFFF",
+        backgroundColor: "#F1F5FF",
         maxWidth: "420px",
         margin: "auto",
         minHeight: "100vh",
@@ -57,31 +58,61 @@ const Programmes = () => {
             alt="New Wave Learning Logo"
           />
         </Grid>
-        {programmesData.map((item: ICard, index: number) => {
-          return (
-            <Card
-              key={index}
-              title={item.title}
-              description={item.description}
-              image={item.image}
-            />
-          );
-        })}
-        <Grid className="all-programmes" sx={{ display: "flex", alignItems: "center" }}>
-          <div>
-            <p className={"programmes-title"}>All Programmes</p>
-            <p className={"programmes-description"}>
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry.{" "}
-            </p>
-          </div>
-          <img
-            style={{ marginRight: "20px", objectFit: "cover", borderRadius: "4px" }}
-            src={ArrowRightIcon}
-            width="22px"
-            height="22px"
-            alt="arrow icon"
-          />
-        </Grid>
+        {programmeList &&
+          programmeList.map((item: any, index: number) => {
+            return (
+              <Grid
+                onClick={() => {
+                  history.push(`/user-dashboard/${item.id}`);
+                }}
+                key={index}
+                className="all-programmes"
+              >
+                <Grid sx={{ display: "flex", alignItems: "center", padding: "0 13px" }}>
+                  <img width="68px" src={item.image} alt="programme img" />
+                  <p className={"programmes-title"}>{item.name}</p>
+                </Grid>
+                <img
+                  style={{ marginRight: "20px", objectFit: "cover", borderRadius: "4px" }}
+                  src={ArrowRightIcon}
+                  width="24px"
+                  height="40px"
+                  alt="arrow icon"
+                />
+              </Grid>
+            );
+          })}
+      </Grid>
+      <Grid mt="100%" item sx={{ width: "100%", padding: "0 15px" }}>
+        <Button
+          onClick={() => {
+            window.open("https://www.newwavelearning.com/programmes", "_blank");
+          }}
+          variant="contained"
+          sx={{
+            padding: "25px 27px !important",
+            fontSize: "24px",
+            fontWeight: 800,
+            backgroundColor: "#0E4A66",
+            boxShadow: "0px 4px 15px rgba(14, 74, 102, 0.57)",
+            borderRadius: "8px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+          fullWidth
+          size="large"
+        >
+          <Typography
+            sx={{ fontWeight: "700", margin: "0" }}
+            variant="h5"
+            gutterBottom
+            component="p"
+          >
+            All Programmes
+          </Typography>
+          <img src={ArrowWhiteIcon} alt={"arrow"} />
+        </Button>
       </Grid>
     </Grid>
   );

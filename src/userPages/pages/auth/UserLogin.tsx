@@ -73,7 +73,7 @@ const UserLogin = ({ history }: LoginPageProps) => {
       className="user-login"
       container
       style={{
-        backgroundColor: "#FFFFFF",
+        backgroundColor: "#F1F5FF",
         maxWidth: "420px",
         margin: "auto",
         minHeight: "100vh",
@@ -95,22 +95,23 @@ const UserLogin = ({ history }: LoginPageProps) => {
           <img src={nwLogo} width="208px" height="121px" alt="New Wave Learning Logo" />
           <Typography
             sx={{ margin: "15% 0 8% 0", fontWeight: "500" }}
-            variant="h6"
+            variant="h5"
             gutterBottom
             component="p"
           >
-            lOG-IN
+            Login
           </Typography>
         </Grid>
         <Grid item sx={{ padding: "5% 6% 10% 6%" }} container direction="column" spacing={2}>
           <Grid item>
-            <Typography variant="body1" gutterBottom>
+            <Typography variant="body1" sx={{ fontWeight: 500 }} gutterBottom>
               Email Address
             </Typography>
             <TextField
               inputProps={{
                 style: {
                   padding: "11.5px",
+                  border: "1px solid #0E4A66",
                 },
               }}
               id="email"
@@ -128,13 +129,14 @@ const UserLogin = ({ history }: LoginPageProps) => {
             />
           </Grid>
           <Grid item sx={{ paddingTop: "10px !important" }}>
-            <Typography variant="body1" gutterBottom>
+            <Typography variant="body1" sx={{ fontWeight: 500 }} gutterBottom>
               Password
             </Typography>
             <TextField
               inputProps={{
                 style: {
                   padding: "11.5px",
+                  border: "1px solid #0E4A66",
                 },
               }}
               id="password"
@@ -160,10 +162,11 @@ const UserLogin = ({ history }: LoginPageProps) => {
                 </Typography>
               </Grid>
             )}
-            <Grid mt="10px" item sx={{ textAlign: "center" }}>
+            <Grid item sx={{ paddingTop: "5px !important" }}>
               <Link
                 sx={{
                   color: "black",
+                  fontWeight: 500,
                   "&:hover": {
                     textDecoration: "underline",
                   },
@@ -172,18 +175,25 @@ const UserLogin = ({ history }: LoginPageProps) => {
                 to="/user-reset-password"
                 underline="none"
               >
-                Forgot password?
+                Forgotten password?
               </Link>
             </Grid>
-            <Grid mt="50%" item>
+            <Grid mt="64%" item>
               <Button
                 variant="contained"
-                sx={{ padding: "13.39px", fontSize: "20px", fontWeight: 500 }}
+                sx={{
+                  padding: "16px 13.39px",
+                  fontSize: "24px",
+                  fontWeight: 800,
+                  backgroundColor: "#0E4A66",
+                  boxShadow: "0px 4px 15px rgba(14, 74, 102, 0.57)",
+                  borderRadius: "8px",
+                }}
                 fullWidth
                 size="large"
                 onClick={handleLogin}
               >
-                LOG-IN
+                Login
               </Button>
             </Grid>
           </Grid>

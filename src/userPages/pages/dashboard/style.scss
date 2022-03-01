@@ -3,25 +3,51 @@
   p, h1, h2, h3, h4, h5, h6{
     font-family: 'Montserrat', sans-serif;
   }
+  .all-programmes{
+    cursor: pointer;
+    margin: 10px 13px 60px 13px;
+    box-sizing: border-box;
+    padding: 30px 0;
+    border-radius: 10px;
+    box-shadow: #0E4A66 3px 7.5px 26px, #0e4a66 4px 7px 0px;
+    border: 2px solid #0E4A66;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #FFFFFF;
+  }
+  .programmes-title{
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 27px;
+    text-transform: capitalize;
+    color: #003B50;
+    margin: 0 8px;
+    padding-left: 10px;
+  }
   .dashboard-card{
     cursor: pointer;
-    padding: 73px 0 0 0;
     margin: 10px;
     max-width: 45% !important;
-    border: 1px solid rgba(0, 59, 80, 0.15);
     box-sizing: border-box;
-    box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);
-    border-radius: 4px;
+    border-radius: 8px;
     height: 180px;
+    box-shadow: #0e4a66 0px 6.5px 8px, #0e4a66 2px 3px 0px;
+    border: 2px solid #0E4A66;
+    background: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 21px 9px;
   }
   .dashboard-title{
+    margin-top: 10px;
+    margin-bottom: 0;
     font-weight: 600;
     font-size: 18px;
     line-height: 27px;
     text-transform: capitalize;
     color: #003B50;
-    margin: 0;
-    padding-left: 10px;
   }
   .dashboard-description{
     font-weight: 500;
@@ -29,25 +55,8 @@
     line-height: 22px;
     text-transform: capitalize;
     color: #003B50;
-    margin: 3px 0 8px 0;
-    padding-left: 10px;
-    padding-right: 26px;
-  }
-  .slider{
-    position: relative;
-    width: 100%;
-    height: 4px;
-    background: #E8E6E6;
-    border-radius: 2px;
-    padding: 0 13px;
-  }
-  .slider-bar{
-    background: #FD773B;
-    width: 29%;
-    height: 10px;
-    border-radius: 5px;
-    position: absolute;
-    top: -3px;
-    left: 0;
+    text-align: center;
+    margin-top: 4px;
+    margin-bottom: 0;
   }
 }

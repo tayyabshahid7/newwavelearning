@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { Grid, Typography, TextField, Button, Link } from "@mui/material";
+import { Grid, Typography, TextField, Button } from "@mui/material";
 import nwLogo from "../../static/images/logo.png";
 import { isValidEmail } from "../../../common/utils";
 import { sendResetPasswordEmail } from "../../../services/auth";
-import { Link as RouterLink } from "react-router-dom";
 import "./auth.scss";
+import { useHistory } from "react-router";
 
 const UserResetPassword = () => {
+  const history = useHistory();
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
@@ -46,7 +47,7 @@ const UserResetPassword = () => {
       container
       className="user-login"
       style={{
-        backgroundColor: "#FFFFFF",
+        backgroundColor: "#F1F5FF",
         maxWidth: "420px",
         margin: "auto",
         minHeight: "100vh",
@@ -69,35 +70,63 @@ const UserResetPassword = () => {
 
           {!emailSent && (
             <Typography
-              sx={{ margin: "15% 0 8% 0", fontWeight: "500" }}
+              sx={{ margin: "15% 0 8% 0", fontSize: "22px", fontWeight: "500" }}
               variant="h6"
               gutterBottom
               component="p"
             >
-              RESET YOUR PASSWORD
+              Reset Your Password
             </Typography>
           )}
         </Grid>
 
         {emailSent ? (
-          <Grid item sx={{ padding: "5% 10%", textAlign: "center" }}>
-            <Typography variant="h6">You will shortly receive a password reset email. </Typography>
-            <br />
-            <Link component={RouterLink} to={"/user-login"} underline="none">
-              Back to Login Page
-            </Link>
+          <Grid>
+            <Grid item sx={{ padding: "5% 10%", textAlign: "center" }}>
+              <Typography variant="h6" sx={{ fontSize: "20px", color: "#0E4A66" }}>
+                You will shortly receive a password reset email.{" "}
+              </Typography>
+              <br />
+            </Grid>
+            <Grid mt="100%" item container direction="column">
+              <Grid sx={{ padding: "0 6%" }} item>
+                <Button
+                  sx={{
+                    padding: "16px 13.39px",
+                    fontSize: "24px",
+                    fontWeight: 800,
+                    backgroundColor: "#0E4A66",
+                    boxShadow: "0px 4px 15px rgba(14, 74, 102, 0.57)",
+                    borderRadius: "8px",
+                  }}
+                  variant="contained"
+                  fullWidth
+                  size="large"
+                  onClick={() => history.push("user-login")}
+                  disabled={loading}
+                >
+                  Login
+                </Button>
+              </Grid>
+            </Grid>
           </Grid>
         ) : (
           <form onSubmit={handleSendEmail}>
-            <Grid item sx={{ padding: "5.5%" }} container direction="column" spacing={4}>
+            <Grid item sx={{ padding: "5.5%" }} container direction="column">
               <Grid item>
-                <Typography variant="body1" gutterBottom>
+                <Typography
+                  variant="body1"
+                  sx={{ fontSize: "16px", fontWeight: 500, color: "#0E4A66" }}
+                  gutterBottom
+                >
                   Enter your Email Address
                 </Typography>
                 <TextField
                   inputProps={{
                     style: {
                       padding: "11.5px",
+                      border: "1px solid #0E4A66",
+                      borderRadius: "4px",
                     },
                   }}
                   id="email"
@@ -114,7 +143,7 @@ const UserResetPassword = () => {
                   disabled={loading}
                 />
               </Grid>
-              <Grid item container spacing={1} direction="column">
+              <Grid item container direction="column">
                 {requestError && (
                   <Grid item>
                     <Typography variant="body2" color="error">
@@ -122,18 +151,25 @@ const UserResetPassword = () => {
                     </Typography>
                   </Grid>
                 )}
-                <Grid mt="75%" item>
-                  <Button
-                    sx={{ padding: "13.39px", fontSize: "20px", fontWeight: 500 }}
-                    variant="contained"
-                    fullWidth
-                    size="large"
-                    onClick={handleSendEmail}
-                    disabled={loading}
-                  >
-                    RESET PASSWORD
-                  </Button>
-                </Grid>
+              </Grid>
+              <Grid mt="100%" item>
+                <Button
+                  sx={{
+                    padding: "16px 13.39px",
+                    fontSize: "24px",
+                    fontWeight: 800,
+                    backgroundColor: "#0E4A66",
+                    boxShadow: "0px 4px 15px rgba(14, 74, 102, 0.57)",
+                    borderRadius: "8px",
+                  }}
+                  variant="contained"
+                  fullWidth
+                  size="large"
+                  onClick={handleSendEmail}
+                  disabled={loading}
+                >
+                  Reset Your Password
+                </Button>
               </Grid>
             </Grid>
           </form>

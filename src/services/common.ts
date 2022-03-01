@@ -426,3 +426,12 @@ export const getUserDetails = async (userId: string | number) => {
     throw error;
   }
 };
+
+export const submitStepAnswer = async (data: any) => {
+  try {
+    const response = await axs.post<ResponseData>(`/stepanswers/`, data);
+    return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+};

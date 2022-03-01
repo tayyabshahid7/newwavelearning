@@ -1,37 +1,66 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, Typography } from "@mui/material";
 import burgerIcon from "../../static/images/burger-icon.svg";
-import Card from "../../components/card";
-import robotIcon from "../../static/images/robo.svg";
-import clockImage from "../../static/images/clock.svg";
+import JourneyIcon from "../../static/images/journey-icon.png";
+import LeaderboardIcon from "../../static/images/leaderboard.png";
+import FeedbackIcon from "../../static/images/feedback.png";
+import LiveIcon from "../../static/images/live.png";
+import ArrowRightIcon from "../../static/images/right-arrow.png";
+import { useHistory, useParams } from "react-router";
+import { getProgrammeDetails } from "../../../services/common";
 import "./style.scss";
 
 const dashboardData = [
   {
-    title: "Learning journey",
-    description: "Start your learning here",
+    title: "Learning Journey",
+    description: "Start Your Learning Journey Here",
+    icon: JourneyIcon,
   },
   {
     title: "Leaderboard",
-    description: "Check out your results",
+    description: "Check Out Your Results",
+    icon: LeaderboardIcon,
   },
   {
     title: "Feedback",
-    description: "View all your feedback",
+    description: "View All Your Feedback",
+    icon: FeedbackIcon,
   },
   {
     title: "Live Sessions",
-    description: "View your live schedule",
+    description: "View Your Live",
+    icon: LiveIcon,
   },
 ];
 
+interface ProgrammePageParams {
+  programmeId: string;
+}
+
 const UserDashboard = () => {
+  const history = useHistory();
+  const { programmeId } = useParams<ProgrammePageParams>();
+  const [programme, setProgramme] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchProgrammeData = async () => {
+      try {
+        const programmeDetails = await getProgrammeDetails(programmeId);
+        setProgramme(programmeDetails.data);
+        debugger;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchProgrammeData();
+  }, [programmeId]);
+
   return (
     <Grid
       className="dashboard"
       container
       style={{
-        backgroundColor: "#FFFFFF",
+        backgroundColor: "#F1F5FF",
         maxWidth: "420px",
         margin: "auto",
         minHeight: "100vh",
@@ -60,36 +89,44 @@ const UserDashboard = () => {
             alt="New Wave Learning Logo"
           />
         </Grid>
-        <Card title={"BuildMe"} image={robotIcon} />
-        <Grid sx={{ display: "flex", alignItems: "center", margin: "0 13px" }}>
-          <img width={"17px"} height={"17px"} src={clockImage} alt={"clock"} />
-          <Typography
-            sx={{ fontWeight: "600", marginLeft: "10px", color: "#505254" }}
-            component="p"
-          >
-            3 Hours Remaining
-          </Typography>
-        </Grid>
 
-        <div style={{ margin: "14px 13px" }}>
-          <div className={"slider"}>
-            <div className={"slider-bar"}></div>
-          </div>
-        </div>
+        <Grid
+          onClick={() => {
+            history.push(`/user-programmes-section/${programmeId}`);
+          }}
+          className="all-programmes"
+        >
+          <Grid sx={{ display: "flex", alignItems: "center", padding: "0 13px" }}>
+            <img width="68px" src={programme?.image} alt="programme img" />
+            <p className={"programmes-title"}>{programme?.name}</p>
+          </Grid>
+          <img
+            style={{ marginRight: "20px", objectFit: "cover", borderRadius: "4px" }}
+            src={ArrowRightIcon}
+            width="24px"
+            height="40px"
+            alt="arrow icon"
+          />
+        </Grid>
 
         <Grid container spacing={0} sx={{ marginBottom: "20px" }}>
           {dashboardData.map((item: any, index: number) => {
             return (
-              <Grid className="dashboard-card" xs={6}>
+              <Grid
+                key={index}
+                onClick={() => {
+                  index === 0 && history.push(`/user-programmes-section/${programmeId}`);
+                }}
+                className="dashboard-card"
+                xs={6}
+              >
+                <img src={item.icon} width={"50px"} alt={"icon"} />
                 <p className={"dashboard-title"}>{item.title}</p>
                 <p className={"dashboard-description"}>{item.description}</p>
               </Grid>
             );
           })}
         </Grid>
-        {/*<Grid className="all-programmes" sx={{ display: "flex", flexDirection: "column" }}>*/}
-        {/* */}
-        {/*</Grid>*/}
       </Grid>
     </Grid>
   );
