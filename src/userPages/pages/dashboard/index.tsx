@@ -47,7 +47,6 @@ const UserDashboard = () => {
       try {
         const programmeDetails = await getProgrammeDetails(programmeId);
         setProgramme(programmeDetails.data);
-        debugger;
       } catch (error) {
         console.log(error);
       }

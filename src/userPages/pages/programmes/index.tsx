@@ -16,7 +16,6 @@ const Programmes = () => {
       try {
         let response = await getProgrammes();
         setProgrammeList(response.data.results);
-        debugger;
       } catch (error) {
         console.log(error);
       }

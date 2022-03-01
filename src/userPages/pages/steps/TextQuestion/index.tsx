@@ -31,7 +31,6 @@ const TextQuestion = ({
         ids.push(item.id);
         getTotalSelected(selectedCount + 1);
       } else {
-        debugger;
         if (data[index].isSelected) {
           let indx = ids.findIndex((value: any) => item.id === value);
           if (indx > -1) {

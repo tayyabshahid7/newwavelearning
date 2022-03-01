@@ -25,7 +25,6 @@ const UserResetPassword = () => {
     e.preventDefault();
     setRequestError(false);
     setLoading(true);
-    debugger;
     if (isValidEmail(email)) {
       try {
         const response = await sendResetPasswordEmail(email);
