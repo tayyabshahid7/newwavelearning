@@ -42,7 +42,6 @@ import UserResetPassword from "userPages/pages/auth/UserResetPassword";
 import UserSetPassword from "./userPages/pages/auth/UserSetPassword";
 import Programmes from "./userPages/pages/programmes";
 import UserDashboard from "./userPages/pages/dashboard";
-import Intro from "./userPages/pages/intro";
 import Steps from "./userPages/pages/steps";
 import ProgrammeSection from "./userPages/pages/programmes/programmes-sections";
 
@@ -60,7 +59,7 @@ function App() {
         <Route exact path="/forgotten-password" component={ForgottenPassword} />
         <Route path="/reset-password/:signature/:token" component={PasswordReset} />
         <ProtectedRoute exact path={"/user-steps/:sectionId/:stepId"} component={Steps} />
-        <ProtectedRoute exact path={"/user-intro/:stepId"} component={Intro} />
+        {/*<ProtectedRoute exact path={"/user-intro/:stepId"} component={Intro} />*/}
         <ProtectedRoute exact path="/dashboard" component={DashBoardPage} />
         <ProtectedRoute exact path="/cohorts" component={CohortsPage} />
         <ProtectedRoute exact path="/cohorts/add" component={AddCohortPage} />

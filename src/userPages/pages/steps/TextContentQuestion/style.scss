@@ -1,0 +1,21 @@
+.text-question{
+    font-family: 'Montserrat', sans-serif;
+    p, h1, h2, h3, h4, h5, h6{
+        font-family: 'Montserrat', sans-serif;
+    }
+    &.text-image{
+        display: flex;
+        justify-content: center;
+        min-width: 75%;
+        max-width: 75%;
+        width: 291.92px;
+        margin: auto;
+        margin-top: 5% !important;
+        margin-bottom: 0 !important;
+        background: #FBFBFB;
+        border: 1px solid #0E4A66;
+        box-sizing: border-box;
+        box-shadow: 0px 2px 10px 8px rgba(37, 39, 38, 0.047476);
+        border-radius: 16px;
+    }
+}

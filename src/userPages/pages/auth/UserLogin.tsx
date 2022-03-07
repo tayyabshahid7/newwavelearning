@@ -34,7 +34,7 @@ const UserLogin = ({ history }: LoginPageProps) => {
 
     try {
       await loginUser(email, password);
-      window.location.href = "/cohorts";
+      window.location.href = "user-programmes";
     } catch (error: any) {
       if (error.response?.status === 401) {
         setLoginError(error.response.data.detail);

@@ -12,6 +12,10 @@ import AudioQuestion from "./AudioQuestion";
 import VideoQuestion from "./VideoQuestion";
 import { StepData } from "../../../common/types";
 import { useHistory } from "react-router";
+import ToggleQuestion from "./ToggleQuestion";
+import TextContentQuestion from "./TextContentQuestion";
+import KeyboardQuestion from "./KeyboardQuestion";
+import ModelQuestion from "./ModelQuestion";
 
 type IntroParams = {
   stepId: string;
@@ -24,6 +28,7 @@ const Steps = () => {
   const [loading, setLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [selectedCount, setSelectedCount] = useState(0);
+  const [text, setText] = useState("");
   const [totalAnswerCount, setTotalAnswerCount] = useState(0);
   const [stepType, setStepType] = useState("");
   const [selectedAnswerIds, setSelectedAnswerIds] = useState<any>([]);
@@ -136,6 +141,7 @@ const Steps = () => {
       <Loading loading={loading} />
       <Grid item container direction="column" style={{ minHeight: "70vh" }}>
         {stepType === "video" && <VideoQuestion video={stepData.video} />}
+        {stepType === "text_content" && <TextContentQuestion image={stepData.image} />}
         <Grid
           item
           sx={{
@@ -150,10 +156,12 @@ const Steps = () => {
             sx={{
               textAlign: "center",
               margin: "0% 0 2% 0",
-              padding: "0 25px",
+              padding: stepType === "model_answer_question" ? "0 7% !important" : "0 25px",
               fontWeight: "600",
-              marginTop: "10%",
+              marginTop: "0%",
+              fontSize: "24px",
               marginBottom: "5%",
+              color: "#0E4A66",
             }}
             variant="h5"
             gutterBottom
@@ -164,24 +172,35 @@ const Steps = () => {
 
         {totalAnswerCount && (
           <Grid item sx={{ padding: "5% 10% 0 10%", textAlign: "center" }}>
-            <Typography component="h5" sx={{ fontSize: "16px", color: "#6A6E71" }}>
+            <Typography
+              component="h5"
+              sx={{ fontSize: "16px", color: "#0E4A66", fontWeight: "400" }}
+            >
               select {totalAnswerCount} correct answer
             </Typography>
           </Grid>
         )}
 
         <Grid item sx={{ padding: "0% 10%", textAlign: "center", marginTop: "20px" }}>
-          <Typography component="h5" sx={{ color: "#6A6E71", fontSize: "16px" }}>
-            {stepData.description}
+          <Typography
+            component="h5"
+            sx={{
+              color: "#0E4A66",
+              fontSize: "16px",
+              fontWeight: "400",
+            }}
+          >
+            {stepData.description || stepData.content}
           </Typography>
         </Grid>
 
-        <Grid sx={{ marginTop: "50px" }}>
+        <Grid item sx={{ marginTop: "20px" }}>
           {stepType === "multiple_choice_question" ? (
             <TextQuestion
               selectedAnswerList={(ids: any) => setSelectedAnswerIds(ids)}
               getTotalSelected={(count: number) => {
                 setSelectedCount(count);
+                setText(" ");
               }}
               totalAnswerCount={totalAnswerCount}
               isSubmitted={isSubmitted}
@@ -192,6 +211,7 @@ const Steps = () => {
               selectedAnswerList={(ids: any) => setSelectedAnswerIds(ids)}
               getTotalSelected={(count: number) => {
                 setSelectedCount(count);
+                setText(" ");
               }}
               totalAnswerCount={totalAnswerCount}
               isSubmitted={isSubmitted}
@@ -199,14 +219,48 @@ const Steps = () => {
             />
           ) : stepType === "audio" ? (
             <AudioQuestion audio={stepData.audio} />
+          ) : stepType === "toggle" ? (
+            <ToggleQuestion
+              min={stepData.min_value}
+              max={stepData.max_value}
+              step={stepData.step}
+            />
+          ) : stepType === "keyword_question" ? (
+            <KeyboardQuestion
+              answeredQuestion={(text: string) => {
+                setText(text);
+              }}
+              isSubmitted={isSubmitted}
+              keywords={stepData.keywords}
+            />
+          ) : stepType === "model_answer_question" ? (
+            <ModelQuestion
+              answeredQuestion={(text: string) => {
+                setText(text);
+              }}
+              isSubmitted={isSubmitted}
+              modelAnswer={stepData.model_answer}
+            />
           ) : null}
         </Grid>
       </Grid>
 
       <Grid item px="18px" width="100%">
-        {!loading && !isSubmitted && stepType !== "audio" && stepType !== "video" ? (
+        {!loading &&
+        !isSubmitted &&
+        stepType !== "audio" &&
+        stepType !== "video" &&
+        stepType !== "toggle" &&
+        stepType !== "text_content" ? (
           <Button
-            sx={{ padding: "13.39px", fontSize: "16px", borderRadius: "16px", fontWeight: 500 }}
+            sx={{
+              padding: "16px 13.39px",
+              fontSize: "24px",
+              fontWeight: 800,
+              backgroundColor: "#0E4A66",
+              boxShadow: "0px 4px 15px rgba(14, 74, 102, 0.57)",
+              borderRadius: "8px",
+            }}
             variant="contained"
             fullWidth
             size="large"
@@ -214,22 +268,31 @@ const Steps = () => {
               setIsSubmitted(true);
               submitAnswer();
             }}
-            disabled={loading || selectedCount < totalAnswerCount}
+            disabled={loading || selectedCount < totalAnswerCount || text.length === 0}
           >
-            {stepType === "multiple_choice_question" || stepType === "picture_choice_question"
-              ? "Submit"
-              : "Next"}
+            Submit
           </Button>
-        ) : !loading ? (
+        ) : !loading && stepType !== "model_answer_question" ? (
           <Button
-            sx={{ padding: "13.39px", fontSize: "16px", borderRadius: "16px", fontWeight: 500 }}
+            sx={{
+              padding: "16px 13.39px",
+              fontSize: "24px",
+              fontWeight: 800,
+              backgroundColor: "#0E4A66",
+              boxShadow: "0px 4px 15px rgba(14, 74, 102, 0.57)",
+              borderRadius: "8px",
+            }}
             variant="contained"
             fullWidth
             size="large"
             onClick={() => {
               const nextStepId = getNextStepId();
-              setIsSubmitted(false);
-              if (nextStepId) history.push(`/user-steps/${sectionId}/${nextStepId}`);
+              if (nextStepId) {
+                setIsSubmitted(false);
+                setSelectedCount(0);
+                setText("");
+                history.push(`/user-steps/${sectionId}/${nextStepId}`);
+              }
             }}
             disabled={loading || selectedCount < totalAnswerCount}
           >

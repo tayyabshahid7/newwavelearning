@@ -99,6 +99,32 @@ let theme = createTheme({
         },
       },
     },
+    MuiSlider: {
+      styleOverrides: {
+        thumb: {
+          "::after": {
+            background: "#FBFBFB",
+            border: "1px solid #E5E5E5",
+            boxSizing: " border-box",
+            boxShadow: "0px 2px 10px 8px rgba(37, 39, 38, 0.047476)",
+            borderRadius: "16px",
+            width: "47px",
+            height: "37px",
+          },
+        },
+        markLabel: {
+          padding: "10px 0",
+          '&[data-index="0"]': {
+            left: "3% !important",
+          },
+        },
+        mark: {
+          backgroundColor: "#bfbfbf",
+          height: 8,
+          width: 0,
+        },
+      },
+    },
   },
 });
 

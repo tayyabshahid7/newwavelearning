@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Grid, Typography } from "@mui/material";
 import burgerIcon from "../../../static/images/burger-icon.svg";
 import ArrowWhiteIcon from "../../../static/images/arrow-white.png";
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import { getProgrammeDetails, getProgrammeSections } from "../../../../services/common";
 import { SectionData } from "../../../../common/types";
 import { useSnackbar } from "notistack";
@@ -13,6 +13,7 @@ interface ProgrammePageParams {
 }
 
 const ProgrammeSection = () => {
+  const history = useHistory();
   const [programme, setProgramme] = useState<any>(null);
   const { programmeId } = useParams<ProgrammePageParams>();
   const { enqueueSnackbar } = useSnackbar();
@@ -40,6 +41,10 @@ const ProgrammeSection = () => {
     };
     fetchData();
   }, [programmeId, enqueueSnackbar]);
+
+  const sectionHandler = (item: any) => {
+    if (item.step_order) history.push(`/user-steps/${item.id}/${item.step_order[0]}`);
+  };
 
   return (
     <Grid
@@ -115,7 +120,13 @@ const ProgrammeSection = () => {
         {sections &&
           sections.map((item: any, index: number) => {
             return (
-              <Grid key={index} className="section">
+              <Grid
+                key={index}
+                className="section"
+                onClick={() => {
+                  sectionHandler(item);
+                }}
+              >
                 <p className={"section-title"}>{item.title}</p>
                 <p className={"section-step"}>0/{item.steps} Steps completed</p>
                 <Grid className="footer">

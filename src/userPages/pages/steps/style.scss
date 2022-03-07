@@ -1,18 +1,21 @@
 .steps{
     font-family: 'Montserrat', sans-serif;
-    p, h1, h2, h3, h4, h5, h6{
+    p, h1, h2, h3, h4, h5, h6, textarea{
         font-family: 'Montserrat', sans-serif;
     }
     .select-box{
         cursor: pointer;
-        background: #FBFBFB;
-        box-shadow: 0px 2px 8px 4px rgba(37, 39, 38, 0.047476);
-        border-radius: 16px;
         height: 83px;
         display: flex;
         align-items: center;
-        margin: 10px 15px;
+        margin: 25px 15px;
         padding: 0px 25px;
+        background: #FFFFFF;
+        border: 2px solid #0E4A66;
+        box-sizing: border-box;
+        box-shadow: 3px 4px 4px 1px #0E4A66;
+        border-radius: 8px;
+
         h5{
             font-size: 20px;
             font-weight: 700;
@@ -29,14 +32,15 @@
         position: relative;
         display: flex;
         justify-content: center;
-        background: #FBFBFB;
-        border: 1px solid #E5E5E5;
-        box-sizing: border-box;
-        box-shadow: 0px 2px 10px 8px rgba(37, 39, 38, 0.047476);
-        border-radius: 16px;
         cursor: pointer;
         margin: 10px 18px;
         padding: 21% 0;
+        background: #FFFFFF;
+        border: 2px solid #0E4A66;
+        box-sizing: border-box;
+        box-shadow: 3px 4px 4px 1px #0E4A66;
+        border-radius: 8px;
+
         .box-icon{
             position: absolute;
             right: -10px;
@@ -51,7 +55,7 @@
             font-weight: 700;
         }
         &.selected{
-            background: rgba(34, 185, 212, 0.3);
+            background: #22B9D4;
             border: 1px solid rgba(34, 185, 212, 0.39);
             h5{
                 color: #FFFFFF;
