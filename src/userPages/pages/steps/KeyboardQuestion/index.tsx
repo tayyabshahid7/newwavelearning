@@ -34,7 +34,11 @@ const KeyboardQuestion = ({ isSubmitted, answeredQuestion, keywords }: any) => {
           <p className="correct-answer">{value}</p>
           <img
             style={{ cursor: "pointer" }}
-            src={keywords.some((item: string) => item.includes(value)) ? selectedIcon : removeIcon}
+            src={
+              keywords && keywords.some((item: string) => item.includes(value))
+                ? selectedIcon
+                : removeIcon
+            }
             width="35px"
             height="35px"
             alt="Correct Incorrect Logo"
