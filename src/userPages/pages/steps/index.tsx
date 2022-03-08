@@ -24,6 +24,7 @@ type IntroParams = {
 
 const Steps = () => {
   const history = useHistory();
+  const user = JSON.parse(localStorage.getItem("user") || "");
   const { stepId, sectionId } = useParams<IntroParams>();
   const [loading, setLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -86,8 +87,7 @@ const Steps = () => {
     }
   };
 
-  const submitAnswer = async () => {
-    let user = JSON.parse(localStorage.getItem("user") || "");
+  const submitAnswer = async (isCorrect?: boolean) => {
     let obj: any = {};
     if (stepType === "picture_choice_question" || stepType === "multiple_choice_question") {
       obj = {
@@ -268,6 +268,9 @@ const Steps = () => {
             />
           ) : stepType === "model_answer_question" ? (
             <ModelQuestion
+              isCorrect={async (correct: boolean) => {
+                await submitAnswer(correct);
+              }}
               answeredQuestion={(text: string) => {
                 setText(text);
               }}
@@ -321,6 +324,7 @@ const Steps = () => {
             onClick={async () => {
               if (
                 stepType !== "picture_choice_question" &&
+                stepType !== "model_answer_question" &&
                 stepType !== "multiple_choice_question"
               ) {
                 await submitAnswer();

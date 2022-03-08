@@ -3,7 +3,7 @@ import { Button, Grid, Typography } from "@mui/material";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import "./style.scss";
 
-const ModelQuestion = ({ isSubmitted, answeredQuestion, modelAnswer }: any) => {
+const ModelQuestion = ({ isCorrect, isSubmitted, answeredQuestion, modelAnswer }: any) => {
   const [value, setValue] = useState<string>("");
 
   return (
@@ -64,7 +64,9 @@ const ModelQuestion = ({ isSubmitted, answeredQuestion, modelAnswer }: any) => {
               variant="contained"
               fullWidth
               size="large"
-              onClick={() => {}}
+              onClick={async () => {
+                isCorrect(true);
+              }}
             >
               Correct
             </Button>
@@ -84,7 +86,9 @@ const ModelQuestion = ({ isSubmitted, answeredQuestion, modelAnswer }: any) => {
               variant="contained"
               fullWidth
               size="large"
-              onClick={() => {}}
+              onClick={async a => {
+                isCorrect(false);
+              }}
             >
               Incorrect
             </Button>
