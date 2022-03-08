@@ -31,6 +31,7 @@ const Steps = () => {
   const [text, setText] = useState("");
   const [totalAnswerCount, setTotalAnswerCount] = useState(0);
   const [stepType, setStepType] = useState("");
+  const [selectedToggleValue, setSelectedToggleValue] = useState("");
   const [selectedAnswerIds, setSelectedAnswerIds] = useState<any>([]);
   const [stepData, setStepData] = useState<any>({
     content: "",
@@ -87,10 +88,39 @@ const Steps = () => {
 
   const submitAnswer = async () => {
     let user = JSON.parse(localStorage.getItem("user") || "");
+    let obj: any = {};
+    if (stepType === "picture_choice_question" || stepType === "multiple_choice_question") {
+      obj = {
+        answer: selectedAnswerIds,
+        completed: true,
+      };
+    } else if (stepType === "audio" || stepType === "video" || stepType === "text_content") {
+      obj = {
+        answer: null,
+        completed: true,
+      };
+    } else if (stepType === "keyword_question") {
+      obj = {
+        answer: null,
+        text: text,
+      };
+    } else if (stepType === "model_answer_question") {
+      obj = {
+        answer: null,
+        text: text,
+        correct: true,
+      };
+    } else if (stepType === "toggle") {
+      obj = {
+        answer: null,
+        value: selectedToggleValue,
+      };
+    }
+
     let data = {
       learner: user?.learner,
       step: stepId,
-      answer: selectedAnswerIds,
+      answer: obj,
     };
     await submitStepAnswer(data);
   };
@@ -221,6 +251,9 @@ const Steps = () => {
             <AudioQuestion audio={stepData.audio} />
           ) : stepType === "toggle" ? (
             <ToggleQuestion
+              selectedValue={(text: string) => {
+                setSelectedToggleValue(text);
+              }}
               min={stepData.min_value}
               max={stepData.max_value}
               step={stepData.step}
@@ -264,9 +297,9 @@ const Steps = () => {
             variant="contained"
             fullWidth
             size="large"
-            onClick={() => {
+            onClick={async () => {
               setIsSubmitted(true);
-              submitAnswer();
+              await submitAnswer();
             }}
             disabled={loading || selectedCount < totalAnswerCount || text.length === 0}
           >
@@ -285,7 +318,13 @@ const Steps = () => {
             variant="contained"
             fullWidth
             size="large"
-            onClick={() => {
+            onClick={async () => {
+              if (
+                stepType !== "picture_choice_question" &&
+                stepType !== "multiple_choice_question"
+              ) {
+                await submitAnswer();
+              }
               const nextStepId = getNextStepId();
               if (nextStepId) {
                 setIsSubmitted(false);

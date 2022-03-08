@@ -6,11 +6,16 @@ function valuetext(value: any) {
   return `${value}°C`;
 }
 
-const ToggleQuestion = ({ min, max, step }: any) => {
+const ToggleQuestion = ({ selectedValue, min, max, step }: any) => {
+  const handleChange = (event: any, newValue: any) => {
+    selectedValue(newValue);
+  };
+
   return (
     <Grid sx={{ maxWidth: "85%", margin: "auto" }}>
       <Grid sx={{ display: "flex", justifyContent: "center" }}>
         <Slider
+          onChange={handleChange}
           sx={{ color: "#0E4A66", height: "10px" }}
           aria-label="Temperature"
           getAriaValueText={valuetext}

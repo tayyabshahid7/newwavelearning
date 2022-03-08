@@ -44,6 +44,7 @@ import Programmes from "./userPages/pages/programmes";
 import UserDashboard from "./userPages/pages/dashboard";
 import Steps from "./userPages/pages/steps";
 import ProgrammeSection from "./userPages/pages/programmes/programmes-sections";
+import StepsList from "./userPages/pages/programmes/section-steps-list";
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
       <Switch>
         <Route exact path={LOGIN_PAGE} component={LoginPage} />
         <Route exact path={"/user-programmes"} component={Programmes} />
+        <Route exact path={"/user-section-steps/:sectionId"} component={StepsList} />
         <Route exact path={"/user-programmes-section/:programmeId"} component={ProgrammeSection} />
         <Route exact path={"/user-dashboard/:programmeId"} component={UserDashboard} />
         <Route exact path={"/user-login"} component={UserLogin} />

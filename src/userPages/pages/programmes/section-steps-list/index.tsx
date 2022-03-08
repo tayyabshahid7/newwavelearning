@@ -2,49 +2,52 @@ import React, { useEffect, useState } from "react";
 import { Grid, Typography } from "@mui/material";
 import burgerIcon from "../../../static/images/burger-icon.svg";
 import ArrowWhiteIcon from "../../../static/images/arrow-white.png";
+import completedIcon from "../../../static/images/completed.png";
 import { useHistory, useParams } from "react-router";
-import { getProgrammeDetails, getProgrammeSections } from "../../../../services/common";
-import { SectionData } from "../../../../common/types";
+import { getSection, getSectionSteps } from "../../../../services/common";
+import { StepData } from "../../../../common/types";
 import { useSnackbar } from "notistack";
 import "./style.scss";
 
 interface ProgrammePageParams {
-  programmeId: string;
+  sectionId: any;
 }
 
-const ProgrammeSection = () => {
+const StepsList = () => {
   const history = useHistory();
-  const [programme, setProgramme] = useState<any>(null);
-  const { programmeId } = useParams<ProgrammePageParams>();
+  const { sectionId } = useParams<ProgrammePageParams>();
+  const [steps, setSteps] = useState<StepData[]>([]);
   const { enqueueSnackbar } = useSnackbar();
-
-  const [sections, setSections] = useState<SectionData[]>([]);
+  const [section, setSection] = useState<any>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getProgrammeSections(Number(programmeId));
-        const programmeDetails: any = await getProgrammeDetails(programmeId);
-        setProgramme(programmeDetails.data);
-        let arr: any = [];
-        programmeDetails.data.section_order.filter(function (order: any) {
-          return response.data.forEach(function (list: any) {
-            if (order === list.id) {
-              arr.push(list);
-            }
-          });
-        });
-        setSections(arr);
-      } catch (error) {
-        enqueueSnackbar("Could not fetch sections", { variant: "error" });
+        const sectionData = await getSection(sectionId);
+        setSection(sectionData);
+      } catch (error: any) {
+        enqueueSnackbar(error.response?.data.detail, { variant: "error" });
       }
     };
     fetchData();
-  }, [programmeId, enqueueSnackbar]);
+  }, [sectionId, enqueueSnackbar]);
 
-  const sectionHandler = (item: any) => {
-    // if (item.step_order) history.push(`/user-steps/${item.id}/${item.step_order[0]}`);
-    history.push(`/user-section-steps/${item.id}/`);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (sectionId) {
+          const response = await getSectionSteps(sectionId);
+          setSteps(response.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, [sectionId]);
+
+  const stepHandler = (item: any) => {
+    history.push(`/user-steps/${sectionId}/${item.id}`);
   };
 
   return (
@@ -82,17 +85,18 @@ const ProgrammeSection = () => {
           />
         </Grid>
 
-        <Grid className="section">
+        <Grid className="step">
           <Grid
             sx={{
               display: "flex",
               alignItems: "center",
-              padding: "0 13px",
+              padding: "0 13px 0 0",
               marginBottom: "20px !important",
+              margin: "0 8px 0 0",
+              maxWidth: "10px",
             }}
           >
-            <img width="68px" src={programme?.image} alt="programme img" />
-            <p className={"programmes-title"}>{programme?.name}</p>
+            <p className={"programmes-title"}>{section?.title}</p>
           </Grid>
           <Grid className="footer programme-footer">
             <Typography
@@ -118,21 +122,19 @@ const ProgrammeSection = () => {
           </Grid>
         </Grid>
 
-        {sections &&
-          sections.map((item: any, index: number) => {
+        {steps &&
+          steps.map((item: any, index: number) => {
             return (
               <Grid
                 key={index}
-                className="section"
+                className="step"
                 onClick={() => {
-                  !item.is_section_completed && sectionHandler(item);
+                  !item.is_answered && stepHandler(item);
                 }}
               >
-                <p className={"section-title"}>{item.title}</p>
-                <p className={"section-step"}>
-                  {item.completed_steps} / {item.steps} Steps completed
-                </p>
-                <Grid className={"footer ".concat(item.is_section_completed ? "completed" : "")}>
+                <p className={"step-title"}>{item.fields?.question || item.fields?.title}</p>
+                <p className={"section-step"}>{item.is_answered ? "Not Completed" : "Completed"}</p>
+                <Grid className={"footer ".concat(item?.is_answered ? "completed" : "")}>
                   <Typography
                     sx={{
                       fontWeight: "700",
@@ -147,10 +149,10 @@ const ProgrammeSection = () => {
                     {item.is_section_completed ? "Completed" : "Continue"}
                   </Typography>
                   <img
-                    style={{ marginRight: "20px", objectFit: "cover", borderRadius: "4px" }}
-                    src={ArrowWhiteIcon}
-                    width="12px"
-                    height="23px"
+                    style={{ marginRight: "20px" }}
+                    src={item?.is_answered ? completedIcon : ArrowWhiteIcon}
+                    width={item?.is_answered ? "18px" : "12px"}
+                    height={item?.is_answered ? "16px" : "23px"}
                     alt="arrow icon"
                   />
                 </Grid>
@@ -162,4 +164,4 @@ const ProgrammeSection = () => {
   );
 };
 
-export default ProgrammeSection;
+export default StepsList;
