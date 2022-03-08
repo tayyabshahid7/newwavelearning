@@ -69,6 +69,7 @@ function App() {
         <ProtectedRoute exact path="/programmes" component={ProgrammesPage} />
         <ProtectedRoute exact path="/programmes/add" component={AddProgrammePage} />
         <ProtectedRoute exact path="/programmes/:programmeId" component={ProgrammeDetailsPage} />
+
         <ProtectedRoute
           exact
           path="/programmes/:programmeId/sections/:sectionId"
