@@ -137,7 +137,7 @@ const StepsList = () => {
             return (
               <Grid
                 key={index}
-                className="step"
+                className="step "
                 onClick={() => {
                   !item.is_answered && stepHandler(item);
                 }}

@@ -6,9 +6,9 @@ import { useHistory, useParams } from "react-router";
 import { getProgrammeDetails, getProgrammeSections } from "../../../../services/common";
 import { SectionData } from "../../../../common/types";
 import { useSnackbar } from "notistack";
-import "./style.scss";
 import completedIcon from "../../../static/images/completed.png";
 import LockIcon from "../../../static/images/lock-icon.png";
+import "./style.scss";
 
 interface ProgrammePageParams {
   programmeId: string;
