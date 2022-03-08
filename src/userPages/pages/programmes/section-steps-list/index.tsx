@@ -3,6 +3,7 @@ import { Grid, Typography } from "@mui/material";
 import burgerIcon from "../../../static/images/burger-icon.svg";
 import ArrowWhiteIcon from "../../../static/images/arrow-white.png";
 import completedIcon from "../../../static/images/completed.png";
+import LockIcon from "../../../static/images/lock-icon.png";
 import { useHistory, useParams } from "react-router";
 import { getSection, getSectionSteps } from "../../../../services/common";
 import { StepData } from "../../../../common/types";
@@ -36,7 +37,16 @@ const StepsList = () => {
     const fetchData = async () => {
       try {
         if (sectionId) {
+          let isCurrentStep = false;
           const response = await getSectionSteps(sectionId);
+          response.data.forEach((item: any) => {
+            if (!item.is_answered && !isCurrentStep) {
+              item.current_step = true;
+              isCurrentStep = true;
+            } else if (!item.is_answered) {
+              item.is_locked = true;
+            }
+          });
           setSteps(response.data);
         }
       } catch (error) {
@@ -150,9 +160,15 @@ const StepsList = () => {
                   </Typography>
                   <img
                     style={{ marginRight: "20px" }}
-                    src={item?.is_answered ? completedIcon : ArrowWhiteIcon}
-                    width={item?.is_answered ? "18px" : "12px"}
-                    height={item?.is_answered ? "16px" : "23px"}
+                    src={
+                      item?.is_answered
+                        ? completedIcon
+                        : item.current_step
+                        ? ArrowWhiteIcon
+                        : LockIcon
+                    }
+                    width={item?.is_answered ? "18px" : item.is_locked ? "25px" : "12px"}
+                    height={item?.is_answered ? "16px" : item.is_locked ? "23px" : "23px"}
                     alt="arrow icon"
                   />
                 </Grid>

@@ -7,6 +7,8 @@ import { getProgrammeDetails, getProgrammeSections } from "../../../../services/
 import { SectionData } from "../../../../common/types";
 import { useSnackbar } from "notistack";
 import "./style.scss";
+import completedIcon from "../../../static/images/completed.png";
+import LockIcon from "../../../static/images/lock-icon.png";
 
 interface ProgrammePageParams {
   programmeId: string;
@@ -33,6 +35,16 @@ const ProgrammeSection = () => {
               arr.push(list);
             }
           });
+        });
+
+        let isCurrentStep = false;
+        arr.forEach((item: any) => {
+          if (!item.is_section_completed && !isCurrentStep) {
+            item.current_step = true;
+            isCurrentStep = true;
+          } else if (!item.is_section_completed) {
+            item.is_locked = true;
+          }
         });
         setSections(arr);
       } catch (error) {
@@ -146,11 +158,18 @@ const ProgrammeSection = () => {
                   >
                     {item.is_section_completed ? "Completed" : "Continue"}
                   </Typography>
+
                   <img
-                    style={{ marginRight: "20px", objectFit: "cover", borderRadius: "4px" }}
-                    src={ArrowWhiteIcon}
-                    width="12px"
-                    height="23px"
+                    style={{ marginRight: "20px" }}
+                    src={
+                      item?.is_section_completed
+                        ? completedIcon
+                        : item.current_step
+                        ? ArrowWhiteIcon
+                        : LockIcon
+                    }
+                    width={item?.is_section_completed ? "18px" : item.is_locked ? "25px" : "12px"}
+                    height={item?.is_section_completed ? "16px" : item.is_locked ? "23px" : "23px"}
                     alt="arrow icon"
                   />
                 </Grid>
