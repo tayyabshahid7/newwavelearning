@@ -35,7 +35,10 @@ const KeyboardQuestion = ({ isSubmitted, answeredQuestion, keywords }: any) => {
           <img
             style={{ cursor: "pointer" }}
             src={
-              keywords && keywords.some((item: string) => item.includes(value))
+              keywords &&
+              keywords.some((item: string) =>
+                value.toLowerCase().includes(item.toLocaleLowerCase())
+              )
                 ? selectedIcon
                 : removeIcon
             }
