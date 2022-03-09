@@ -267,6 +267,15 @@ const Steps = () => {
             <ModelQuestion
               isCorrect={async (correct: boolean) => {
                 await submitAnswer(correct);
+                const nextStepId = getNextStepId();
+                if (nextStepId) {
+                  setIsSubmitted(false);
+                  setSelectedCount(0);
+                  setText("");
+                  history.push(`/user-steps/${sectionId}/${nextStepId}`);
+                } else {
+                  history.push(`/section-success/${sectionId}/${steps[0]?.programme}`);
+                }
               }}
               answeredQuestion={(text: string) => {
                 setText(text);
