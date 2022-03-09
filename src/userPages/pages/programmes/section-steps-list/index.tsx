@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Grid, Typography } from "@mui/material";
 import ArrowWhiteIcon from "../../../static/images/arrow-white.png";
 import completedIcon from "../../../static/images/completed.png";
@@ -21,25 +21,23 @@ const StepsList = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [section, setSection] = useState<any>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const sectionData = await getSection(sectionId);
-        setSection(sectionData);
-      } catch (error: any) {
-        enqueueSnackbar(error.response?.data.detail, { variant: "error" });
-      }
-    };
-    fetchData();
-  }, [sectionId, enqueueSnackbar]);
-
-  useEffect(() => {
-    const fetchData = async () => {
+  const getStepData = useCallback(
+    async (stepOrder: any) => {
       try {
         if (sectionId) {
           let isCurrentStep = false;
           const response = await getSectionSteps(sectionId);
-          response.data.forEach((item: any) => {
+
+          let arr: any = [];
+          stepOrder.filter(function (order: any) {
+            return response.data.forEach(function (list: any) {
+              if (order === list.id) {
+                arr.push(list);
+              }
+            });
+          });
+
+          arr.forEach((item: any) => {
             if (!item.is_answered && !isCurrentStep) {
               item.current_step = true;
               isCurrentStep = true;
@@ -47,14 +45,27 @@ const StepsList = () => {
               item.is_locked = true;
             }
           });
-          setSteps(response.data);
+          setSteps(arr);
         }
       } catch (error) {
         console.log(error);
       }
+    },
+    [sectionId]
+  );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const sectionData: any = await getSection(sectionId);
+        setSection(sectionData);
+        await getStepData(sectionData?.step_order);
+      } catch (error: any) {
+        enqueueSnackbar(error.response?.data.detail, { variant: "error" });
+      }
     };
     fetchData();
-  }, [sectionId]);
+  }, [getStepData, sectionId, enqueueSnackbar]);
 
   const stepHandler = (item: any) => {
     history.push(`/user-steps/${sectionId}/${item.id}`);
