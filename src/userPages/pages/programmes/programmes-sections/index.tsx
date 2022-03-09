@@ -58,6 +58,12 @@ const ProgrammeSection = () => {
     history.push(`/user-section-steps/${item.id}/`);
   };
 
+  const getStarted = () => {
+    let obj = sections.filter((item: any) => item.is_section_completed === false);
+    // if (item.step_order) history.push(`/user-steps/${item.id}/${item.step_order[0]}`);
+    history.push(`/user-section-steps/${obj[0].id}/`);
+  };
+
   return (
     <Grid
       className="programmes-section"
@@ -86,7 +92,7 @@ const ProgrammeSection = () => {
           </Typography>
         </Grid>
 
-        <Grid className="section">
+        <Grid className="section" onClick={getStarted}>
           <Grid
             sx={{
               display: "flex",

@@ -59,6 +59,11 @@ const StepsList = () => {
     history.push(`/user-steps/${sectionId}/${item.id}`);
   };
 
+  const getStarted = () => {
+    let obj = steps.filter((item: any) => item.is_answered === false);
+    history.push(`/user-steps/${sectionId}/${obj[0].id}`);
+  };
+
   return (
     <Grid
       className="programmes-section"
@@ -87,7 +92,7 @@ const StepsList = () => {
           </Typography>
         </Grid>
 
-        <Grid className="step">
+        <Grid className="step" onClick={getStarted}>
           <Grid
             sx={{
               display: "flex",
