@@ -15,7 +15,7 @@ const TextQuestion = ({
   const [answerList, setAnswerList] = useState([]);
 
   useEffect(() => {
-    if (answers.length > 0) {
+    if (answers && answers.length > 0) {
       setAnswerList(answers);
     }
   }, [answers]);

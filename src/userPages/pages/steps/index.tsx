@@ -1,6 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Grid, Typography, Button } from "@mui/material";
-import { getSectionSteps, getStepDetails, submitStepAnswer } from "../../../services/common";
+import {
+  getSection,
+  getSectionSteps,
+  getStepDetails,
+  submitStepAnswer,
+} from "../../../services/common";
 import "./style.scss";
 import Loading from "../../../components/Loading";
 import { useParams } from "react-router-dom";
@@ -45,21 +50,49 @@ const Steps = () => {
     video: "",
   });
 
-  useEffect(() => {
-    setLoading(true);
-    const fetchData = async () => {
+  const getStepData = useCallback(
+    async (stepOrder: any) => {
       try {
         if (sectionId) {
+          let isCurrentStep = false;
           const response = await getSectionSteps(sectionId);
-          setSteps(response.data);
+
+          let arr: any = [];
+          stepOrder.filter(function (order: any) {
+            return response.data.forEach(function (list: any) {
+              if (order === list.id) {
+                arr.push(list);
+              }
+            });
+          });
+
+          arr.forEach((item: any) => {
+            if (!item.is_answered && !isCurrentStep) {
+              item.current_step = true;
+              isCurrentStep = true;
+            } else if (!item.is_answered) {
+              item.is_locked = true;
+            }
+          });
           setLoading(false);
+          setSteps(arr);
         }
       } catch (error) {
         console.log(error);
       }
+    },
+    [sectionId]
+  );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const sectionData: any = await getSection(sectionId);
+        await getStepData(sectionData?.step_order);
+      } catch (error: any) {}
     };
     fetchData();
-  }, [sectionId]);
+  }, [getStepData, sectionId]);
 
   useEffect(() => {
     const fetchStepData = async () => {
