@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Typography } from "@mui/material";
-import burgerIcon from "../../../static/images/burger-icon.svg";
 import ArrowWhiteIcon from "../../../static/images/arrow-white.png";
 import { useHistory, useParams } from "react-router";
 import { getProgrammeDetails, getProgrammeSections } from "../../../../services/common";
@@ -85,13 +84,6 @@ const ProgrammeSection = () => {
           <Typography sx={{ fontWeight: "500" }} variant="h6" gutterBottom component="p">
             Learning Journey
           </Typography>
-          <img
-            style={{ cursor: "pointer" }}
-            src={burgerIcon}
-            width="50px"
-            height="27px"
-            alt="New Wave Learning Logo"
-          />
         </Grid>
 
         <Grid className="section">

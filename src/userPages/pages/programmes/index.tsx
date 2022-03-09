@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Button, Grid, Typography } from "@mui/material";
-import burgerIcon from "../../static/images/burger-icon.svg";
 import ArrowRightIcon from "../../static/images/right-arrow.png";
 import ArrowWhiteIcon from "../../static/images/arrow-white.png";
 import "./style.scss";
@@ -49,13 +48,6 @@ const Programmes = () => {
           <Typography sx={{ fontWeight: "500" }} variant="h6" gutterBottom component="p">
             Programmes
           </Typography>
-          <img
-            style={{ cursor: "pointer" }}
-            src={burgerIcon}
-            width="50px"
-            height="27px"
-            alt="New Wave Learning Logo"
-          />
         </Grid>
         {programmeList &&
           programmeList.map((item: any, index: number) => {

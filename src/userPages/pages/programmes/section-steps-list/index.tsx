@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Typography } from "@mui/material";
-import burgerIcon from "../../../static/images/burger-icon.svg";
 import ArrowWhiteIcon from "../../../static/images/arrow-white.png";
 import completedIcon from "../../../static/images/completed.png";
 import LockIcon from "../../../static/images/lock-icon.png";
@@ -86,13 +85,6 @@ const StepsList = () => {
           <Typography sx={{ fontWeight: "500" }} variant="h6" gutterBottom component="p">
             Learning Journey
           </Typography>
-          <img
-            style={{ cursor: "pointer" }}
-            src={burgerIcon}
-            width="50px"
-            height="27px"
-            alt="New Wave Learning Logo"
-          />
         </Grid>
 
         <Grid className="step">
@@ -143,7 +135,7 @@ const StepsList = () => {
                 }}
               >
                 <p className={"step-title"}>{item.fields?.question || item.fields?.title}</p>
-                <p className={"section-step"}>{item.is_answered ? "Not Completed" : "Completed"}</p>
+                <p className={"section-step"}>{item.is_answered ? "Completed" : "Not Completed"}</p>
                 <Grid className={"footer ".concat(item?.is_answered ? "completed" : "")}>
                   <Typography
                     sx={{
@@ -156,7 +148,7 @@ const StepsList = () => {
                     gutterBottom
                     component="p"
                   >
-                    {item.is_section_completed ? "Completed" : "Continue"}
+                    {item.is_answered ? "Completed" : "Continue"}
                   </Typography>
                   <img
                     style={{ marginRight: "20px" }}

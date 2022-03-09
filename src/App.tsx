@@ -45,22 +45,32 @@ import UserDashboard from "./userPages/pages/dashboard";
 import Steps from "./userPages/pages/steps";
 import ProgrammeSection from "./userPages/pages/programmes/programmes-sections";
 import StepsList from "./userPages/pages/programmes/section-steps-list";
+import CompleteSection from "./userPages/pages/steps/CompleteSection";
 
 function App() {
   return (
     <Router>
       <Switch>
         <Route exact path={LOGIN_PAGE} component={LoginPage} />
-        <Route exact path={"/user-programmes"} component={Programmes} />
-        <Route exact path={"/user-section-steps/:sectionId"} component={StepsList} />
-        <Route exact path={"/user-programmes-section/:programmeId"} component={ProgrammeSection} />
-        <Route exact path={"/user-dashboard/:programmeId"} component={UserDashboard} />
+        <ProtectedRoute exact path={"/user-programmes"} component={Programmes} />
+        <ProtectedRoute exact path={"/user-section-steps/:sectionId"} component={StepsList} />
+        <ProtectedRoute
+          exact
+          path={"/user-programmes-section/:programmeId"}
+          component={ProgrammeSection}
+        />
+        <ProtectedRoute exact path={"/user-dashboard/:programmeId"} component={UserDashboard} />
         <Route exact path={"/user-login"} component={UserLogin} />
         <Route exact path={"/user-reset-password"} component={UserResetPassword} />
         <Route path="/user-set-password/:signature/:token" component={UserSetPassword} />
         <Route exact path="/forgotten-password" component={ForgottenPassword} />
         <Route path="/reset-password/:signature/:token" component={PasswordReset} />
         <ProtectedRoute exact path={"/user-steps/:sectionId/:stepId"} component={Steps} />
+        <ProtectedRoute
+          exact
+          path={"/section-success/:sectionId/:programmeId"}
+          component={CompleteSection}
+        />
         {/*<ProtectedRoute exact path={"/user-intro/:stepId"} component={Intro} />*/}
         <ProtectedRoute exact path="/dashboard" component={DashBoardPage} />
         <ProtectedRoute exact path="/cohorts" component={CohortsPage} />

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Typography } from "@mui/material";
-import burgerIcon from "../../static/images/burger-icon.svg";
 import JourneyIcon from "../../static/images/journey-icon.png";
 import LeaderboardIcon from "../../static/images/leaderboard.png";
 import FeedbackIcon from "../../static/images/feedback.png";
@@ -80,13 +79,6 @@ const UserDashboard = () => {
           <Typography sx={{ fontWeight: "500" }} variant="h6" gutterBottom component="p">
             Dashboard
           </Typography>
-          <img
-            style={{ cursor: "pointer" }}
-            src={burgerIcon}
-            width="50px"
-            height="27px"
-            alt="New Wave Learning Logo"
-          />
         </Grid>
 
         <Grid

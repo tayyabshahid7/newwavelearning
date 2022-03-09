@@ -51,6 +51,7 @@ export interface StepData {
   step_type?: string;
   name?: string;
   number?: number;
+  programme?: number;
   fields?: any;
 }
 

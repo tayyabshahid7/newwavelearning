@@ -4,7 +4,6 @@ import { getSectionSteps, getStepDetails, submitStepAnswer } from "../../../serv
 import "./style.scss";
 import Loading from "../../../components/Loading";
 import { useParams } from "react-router-dom";
-import burgerIcon from "../../static/images/burger-icon.svg";
 import arrowIcon from "../../static/images/right-arrow 6.png";
 import TextQuestion from "./TextQuestion";
 import PictureQuestion from "./PictureQuestion";
@@ -16,6 +15,7 @@ import ToggleQuestion from "./ToggleQuestion";
 import TextContentQuestion from "./TextContentQuestion";
 import KeyboardQuestion from "./KeyboardQuestion";
 import ModelQuestion from "./ModelQuestion";
+import LiveSession from "./LiveSession";
 
 type IntroParams = {
   stepId: string;
@@ -34,6 +34,7 @@ const Steps = () => {
   const [stepType, setStepType] = useState("");
   const [selectedToggleValue, setSelectedToggleValue] = useState("");
   const [selectedAnswerIds, setSelectedAnswerIds] = useState<any>([]);
+  const [steps, setSteps] = useState<StepData[]>([]);
   const [stepData, setStepData] = useState<any>({
     content: "",
     image: "",
@@ -44,7 +45,6 @@ const Steps = () => {
     audio: "",
     video: "",
   });
-  const [steps, setSteps] = useState<StepData[]>([]);
 
   useEffect(() => {
     setLoading(true);
@@ -153,19 +153,12 @@ const Steps = () => {
         }}
       >
         <img
+          onClick={() => history.goBack()}
           style={{ cursor: "pointer" }}
           src={arrowIcon}
           width="27px"
           height="27px"
           alt="Arrow Logo"
-        />
-
-        <img
-          style={{ cursor: "pointer" }}
-          src={burgerIcon}
-          width="50px"
-          height="27px"
-          alt="Burger Logo"
         />
       </Grid>
       <Loading loading={loading} />
@@ -182,22 +175,24 @@ const Steps = () => {
             flexDirection: "column",
           }}
         >
-          <Typography
-            sx={{
-              textAlign: "center",
-              margin: "0% 0 2% 0",
-              padding: stepType === "model_answer_question" ? "0 7% !important" : "0 25px",
-              fontWeight: "600",
-              marginTop: "0%",
-              fontSize: "24px",
-              marginBottom: "5%",
-              color: "#0E4A66",
-            }}
-            variant="h5"
-            gutterBottom
-          >
-            {stepData.question || stepData.title}
-          </Typography>
+          {stepType !== "live_session" && (
+            <Typography
+              sx={{
+                textAlign: "center",
+                margin: "0% 0 2% 0",
+                padding: stepType === "model_answer_question" ? "0 7% !important" : "0 25px",
+                fontWeight: "600",
+                marginTop: "0%",
+                fontSize: "24px",
+                marginBottom: "5%",
+                color: "#0E4A66",
+              }}
+              variant="h5"
+              gutterBottom
+            >
+              {stepData.question || stepData.title}
+            </Typography>
+          )}
         </Grid>
 
         {totalAnswerCount && (
@@ -211,18 +206,20 @@ const Steps = () => {
           </Grid>
         )}
 
-        <Grid item sx={{ padding: "0% 10%", textAlign: "center", marginTop: "20px" }}>
-          <Typography
-            component="h5"
-            sx={{
-              color: "#0E4A66",
-              fontSize: "16px",
-              fontWeight: "400",
-            }}
-          >
-            {stepData.description || stepData.content}
-          </Typography>
-        </Grid>
+        {stepType !== "live_session" && (
+          <Grid item sx={{ padding: "0% 10%", textAlign: "center", marginTop: "20px" }}>
+            <Typography
+              component="h5"
+              sx={{
+                color: "#0E4A66",
+                fontSize: "16px",
+                fontWeight: "400",
+              }}
+            >
+              {stepData.description || stepData.content}
+            </Typography>
+          </Grid>
+        )}
 
         <Grid item sx={{ marginTop: "20px" }}>
           {stepType === "multiple_choice_question" ? (
@@ -277,6 +274,13 @@ const Steps = () => {
               isSubmitted={isSubmitted}
               modelAnswer={stepData.model_answer}
             />
+          ) : stepType === "live_session" ? (
+            <LiveSession
+              hours={stepData.hours}
+              minutes={stepData.minutes}
+              title={stepData.title}
+              description={stepData.description}
+            />
           ) : null}
         </Grid>
       </Grid>
@@ -284,6 +288,7 @@ const Steps = () => {
       <Grid item px="18px" width="100%">
         {!loading &&
         !isSubmitted &&
+        stepType !== "live_session" &&
         stepType !== "audio" &&
         stepType !== "video" &&
         stepType !== "toggle" &&
@@ -335,6 +340,8 @@ const Steps = () => {
                 setSelectedCount(0);
                 setText("");
                 history.push(`/user-steps/${sectionId}/${nextStepId}`);
+              } else {
+                history.push(`/section-success/${sectionId}/${steps[0]?.programme}`);
               }
             }}
             disabled={loading || selectedCount < totalAnswerCount}
