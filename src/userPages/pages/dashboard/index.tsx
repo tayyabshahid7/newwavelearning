@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Grid, Typography } from "@mui/material";
 import JourneyIcon from "../../static/images/journey-icon.png";
 import LeaderboardIcon from "../../static/images/leaderboard.png";
@@ -9,6 +9,7 @@ import { useHistory, useParams } from "react-router";
 import { getProgrammeDetails } from "../../../services/common";
 import "./style.scss";
 import arrowIcon from "../../static/images/right-arrow 6.png";
+import { Burger, Menu } from "../../components/BurgerMenu";
 
 const dashboardData = [
   {
@@ -41,6 +42,10 @@ const UserDashboard = () => {
   const history = useHistory();
   const { programmeId } = useParams<ProgrammePageParams>();
   const [programme, setProgramme] = useState<any>(null);
+  const [open, setOpen] = useState(false);
+  const node: any = useRef();
+  // const { enqueueSnackbar } = useSnackbar();
+  // const [sections, setSections] = useState<SectionData[]>([]);
 
   useEffect(() => {
     const fetchProgrammeData = async () => {
@@ -54,11 +59,25 @@ const UserDashboard = () => {
     fetchProgrammeData();
   }, [programmeId]);
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await getProgrammeSections(Number(programmeId));
+  //       debugger;
+  //       setSections(response.data);
+  //     } catch (error) {
+  //       enqueueSnackbar("Could not fetch sections", { variant: "error" });
+  //     }
+  //   };
+  //   fetchData();
+  // }, [programmeId, enqueueSnackbar]);
+
   return (
     <Grid
       className="dashboard"
       container
       style={{
+        position: "relative",
         backgroundColor: "#F1F5FF",
         maxWidth: "420px",
         margin: "auto",
@@ -74,19 +93,45 @@ const UserDashboard = () => {
             display: "flex",
             alignItems: "center",
             marginBottom: "2%",
+            justifyContent: "space-between",
           }}
         >
-          <img
-            onClick={() => history.goBack()}
-            style={{ cursor: "pointer" }}
-            src={arrowIcon}
-            width="27px"
-            height="27px"
-            alt="Arrow Logo"
-          />
-          <Typography sx={{ fontWeight: "500" }} ml="20px" variant="h6" gutterBottom component="p">
-            Dashboard
-          </Typography>
+          <Grid
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <img
+              onClick={() => history.goBack()}
+              style={{ cursor: "pointer" }}
+              src={arrowIcon}
+              width="27px"
+              height="27px"
+              alt="Arrow Logo"
+            />
+            <Typography
+              sx={{ fontWeight: "500" }}
+              ml="20px"
+              mb="0"
+              variant="h6"
+              gutterBottom
+              component="p"
+            >
+              Dashboard
+            </Typography>
+          </Grid>
+          <Grid ref={node}>
+            <Burger open={open} setOpen={setOpen} />
+            <Menu
+              open={open}
+              setOpen={setOpen}
+              close={() => {
+                setOpen(false);
+              }}
+            />
+          </Grid>
         </Grid>
 
         <Grid

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Grid, Typography } from "@mui/material";
 import ArrowWhiteIcon from "../../../static/images/arrow-white.png";
 import completedIcon from "../../../static/images/completed.png";
@@ -9,6 +9,7 @@ import { StepData } from "../../../../common/types";
 import { useSnackbar } from "notistack";
 import "./style.scss";
 import arrowIcon from "../../../static/images/right-arrow 6.png";
+import { Burger, Menu } from "../../../components/BurgerMenu";
 
 interface ProgrammePageParams {
   sectionId: any;
@@ -20,6 +21,8 @@ const StepsList = () => {
   const [steps, setSteps] = useState<StepData[]>([]);
   const { enqueueSnackbar } = useSnackbar();
   const [section, setSection] = useState<any>(null);
+  const node: any = useRef();
+  const [open, setOpen] = useState(false);
 
   const getStepData = useCallback(
     async (stepOrder: any) => {
@@ -81,6 +84,7 @@ const StepsList = () => {
       className="programmes-section"
       container
       style={{
+        position: "relative",
         backgroundColor: "#F1F5FF",
         maxWidth: "420px",
         margin: "auto",
@@ -109,6 +113,16 @@ const StepsList = () => {
           <Typography sx={{ fontWeight: "500" }} ml="20px" variant="h6" gutterBottom component="p">
             Learning Journey
           </Typography>
+          <Grid ref={node}>
+            <Burger open={open} setOpen={setOpen} />
+            <Menu
+              open={open}
+              setOpen={setOpen}
+              close={() => {
+                setOpen(false);
+              }}
+            />
+          </Grid>
         </Grid>
 
         <Grid className="step" onClick={getStarted}>
@@ -155,7 +169,7 @@ const StepsList = () => {
                 key={index}
                 className="step "
                 onClick={() => {
-                  !item.is_answered && stepHandler(item);
+                  !item.is_answered && item.current_step && stepHandler(item);
                 }}
               >
                 <p className={"step-title"}>{item.fields?.question || item.fields?.title}</p>

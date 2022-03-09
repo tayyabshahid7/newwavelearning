@@ -46,6 +46,7 @@ import Steps from "./userPages/pages/steps";
 import ProgrammeSection from "./userPages/pages/programmes/programmes-sections";
 import StepsList from "./userPages/pages/programmes/section-steps-list";
 import CompleteSection from "./userPages/pages/steps/CompleteSection";
+import LiveSession from "./userPages/pages/steps/LiveSession";
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
       <Switch>
         <Route exact path={LOGIN_PAGE} component={LoginPage} />
         <ProtectedRoute exact path={"/user-programmes"} component={Programmes} />
+        <ProtectedRoute exact path={"/user-live-sessions/:stepId"} component={LiveSession} />
         <ProtectedRoute exact path={"/user-section-steps/:sectionId"} component={StepsList} />
         <ProtectedRoute
           exact

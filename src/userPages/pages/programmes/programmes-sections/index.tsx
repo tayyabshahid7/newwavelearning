@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Grid, Typography } from "@mui/material";
 import ArrowWhiteIcon from "../../../static/images/arrow-white.png";
 import { useHistory, useParams } from "react-router";
@@ -9,6 +9,7 @@ import completedIcon from "../../../static/images/completed.png";
 import LockIcon from "../../../static/images/lock-icon.png";
 import "./style.scss";
 import arrowIcon from "../../../static/images/right-arrow 6.png";
+import { Burger, Menu } from "../../../components/BurgerMenu";
 
 interface ProgrammePageParams {
   programmeId: string;
@@ -19,7 +20,8 @@ const ProgrammeSection = () => {
   const [programme, setProgramme] = useState<any>(null);
   const { programmeId } = useParams<ProgrammePageParams>();
   const { enqueueSnackbar } = useSnackbar();
-
+  const [open, setOpen] = useState(false);
+  const node: any = useRef();
   const [sections, setSections] = useState<SectionData[]>([]);
 
   useEffect(() => {
@@ -70,6 +72,7 @@ const ProgrammeSection = () => {
       className="programmes-section"
       container
       style={{
+        position: "relative",
         backgroundColor: "#F1F5FF",
         maxWidth: "420px",
         margin: "auto",
@@ -98,6 +101,16 @@ const ProgrammeSection = () => {
           <Typography sx={{ fontWeight: "500" }} ml="20px" variant="h6" gutterBottom component="p">
             Learning Journey
           </Typography>
+          <Grid ref={node}>
+            <Burger open={open} setOpen={setOpen} />
+            <Menu
+              open={open}
+              setOpen={setOpen}
+              close={() => {
+                setOpen(false);
+              }}
+            />
+          </Grid>
         </Grid>
 
         <Grid className="section" onClick={getStarted}>
@@ -143,7 +156,7 @@ const ProgrammeSection = () => {
                 key={index}
                 className="section"
                 onClick={() => {
-                  !item.is_section_completed && sectionHandler(item);
+                  !item.is_section_completed && item.current_step && sectionHandler(item);
                 }}
               >
                 <p className={"section-title"}>{item.title}</p>

@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button, Grid, Typography } from "@mui/material";
 import ArrowRightIcon from "../../static/images/right-arrow.png";
 import ArrowWhiteIcon from "../../static/images/arrow-white.png";
-import "./style.scss";
 import { getProgrammes } from "../../../services/common";
 import { useHistory } from "react-router";
+import "./style.scss";
+import { Burger, Menu } from "../../components/BurgerMenu";
 
 const Programmes = () => {
   const [programmeList, setProgrammeList] = useState<any>(null);
   const history = useHistory();
+  const [open, setOpen] = useState(false);
+  const node: any = useRef();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,6 +30,7 @@ const Programmes = () => {
       className="programmes"
       container
       style={{
+        position: "relative",
         backgroundColor: "#F1F5FF",
         maxWidth: "450px",
         margin: "auto",
@@ -48,6 +52,16 @@ const Programmes = () => {
           <Typography sx={{ fontWeight: "500" }} variant="h6" gutterBottom component="p">
             Programmes
           </Typography>
+          <Grid ref={node}>
+            <Burger open={open} setOpen={setOpen} />
+            <Menu
+              open={open}
+              setOpen={setOpen}
+              close={() => {
+                setOpen(false);
+              }}
+            />
+          </Grid>
         </Grid>
         {programmeList &&
           programmeList.map((item: any, index: number) => {
