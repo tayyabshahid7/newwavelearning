@@ -8,6 +8,7 @@ import ArrowRightIcon from "../../static/images/right-arrow.png";
 import { useHistory, useParams } from "react-router";
 import { getProgrammeDetails } from "../../../services/common";
 import "./style.scss";
+import arrowIcon from "../../static/images/right-arrow 6.png";
 
 const dashboardData = [
   {
@@ -71,12 +72,19 @@ const UserDashboard = () => {
           sx={{
             padding: "6% 5%",
             display: "flex",
-            justifyContent: "space-between",
             alignItems: "center",
             marginBottom: "2%",
           }}
         >
-          <Typography sx={{ fontWeight: "500" }} variant="h6" gutterBottom component="p">
+          <img
+            onClick={() => history.goBack()}
+            style={{ cursor: "pointer" }}
+            src={arrowIcon}
+            width="27px"
+            height="27px"
+            alt="Arrow Logo"
+          />
+          <Typography sx={{ fontWeight: "500" }} ml="20px" variant="h6" gutterBottom component="p">
             Dashboard
           </Typography>
         </Grid>

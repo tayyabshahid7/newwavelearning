@@ -8,6 +8,7 @@ import { useSnackbar } from "notistack";
 import completedIcon from "../../../static/images/completed.png";
 import LockIcon from "../../../static/images/lock-icon.png";
 import "./style.scss";
+import arrowIcon from "../../../static/images/right-arrow 6.png";
 
 interface ProgrammePageParams {
   programmeId: string;
@@ -82,12 +83,19 @@ const ProgrammeSection = () => {
           sx={{
             padding: "6% 5%",
             display: "flex",
-            justifyContent: "space-between",
             alignItems: "center",
             marginBottom: "2%",
           }}
         >
-          <Typography sx={{ fontWeight: "500" }} variant="h6" gutterBottom component="p">
+          <img
+            onClick={() => history.goBack()}
+            style={{ cursor: "pointer" }}
+            src={arrowIcon}
+            width="27px"
+            height="27px"
+            alt="Arrow Logo"
+          />
+          <Typography sx={{ fontWeight: "500" }} ml="20px" variant="h6" gutterBottom component="p">
             Learning Journey
           </Typography>
         </Grid>
