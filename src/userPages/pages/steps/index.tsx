@@ -336,7 +336,7 @@ const Steps = () => {
             size="large"
             onClick={async () => {
               setIsSubmitted(true);
-              await submitAnswer();
+              stepType !== "model_answer_question" && (await submitAnswer());
             }}
             disabled={loading || selectedCount < totalAnswerCount || text.length === 0}
           >
@@ -359,6 +359,7 @@ const Steps = () => {
               if (
                 stepType !== "picture_choice_question" &&
                 stepType !== "model_answer_question" &&
+                stepType !== "keyword_question" &&
                 stepType !== "multiple_choice_question"
               ) {
                 await submitAnswer();
