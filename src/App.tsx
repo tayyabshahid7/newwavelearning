@@ -61,7 +61,7 @@ function App() {
           path={"/user-programmes-section/:programmeId"}
           component={ProgrammeSection}
         />
-        <ProtectedRoute exact path={"/user-dashboard/:programmeId"} component={UserDashboard} />
+        <ProtectedRoute exact path={"/user-dashboard/"} component={UserDashboard} />
         <Route exact path={"/user-login"} component={UserLogin} />
         <Route exact path={"/user-reset-password"} component={UserResetPassword} />
         <Route path="/user-set-password/:signature/:token" component={UserSetPassword} />

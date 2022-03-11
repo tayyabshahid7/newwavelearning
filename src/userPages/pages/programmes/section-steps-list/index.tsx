@@ -10,6 +10,7 @@ import { useSnackbar } from "notistack";
 import "./style.scss";
 import arrowIcon from "../../../static/images/right-arrow 6.png";
 import { Burger, Menu } from "../../../components/BurgerMenu";
+import Loading from "../../../../components/Loading";
 
 interface ProgrammePageParams {
   sectionId: any;
@@ -23,9 +24,12 @@ const StepsList = () => {
   const [section, setSection] = useState<any>(null);
   const node: any = useRef();
   const [open, setOpen] = useState(false);
+  const [completedStepCount, setCompletedStepCount] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const getStepData = useCallback(
     async (stepOrder: any) => {
+      setLoading(true);
       try {
         if (sectionId) {
           let isCurrentStep = false;
@@ -48,9 +52,18 @@ const StepsList = () => {
               item.is_locked = true;
             }
           });
+
+          let obj = arr.filter((item: any) => item.is_answered === true);
+          if (obj.length > 0) {
+            setCompletedStepCount(1);
+          }
           setSteps(arr);
+          setTimeout(() => {
+            setLoading(false);
+          }, 300);
         }
       } catch (error) {
+        setLoading(false);
         console.log(error);
       }
     },
@@ -92,6 +105,7 @@ const StepsList = () => {
         width: "100%",
       }}
     >
+      <Loading loading={loading} />
       <Grid item container direction="column">
         <Grid
           item
@@ -111,18 +125,18 @@ const StepsList = () => {
             alt="Arrow Logo"
           />
           <Typography sx={{ fontWeight: "500" }} ml="20px" variant="h6" gutterBottom component="p">
-            Learning Journey
+            {section?.title}
           </Typography>
           <Grid ref={node}>
             <Burger open={open} setOpen={setOpen} />
-            <Menu
-              open={open}
-              setOpen={setOpen}
-              close={() => {
-                setOpen(false);
-              }}
-            />
           </Grid>
+          <Menu
+            open={open}
+            setOpen={setOpen}
+            close={() => {
+              setOpen(false);
+            }}
+          />
         </Grid>
 
         <Grid className="step" onClick={getStarted}>
@@ -150,7 +164,7 @@ const StepsList = () => {
               gutterBottom
               component="p"
             >
-              Get Started
+              {completedStepCount > 0 ? "Continue" : "Get Started"}
             </Typography>
             <img
               style={{ marginRight: "20px", objectFit: "cover", borderRadius: "4px" }}

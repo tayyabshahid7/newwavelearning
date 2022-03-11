@@ -10,6 +10,7 @@ import LockIcon from "../../../static/images/lock-icon.png";
 import "./style.scss";
 import arrowIcon from "../../../static/images/right-arrow 6.png";
 import { Burger, Menu } from "../../../components/BurgerMenu";
+import Loading from "../../../../components/Loading";
 
 interface ProgrammePageParams {
   programmeId: string;
@@ -23,9 +24,12 @@ const ProgrammeSection = () => {
   const [open, setOpen] = useState(false);
   const node: any = useRef();
   const [sections, setSections] = useState<SectionData[]>([]);
+  const [completedStepCount, setCompletedStepCount] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const response = await getProgrammeSections(Number(programmeId));
         const programmeDetails: any = await getProgrammeDetails(programmeId);
@@ -48,8 +52,16 @@ const ProgrammeSection = () => {
             item.is_locked = true;
           }
         });
+        let obj = arr.filter((item: any) => item.completed_steps > 0);
+        if (obj.length > 0) {
+          setCompletedStepCount(1);
+        }
         setSections(arr);
+        setTimeout(() => {
+          setLoading(false);
+        }, 300);
       } catch (error) {
+        setLoading(false);
         enqueueSnackbar("Could not fetch sections", { variant: "error" });
       }
     };
@@ -80,6 +92,7 @@ const ProgrammeSection = () => {
         width: "100%",
       }}
     >
+      <Loading loading={loading} />
       <Grid item container direction="column">
         <Grid
           item
@@ -137,7 +150,7 @@ const ProgrammeSection = () => {
               gutterBottom
               component="p"
             >
-              Get Started
+              {completedStepCount > 0 ? "Continue" : "Get Started"}
             </Typography>
             <img
               style={{ marginRight: "20px", objectFit: "cover", borderRadius: "4px" }}

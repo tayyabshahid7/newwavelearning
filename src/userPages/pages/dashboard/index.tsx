@@ -5,11 +5,12 @@ import LeaderboardIcon from "../../static/images/leaderboard.png";
 import FeedbackIcon from "../../static/images/feedback.png";
 import LiveIcon from "../../static/images/live.png";
 import ArrowRightIcon from "../../static/images/right-arrow.png";
-import { useHistory, useParams } from "react-router";
-import { getProgrammeDetails } from "../../../services/common";
+import { useHistory } from "react-router";
+import { getProgrammes } from "../../../services/common";
 import "./style.scss";
 import arrowIcon from "../../static/images/right-arrow 6.png";
 import { Burger, Menu } from "../../components/BurgerMenu";
+import Loading from "../../../components/Loading";
 
 const dashboardData = [
   {
@@ -34,30 +35,45 @@ const dashboardData = [
   },
 ];
 
-interface ProgrammePageParams {
-  programmeId: string;
-}
-
 const UserDashboard = () => {
   const history = useHistory();
-  const { programmeId } = useParams<ProgrammePageParams>();
   const [programme, setProgramme] = useState<any>(null);
   const [open, setOpen] = useState(false);
   const node: any = useRef();
+  const [loading, setLoading] = useState<boolean>(false);
   // const { enqueueSnackbar } = useSnackbar();
   // const [sections, setSections] = useState<SectionData[]>([]);
 
   useEffect(() => {
-    const fetchProgrammeData = async () => {
+    const fetchData = async () => {
+      setLoading(true);
       try {
-        const programmeDetails = await getProgrammeDetails(programmeId);
-        setProgramme(programmeDetails.data);
+        const response: any = await getProgrammes();
+        if (response?.data?.results && response?.data?.results?.length > 0) {
+          setProgramme(response.data.results[0]);
+        }
+        setTimeout(() => {
+          setLoading(false);
+        }, 300);
       } catch (error) {
+        setLoading(false);
         console.log(error);
       }
     };
-    fetchProgrammeData();
-  }, [programmeId]);
+    fetchData();
+  }, []);
+
+  // useEffect(() => {
+  //   const fetchProgrammeData = async () => {
+  //     try {
+  //       const programmeDetails = await getProgrammeDetails(programmeId);
+  //       setProgramme(programmeDetails.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   fetchProgrammeData();
+  // }, [programmeId]);
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -85,6 +101,7 @@ const UserDashboard = () => {
         width: "100%",
       }}
     >
+      <Loading loading={loading} />
       <Grid item container direction="column">
         <Grid
           item
@@ -136,7 +153,7 @@ const UserDashboard = () => {
 
         <Grid
           onClick={() => {
-            history.push(`/user-programmes-section/${programmeId}`);
+            history.push(`/user-programmes-section/${programme?.id}`);
           }}
           className="all-programmes"
         >
@@ -159,7 +176,7 @@ const UserDashboard = () => {
               <Grid
                 key={index}
                 onClick={() => {
-                  index === 0 && history.push(`/user-programmes-section/${programmeId}`);
+                  index === 0 && history.push(`/user-programmes-section/${programme?.id}`);
                 }}
                 className="dashboard-card"
                 xs={6}

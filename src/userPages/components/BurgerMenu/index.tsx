@@ -39,6 +39,7 @@ const StyledMenu = styled.nav`
     font-weight: 500;
     font-size: 20px;
     line-height: 24px;
+    margin-bottom: 10px;
 
     color: #0e4a66;
 
@@ -59,6 +60,14 @@ export const Menu = ({ open, close }: any) => {
   return (
     // @ts-ignore
     <StyledMenu open={open}>
+      {/*<p*/}
+      {/*  onClick={() => {*/}
+      {/*    close(false);*/}
+      {/*    history.push("/user-dashboard");*/}
+      {/*  }}*/}
+      {/*>*/}
+      {/*  Dashboard*/}
+      {/*</p>*/}
       <p
         onClick={() => {
           close(false);
@@ -91,7 +100,7 @@ const StyledBurger: any = styled.button`
   cursor: pointer;
   padding: 0;
   z-index: 10;
-  top: 3%;
+  top: 35px;
   right: 20px;
 
   &:focus {

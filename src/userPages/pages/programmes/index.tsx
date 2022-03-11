@@ -6,19 +6,26 @@ import { getProgrammes } from "../../../services/common";
 import { useHistory } from "react-router";
 import "./style.scss";
 import { Burger, Menu } from "../../components/BurgerMenu";
+import Loading from "../../../components/Loading";
 
 const Programmes = () => {
   const [programmeList, setProgrammeList] = useState<any>(null);
   const history = useHistory();
   const [open, setOpen] = useState(false);
   const node: any = useRef();
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         let response = await getProgrammes();
         setProgrammeList(response.data.results);
+        setTimeout(() => {
+          setLoading(false);
+        }, 300);
       } catch (error) {
+        setLoading(false);
         console.log(error);
       }
     };
@@ -38,6 +45,7 @@ const Programmes = () => {
         width: "100%",
       }}
     >
+      <Loading loading={loading} />
       <Grid item container direction="column">
         <Grid
           item
@@ -68,7 +76,7 @@ const Programmes = () => {
             return (
               <Grid
                 onClick={() => {
-                  history.push(`/user-dashboard/${item.id}`);
+                  history.push(`/user-dashboard/`);
                 }}
                 key={index}
                 className="all-programmes"
