@@ -115,7 +115,9 @@ export const getSectionSteps = async (sectionId: number) => {
 
 export const addStep = async (data: FormData) => {
   try {
-    const response = await axs.post<StepData>("/steps/", data, { timeout: 15000 });
+    let type = data.get("step_type");
+    let timeOutValue = type === "video" || type === "audio" ? 30000 : 15000;
+    const response = await axs.post<StepData>("/steps/", data, { timeout: timeOutValue });
     return response.data;
   } catch (error: any) {
     throw error;
@@ -124,7 +126,11 @@ export const addStep = async (data: FormData) => {
 
 export const editStep = async (stepId: number | string, data: FormData) => {
   try {
-    const response = await axs.patch<StepData>(`/steps/${stepId}/`, data, { timeout: 15000 });
+    let type = data.get("step_type");
+    let timeOutValue = type === "video" || type === "audio" ? 30000 : 15000;
+    const response = await axs.patch<StepData>(`/steps/${stepId}/`, data, {
+      timeout: timeOutValue,
+    });
     return response.data;
   } catch (error: any) {
     throw error;
@@ -224,6 +230,15 @@ export const deleteCohort = async (cohortId: number) => {
 export const getCohortDetails = async (cohortId: string) => {
   try {
     const response = await axs.get<ResponseData>(`/cohorts/${cohortId}/`);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const getSessions = async (pageUrl: string = "/livesessions") => {
+  try {
+    const response = await axs.get<ResponseData>(pageUrl);
     return response;
   } catch (error: any) {
     throw error;

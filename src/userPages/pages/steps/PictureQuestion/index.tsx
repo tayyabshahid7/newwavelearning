@@ -9,6 +9,7 @@ const PictureQuestion = ({
   totalAnswerCount,
   isSubmitted,
   answers,
+  userAnswer,
 }: any) => {
   const [selectedCount, setSelectedCount] = useState(0);
   const [selectedIds, setSelectedIds] = useState([]);
@@ -16,9 +17,15 @@ const PictureQuestion = ({
 
   useEffect(() => {
     if (answers && answers.length > 0) {
+      if (userAnswer.length > 0) {
+        let uAnswer = userAnswer[0].answer.answer;
+        uAnswer.forEach((item: any) => {
+          answers[item].isSelected = true;
+        });
+      }
       setAnswerList(answers);
     }
-  }, [answers]);
+  }, [userAnswer, answers]);
 
   const selectHandler = (item: any, index: number) => {
     const ids: any = [...selectedIds];

@@ -39,6 +39,7 @@ const Steps = () => {
   const [selectedToggleValue, setSelectedToggleValue] = useState("");
   const [selectedAnswerIds, setSelectedAnswerIds] = useState<any>([]);
   const [steps, setSteps] = useState<StepData[]>([]);
+  const [userAnswer, setUserAnswer] = useState<StepData[]>([]);
   const [stepData, setStepData] = useState<any>({
     content: "",
     image: "",
@@ -48,6 +49,7 @@ const Steps = () => {
     description: "",
     audio: "",
     video: "",
+    answer: [],
   });
 
   const getStepData = useCallback(
@@ -100,6 +102,12 @@ const Steps = () => {
       try {
         const response: any = await getStepDetails(stepId);
         setStepData(response.fields);
+        if (response.answer.length > 0) {
+          setIsSubmitted(true);
+          setSelectedCount(Object.keys(response.answer[0].answer).length);
+        }
+        setUserAnswer(response.answer);
+        debugger;
         setTotalAnswerCount(response.fields?.correct_answers);
         setStepType(response?.step_type);
       } catch (error: any) {
@@ -140,7 +148,7 @@ const Steps = () => {
       obj = {
         answer: null,
         text: text,
-        correct: true,
+        correct: isCorrect,
       };
     } else if (stepType === "toggle") {
       obj = {
@@ -252,6 +260,7 @@ const Steps = () => {
         <Grid item sx={{ marginTop: "20px" }}>
           {stepType === "multiple_choice_question" ? (
             <TextQuestion
+              userAnswer={userAnswer}
               selectedAnswerList={(ids: any) => setSelectedAnswerIds(ids)}
               getTotalSelected={(count: number) => {
                 setSelectedCount(count);
@@ -263,6 +272,7 @@ const Steps = () => {
             />
           ) : stepType === "picture_choice_question" ? (
             <PictureQuestion
+              userAnswer={userAnswer}
               selectedAnswerList={(ids: any) => setSelectedAnswerIds(ids)}
               getTotalSelected={(count: number) => {
                 setSelectedCount(count);
@@ -276,6 +286,8 @@ const Steps = () => {
             <AudioQuestion audio={stepData.audio} />
           ) : stepType === "toggle" ? (
             <ToggleQuestion
+              isSubmitted={isSubmitted}
+              userAnswer={userAnswer}
               selectedValue={(text: string) => {
                 setSelectedToggleValue(text);
               }}
@@ -285,6 +297,7 @@ const Steps = () => {
             />
           ) : stepType === "keyword_question" ? (
             <KeyboardQuestion
+              userAnswer={userAnswer}
               answeredQuestion={(text: string) => {
                 setText(text);
               }}
@@ -293,6 +306,18 @@ const Steps = () => {
             />
           ) : stepType === "model_answer_question" ? (
             <ModelQuestion
+              userAnswer={userAnswer}
+              goToNextStep={() => {
+                const nextStepId = getNextStepId();
+                if (nextStepId) {
+                  setIsSubmitted(false);
+                  setSelectedCount(0);
+                  setText("");
+                  history.push(`/user-steps/${sectionId}/${nextStepId}`);
+                } else {
+                  history.push(`/section-success/${sectionId}/${steps[0]?.programme}`);
+                }
+              }}
               isCorrect={async (correct: boolean) => {
                 await submitAnswer(correct);
                 const nextStepId = getNextStepId();
@@ -357,6 +382,7 @@ const Steps = () => {
             size="large"
             onClick={async () => {
               if (
+                userAnswer.length === 0 &&
                 stepType !== "picture_choice_question" &&
                 stepType !== "model_answer_question" &&
                 stepType !== "keyword_question" &&

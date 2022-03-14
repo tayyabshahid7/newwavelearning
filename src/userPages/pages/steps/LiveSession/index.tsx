@@ -24,7 +24,6 @@ const LiveSession = () => {
     const fetchStepData = async () => {
       try {
         const response: any = await getStepDetails(stepId);
-        debugger;
         setStepData(response.fields);
       } catch (error: any) {
         console.log(error);

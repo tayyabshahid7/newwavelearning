@@ -7,10 +7,10 @@ import { SectionData } from "../../../../common/types";
 import { useSnackbar } from "notistack";
 import completedIcon from "../../../static/images/completed.png";
 import LockIcon from "../../../static/images/lock-icon.png";
-import "./style.scss";
 import arrowIcon from "../../../static/images/right-arrow 6.png";
 import { Burger, Menu } from "../../../components/BurgerMenu";
 import Loading from "../../../../components/Loading";
+import "./style.scss";
 
 interface ProgrammePageParams {
   programmeId: string;
@@ -169,7 +169,7 @@ const ProgrammeSection = () => {
                 key={index}
                 className="section"
                 onClick={() => {
-                  !item.is_section_completed && item.current_step && sectionHandler(item);
+                  (item.current_step || item.is_section_completed) && sectionHandler(item);
                 }}
               >
                 <p className={"section-title"}>{item.title}</p>

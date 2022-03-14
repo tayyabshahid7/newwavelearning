@@ -183,7 +183,7 @@ const StepsList = () => {
                 key={index}
                 className="step "
                 onClick={() => {
-                  !item.is_answered && item.current_step && stepHandler(item);
+                  (item.current_step || item.is_answered) && stepHandler(item);
                 }}
               >
                 <p className={"step-title"}>{item.fields?.question || item.fields?.title}</p>

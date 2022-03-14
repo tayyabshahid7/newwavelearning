@@ -4,6 +4,7 @@ import selectedIcon from "../../../static/images/selected.png";
 import removeIcon from "../../../static/images/remove.png";
 
 const TextQuestion = ({
+  userAnswer,
   selectedAnswerList,
   getTotalSelected,
   totalAnswerCount,
@@ -16,9 +17,16 @@ const TextQuestion = ({
 
   useEffect(() => {
     if (answers && answers.length > 0) {
+      if (userAnswer.length > 0) {
+        let uAnswer = userAnswer[0].answer.answer;
+        uAnswer.forEach((item: any) => {
+          answers[item].isSelected = true;
+        });
+      }
+
       setAnswerList(answers);
     }
-  }, [answers]);
+  }, [answers, userAnswer]);
 
   const selectHandler = (item: any, index: number) => {
     const ids: any = [...selectedIds];

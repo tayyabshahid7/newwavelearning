@@ -66,14 +66,14 @@ const UserDashboard = () => {
   // useEffect(() => {
   //   const fetchProgrammeData = async () => {
   //     try {
-  //       const programmeDetails = await getProgrammeDetails(programmeId);
-  //       setProgramme(programmeDetails.data);
+  //       const liveSessions = await getSessions();
+  //       debugger;
   //     } catch (error) {
   //       console.log(error);
   //     }
   //   };
   //   fetchProgrammeData();
-  // }, [programmeId]);
+  // }, []);
 
   // useEffect(() => {
   //   const fetchData = async () => {

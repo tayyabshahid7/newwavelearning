@@ -1,12 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import "./style.scss";
 import selectedIcon from "../../../static/images/selected.png";
 import removeIcon from "../../../static/images/remove.png";
 
-const KeyboardQuestion = ({ isSubmitted, answeredQuestion, keywords }: any) => {
+const KeyboardQuestion = ({ isSubmitted, answeredQuestion, keywords, userAnswer }: any) => {
   const [value, setValue] = useState<string>("");
+
+  useEffect(() => {
+    if (userAnswer.length > 0) {
+      let uAnswer = userAnswer[0].answer;
+      setValue(uAnswer.text);
+    }
+  }, [userAnswer]);
 
   return (
     <Grid className="keyboard-question" sx={{ maxWidth: "89%", margin: "auto" }}>
