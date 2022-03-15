@@ -42,7 +42,6 @@ const UserDashboard = () => {
   const node: any = useRef();
   const [loading, setLoading] = useState<boolean>(false);
   // const { enqueueSnackbar } = useSnackbar();
-  // const [sections, setSections] = useState<SectionData[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -62,18 +61,6 @@ const UserDashboard = () => {
     };
     fetchData();
   }, []);
-
-  // useEffect(() => {
-  //   const fetchProgrammeData = async () => {
-  //     try {
-  //       const liveSessions = await getSessions();
-  //       debugger;
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   fetchProgrammeData();
-  // }, []);
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -176,7 +163,8 @@ const UserDashboard = () => {
               <Grid
                 key={index}
                 onClick={() => {
-                  index === 0 && history.push(`/user-programmes-section/${programme?.id}`);
+                  if (index === 0) history.push(`/user-programmes-section/${programme?.id}`);
+                  if (index === 3) history.push(`/user-live-sessions/`);
                 }}
                 className="dashboard-card"
                 xs={6}

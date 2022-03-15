@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Typography } from "@mui/material";
 import JourneyIcon from "../../../static/images/journey-icon.png";
+import { getSessions } from "../../../../services/common";
 import "./style.scss";
-import { getStepDetails } from "../../../../services/common";
-import { useParams } from "react-router-dom";
+import arrowIcon from "../../../static/images/right-arrow 6.png";
+import { useHistory } from "react-router";
 
 const LiveSession = () => {
-  const { stepId } = useParams<any>();
+  const history = useHistory();
   const [stepData, setStepData] = useState<any>({
     content: "",
     image: "",
@@ -21,16 +22,16 @@ const LiveSession = () => {
   });
 
   useEffect(() => {
-    const fetchStepData = async () => {
+    const fetchProgrammeData = async () => {
       try {
-        const response: any = await getStepDetails(stepId);
-        setStepData(response.fields);
-      } catch (error: any) {
+        const liveSessions: any = await getSessions();
+        setStepData(liveSessions.data?.results[0]?.step.fields);
+      } catch (error) {
         console.log(error);
       }
     };
-    fetchStepData();
-  }, [stepId]);
+    fetchProgrammeData();
+  }, []);
 
   return (
     <>
@@ -45,7 +46,36 @@ const LiveSession = () => {
           display: "block",
         }}
       >
-        <Grid className="live" item container direction="column">
+        <Grid
+          item
+          sx={{
+            width: "100%",
+            padding: "6% 5%",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "2%",
+            height: "85px",
+          }}
+        >
+          <img
+            onClick={() => history.goBack()}
+            style={{ cursor: "pointer" }}
+            src={arrowIcon}
+            width="27px"
+            height="27px"
+            alt="Arrow Logo"
+          />
+        </Grid>
+        <Grid
+          sx={{
+            paddingTop: "30px",
+          }}
+          className="live"
+          item
+          container
+          direction="column"
+        >
           <Grid className="live-section">
             <Grid sx={{ display: "flex", alignItems: "center", padding: "0 13px" }}>
               <img

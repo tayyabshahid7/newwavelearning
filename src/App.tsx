@@ -62,6 +62,7 @@ function App() {
           component={ProgrammeSection}
         />
         <ProtectedRoute exact path={"/user-dashboard/"} component={UserDashboard} />
+        <ProtectedRoute exact path={"/user-live-sessions/"} component={LiveSession} />
         <Route exact path={"/user-login"} component={UserLogin} />
         <Route exact path={"/user-reset-password"} component={UserResetPassword} />
         <Route path="/user-set-password/:signature/:token" component={UserSetPassword} />
