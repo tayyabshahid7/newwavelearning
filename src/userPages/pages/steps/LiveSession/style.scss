@@ -7,7 +7,7 @@
         cursor: pointer;
         margin: 10px 25px;
         box-sizing: border-box;
-        padding: 30px 0;
+        padding: 20px 0;
         border-radius: 10px;
         box-shadow: #0E4A66 3px 7.5px 26px, #0e4a66 4px 7px 0px;
         border: 2px solid #0E4A66;
@@ -18,7 +18,7 @@
     }
     .live-title{
         font-weight: 600;
-        font-size: 24px;
+        font-size: 16px;
         line-height: 27px;
         text-transform: capitalize;
         color: #003B50;
@@ -37,12 +37,12 @@
     }
 
     .live-time{
-        font-weight: 500;
+        font-weight: 600;
         font-size: 14px;
         line-height: 22px;
         text-transform: capitalize;
         color: #003B50;
-        margin: 10% 0 8px 0;
+        margin: 3% 0 0 0;
         padding-left: 10px;
         padding-right: 26px;
         :nth-child(4),:nth-child(5){

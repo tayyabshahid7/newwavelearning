@@ -8,6 +8,11 @@ import { useHistory } from "react-router";
 
 const LiveSession = () => {
   const history = useHistory();
+
+  const [stepDetail, setStepDetail] = useState<any>({
+    start_time: "",
+    end_time: "",
+  });
   const [stepData, setStepData] = useState<any>({
     content: "",
     image: "",
@@ -25,6 +30,7 @@ const LiveSession = () => {
     const fetchProgrammeData = async () => {
       try {
         const liveSessions: any = await getSessions();
+        setStepDetail(liveSessions.data?.results[0]);
         setStepData(liveSessions.data?.results[0]?.step.fields);
       } catch (error) {
         console.log(error);
@@ -52,7 +58,6 @@ const LiveSession = () => {
             width: "100%",
             padding: "6% 5%",
             display: "flex",
-            justifyContent: "space-between",
             alignItems: "center",
             marginBottom: "2%",
             height: "85px",
@@ -66,6 +71,16 @@ const LiveSession = () => {
             height="27px"
             alt="Arrow Logo"
           />
+          <Typography
+            sx={{ fontWeight: "500", fontSize: "22px" }}
+            ml="20px"
+            mb="0"
+            variant="h6"
+            gutterBottom
+            component="p"
+          >
+            LIVE SESSIONS
+          </Typography>
         </Grid>
         <Grid
           sx={{
@@ -85,16 +100,35 @@ const LiveSession = () => {
                 src={JourneyIcon}
                 alt="img"
               />
-              <p className={"live-title"}>{stepData.title}</p>
+              <Grid sx={{ display: "flex", flexDirection: "column" }}>
+                <Grid sx={{ display: "flex" }}>
+                  <p className={"live-title"}>{stepData.title}</p>
+                  <p className={"live-title"} style={{ marginLeft: "0" }}>
+                    {stepData.session_type === "one_one_session"
+                      ? "1-1 Session"
+                      : stepData.session_type === "group_session"
+                      ? "Group Session"
+                      : stepData.session_type === "cohort_session"
+                      ? "Cohort Session"
+                      : null}
+                  </p>
+                </Grid>
+                <Grid sx={{ display: "flex" }}>
+                  <p className={"live-title"}>{stepDetail.start_time}</p>-
+                  <p style={{ marginLeft: "0" }} className={"live-title"}>
+                    {stepDetail.end_time}
+                  </p>
+                </Grid>
+              </Grid>
             </Grid>
+
             <Grid sx={{ display: "flex", alignItems: "center", padding: "0 13px" }}>
               <p className={"live-description"}>{stepData.description}</p>
             </Grid>
 
             <Grid sx={{ display: "flex", alignItems: "center", padding: "0 13px" }}>
               <Typography variant="h4" component="p" className={"live-time"}>
-                {"Durationss"} : {stepData.hours} {stepData.minutes ? ":" : ""} {stepData.minutes}{" "}
-                {stepData.minutes ? "Min" : ""}
+                Duration: {stepData.hours} Hr {stepData.minutes} {stepData.minutes ? "Min" : ""}
               </Typography>
             </Grid>
           </Grid>
