@@ -12,7 +12,6 @@ const LiveSessionDetail = () => {
   useEffect(() => {
     let state: any = history.location.state;
     state && setLiveSession(state.data);
-    debugger;
   }, [history.location.state]);
 
   return (

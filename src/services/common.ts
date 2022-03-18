@@ -9,6 +9,16 @@ import {
 } from "common/types";
 import { axs } from "./axiosAPI";
 
+export const getUserProgrammes = async (pageUrl: string | null = null) => {
+  const url = pageUrl || "/user-programmes/";
+  try {
+    const response = await axs.get<ResponseData>(url);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
 export const getProgrammes = async (pageUrl: string | null = null) => {
   const url = pageUrl || "/programmes/";
   try {

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Button, Grid, Typography } from "@mui/material";
 import ArrowRightIcon from "../../static/images/right-arrow.png";
 import ArrowWhiteIcon from "../../static/images/arrow-white.png";
-import { getProgrammes } from "../../../services/common";
+import { getUserProgrammes } from "../../../services/common";
 import { useHistory } from "react-router";
 import "./style.scss";
 import { Burger, Menu } from "../../components/BurgerMenu";
@@ -19,7 +19,7 @@ const Programmes = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        let response = await getProgrammes();
+        let response = await getUserProgrammes();
         setProgrammeList(response.data.results);
         setTimeout(() => {
           setLoading(false);

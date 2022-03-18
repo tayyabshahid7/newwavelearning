@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import { logout } from "../../../services/auth";
 import { useHistory } from "react-router";
 import { Grid, Typography } from "@mui/material";
 import nwLogo from "../../static/images/logo.png";
@@ -56,6 +55,11 @@ const StyledMenu = styled.nav`
 
 export const Menu = ({ open, close }: any) => {
   const history = useHistory();
+
+  const logout = () => {
+    localStorage.clear();
+    window.location.href = "/user-login";
+  };
 
   return (
     // @ts-ignore
