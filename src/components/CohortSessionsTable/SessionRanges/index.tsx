@@ -30,8 +30,8 @@ const SessionRanges = ({ session }: SessionRagesProps) => {
       setEndDate(parse(currentSession.end_time, "yyyy-MM-dd", new Date()));
     }
     if (currentSession.start_time && currentSession.end_time) {
-      const st = parse(currentSession.start_time, "yyyy-MM-dd", new Date());
-      const et = parse(currentSession.end_time, "yyyy-MM-dd", new Date());
+      const st = (currentSession.start_time, "yyyy-MM-dd", new Date());
+      const et = (currentSession.end_time, "yyyy-MM-dd", new Date());
       setRange(`${format(st, "dd/MM/yyyy")} - ${format(et, "dd/MM/yyyy")}`);
     } else {
       setRange(null);

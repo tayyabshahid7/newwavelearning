@@ -9,35 +9,41 @@ import { useHistory } from "react-router";
 const LiveSession = () => {
   const history = useHistory();
 
-  const [stepDetail, setStepDetail] = useState<any>({
-    start_time: "",
-    end_time: "",
-  });
-  const [stepData, setStepData] = useState<any>({
-    content: "",
-    image: "",
-    title: "",
-    background_image: "",
-    answers: [],
-    description: "",
-    audio: "",
-    video: "",
-    minutes: "",
-    hours: "",
-  });
+  const [liveSession, setLiveSession] = useState<any>([]);
+
+  // const [stepData, setStepData] = useState<any>({
+  //   content: "",
+  //   image: "",
+  //   title: "",
+  //   background_image: "",
+  //   answers: [],
+  //   description: "",
+  //   audio: "",
+  //   video: "",
+  //   minutes: "",
+  //   hours: "",
+  // });
 
   useEffect(() => {
     const fetchProgrammeData = async () => {
       try {
         const liveSessions: any = await getSessions();
-        setStepDetail(liveSessions.data?.results[0]);
-        setStepData(liveSessions.data?.results[0]?.step.fields);
+        debugger;
+        setLiveSession(liveSessions.data.results);
+        // results[0]?.step.fields
       } catch (error) {
         console.log(error);
       }
     };
     fetchProgrammeData();
   }, []);
+
+  const detailHandler = (data: any) => {
+    history.push({
+      pathname: "/user-live-session-detail",
+      state: { data: data },
+    });
+  };
 
   return (
     <>
@@ -82,57 +88,57 @@ const LiveSession = () => {
             LIVE SESSIONS
           </Typography>
         </Grid>
-        <Grid
-          sx={{
-            paddingTop: "30px",
-          }}
-          className="live"
-          item
-          container
-          direction="column"
-        >
-          <Grid className="live-section">
-            <Grid sx={{ display: "flex", alignItems: "center", padding: "0 13px" }}>
-              <img
-                style={{ marginLeft: "10px" }}
-                width="38px"
-                height={"38px"}
-                src={JourneyIcon}
-                alt="img"
-              />
-              <Grid sx={{ display: "flex", flexDirection: "column" }}>
-                <Grid sx={{ display: "flex" }}>
-                  <p className={"live-title"}>{stepData.title}</p>
-                  <p className={"live-title"} style={{ marginLeft: "0" }}>
-                    {stepData.session_type === "one_one_session"
-                      ? "1-1 Session"
-                      : stepData.session_type === "group_session"
-                      ? "Group Session"
-                      : stepData.session_type === "cohort_session"
-                      ? "Cohort Session"
-                      : null}
-                  </p>
-                </Grid>
-                <Grid sx={{ display: "flex" }}>
-                  <p className={"live-title"}>{stepDetail.start_time}</p>-
-                  <p style={{ marginLeft: "0" }} className={"live-title"}>
-                    {stepDetail.end_time}
-                  </p>
+
+        {liveSession &&
+          liveSession.map((item: any, index: number) => {
+            return (
+              <Grid
+                onClick={() => {
+                  detailHandler(item);
+                }}
+                key={index}
+                sx={{
+                  paddingTop: "30px",
+                }}
+                className="live"
+                item
+                container
+                direction="column"
+              >
+                <Grid className="live-section">
+                  <Grid sx={{ display: "flex", alignItems: "center", padding: "0 13px" }}>
+                    <img
+                      style={{ marginLeft: "10px" }}
+                      width="38px"
+                      height={"38px"}
+                      src={JourneyIcon}
+                      alt="img"
+                    />
+                    <Grid sx={{ display: "flex", flexDirection: "column" }}>
+                      <Grid sx={{ display: "flex" }}>
+                        <p className={"live-title"}>{item.step.fields.title}</p>
+                        <p className={"live-title"} style={{ marginLeft: "0" }}>
+                          {item.step.fields.session_type === "one_one_session"
+                            ? "1-1 Session"
+                            : item.step.fields.session_type === "group_session"
+                            ? "Group Session"
+                            : item.step.fields.session_type === "cohort_session"
+                            ? "Cohort Session"
+                            : null}
+                        </p>
+                      </Grid>
+                      <Grid sx={{ display: "flex" }}>
+                        <p className={"live-title"}>{item.start_time}</p>-
+                        <p style={{ marginLeft: "0" }} className={"live-title"}>
+                          {item.end_time}
+                        </p>
+                      </Grid>
+                    </Grid>
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
-
-            <Grid sx={{ display: "flex", alignItems: "center", padding: "0 13px" }}>
-              <p className={"live-description"}>{stepData.description}</p>
-            </Grid>
-
-            <Grid sx={{ display: "flex", alignItems: "center", padding: "0 13px" }}>
-              <Typography variant="h4" component="p" className={"live-time"}>
-                Duration: {stepData.hours} Hr {stepData.minutes} {stepData.minutes ? "Min" : ""}
-              </Typography>
-            </Grid>
-          </Grid>
-        </Grid>
+            );
+          })}
       </Grid>
     </>
   );

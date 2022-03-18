@@ -47,6 +47,7 @@ import ProgrammeSection from "./userPages/pages/programmes/programmes-sections";
 import StepsList from "./userPages/pages/programmes/section-steps-list";
 import CompleteSection from "./userPages/pages/steps/CompleteSection";
 import LiveSession from "./userPages/pages/steps/LiveSession";
+import LiveSessionDetail from "./userPages/pages/steps/LiveSession/Details";
 
 function App() {
   return (
@@ -63,6 +64,7 @@ function App() {
         />
         <ProtectedRoute exact path={"/user-dashboard/"} component={UserDashboard} />
         <ProtectedRoute exact path={"/user-live-sessions/"} component={LiveSession} />
+        <ProtectedRoute exact path={"/user-live-session-detail/"} component={LiveSessionDetail} />
         <Route exact path={"/user-login"} component={UserLogin} />
         <Route exact path={"/user-reset-password"} component={UserResetPassword} />
         <Route path="/user-set-password/:signature/:token" component={UserSetPassword} />
