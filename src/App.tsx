@@ -55,7 +55,8 @@ function App() {
       <Switch>
         <Route exact path={LOGIN_PAGE} component={LoginPage} />
         <ProtectedRoute exact path={"/user-programmes"} component={Programmes} />
-        <ProtectedRoute exact path={"/user-live-sessions/:stepId"} component={LiveSession} />
+        <ProtectedRoute exact path={"/user-live-sessions/:cohortId"} component={LiveSession} />
+        <ProtectedRoute exact path={"/user-live-session-detail/"} component={LiveSessionDetail} />
         <ProtectedRoute exact path={"/user-section-steps/:sectionId"} component={StepsList} />
         <ProtectedRoute
           exact
@@ -63,8 +64,6 @@ function App() {
           component={ProgrammeSection}
         />
         <ProtectedRoute exact path={"/user-dashboard/"} component={UserDashboard} />
-        <ProtectedRoute exact path={"/user-live-sessions/"} component={LiveSession} />
-        <ProtectedRoute exact path={"/user-live-session-detail/"} component={LiveSessionDetail} />
         <Route exact path={"/user-login"} component={UserLogin} />
         <Route exact path={"/user-reset-password"} component={UserResetPassword} />
         <Route path="/user-set-password/:signature/:token" component={UserSetPassword} />

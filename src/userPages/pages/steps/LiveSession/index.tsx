@@ -1,42 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Typography } from "@mui/material";
 import JourneyIcon from "../../../static/images/journey-icon.png";
-import { getSessions } from "../../../../services/common";
+import { getCohortLiveSessions } from "../../../../services/common";
 import "./style.scss";
 import arrowIcon from "../../../static/images/right-arrow 6.png";
 import { useHistory } from "react-router";
+import { useParams } from "react-router-dom";
+
+interface ProgrammePageParams {
+  cohortId: string;
+}
 
 const LiveSession = () => {
   const history = useHistory();
-
+  const { cohortId } = useParams<ProgrammePageParams>();
   const [liveSession, setLiveSession] = useState<any>([]);
 
-  // const [stepData, setStepData] = useState<any>({
-  //   content: "",
-  //   image: "",
-  //   title: "",
-  //   background_image: "",
-  //   answers: [],
-  //   description: "",
-  //   audio: "",
-  //   video: "",
-  //   minutes: "",
-  //   hours: "",
-  // });
-
   useEffect(() => {
-    const fetchProgrammeData = async () => {
-      try {
-        const liveSessions: any = await getSessions();
-        debugger;
-        setLiveSession(liveSessions.data.results);
-        // results[0]?.step.fields
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchProgrammeData();
-  }, []);
+    if (cohortId) {
+      const fetchProgrammeData = async () => {
+        try {
+          const liveSessions: any = await getCohortLiveSessions(cohortId);
+          setLiveSession(liveSessions.data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchProgrammeData();
+    }
+  }, [cohortId]);
 
   const detailHandler = (data: any) => {
     history.push({

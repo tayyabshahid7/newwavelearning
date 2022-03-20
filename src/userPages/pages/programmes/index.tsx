@@ -4,9 +4,9 @@ import ArrowRightIcon from "../../static/images/right-arrow.png";
 import ArrowWhiteIcon from "../../static/images/arrow-white.png";
 import { getUserProgrammes } from "../../../services/common";
 import { useHistory } from "react-router";
-import "./style.scss";
 import { Burger, Menu } from "../../components/BurgerMenu";
 import Loading from "../../../components/Loading";
+import "./style.scss";
 
 const Programmes = () => {
   const [programmeList, setProgrammeList] = useState<any>(null);
@@ -76,14 +76,17 @@ const Programmes = () => {
             return (
               <Grid
                 onClick={() => {
-                  history.push(`/user-dashboard/`);
+                  history.push({
+                    pathname: "/user-dashboard/",
+                    state: { id: item.id },
+                  });
                 }}
                 key={index}
                 className="all-programmes"
               >
                 <Grid sx={{ display: "flex", alignItems: "center", padding: "0 13px" }}>
-                  <img width="68px" src={item.image} alt="programme img" />
-                  <p className={"programmes-title"}>{item.name}</p>
+                  <img width="68px" src={item.programme.image} alt="programme img" />
+                  <p className={"programmes-title"}>{item.programme.name}</p>
                 </Grid>
                 <img
                   style={{ marginRight: "20px", objectFit: "cover", borderRadius: "4px" }}
@@ -96,7 +99,7 @@ const Programmes = () => {
             );
           })}
       </Grid>
-      <Grid mt="100%" item sx={{ width: "100%", padding: "0 15px" }}>
+      <Grid mt="85%" item sx={{ width: "100%", padding: "0 15px" }}>
         <Button
           onClick={() => {
             window.open("https://www.newwavelearning.com/programmes", "_blank");

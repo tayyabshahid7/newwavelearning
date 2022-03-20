@@ -10,7 +10,7 @@ import {
 import { axs } from "./axiosAPI";
 
 export const getUserProgrammes = async (pageUrl: string | null = null) => {
-  const url = pageUrl || "/user-programmes/";
+  const url = pageUrl || "/user-cohort/";
   try {
     const response = await axs.get<ResponseData>(url);
     return response;
@@ -456,6 +456,24 @@ export const submitStepAnswer = async (data: any) => {
   try {
     const response = await axs.post<ResponseData>(`/stepanswers/`, data);
     return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const getCohortLiveSessions = async (cohortId: string) => {
+  try {
+    const response = await axs.get<ResponseData>(`/livesessions/${cohortId}/cohort-live-sessions/`);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const getUserCohortDetails = async (cohortId: string) => {
+  try {
+    const response = await axs.get<ResponseData>(`/user-cohort/${cohortId}/`);
+    return response;
   } catch (error: any) {
     throw error;
   }

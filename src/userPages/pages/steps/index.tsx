@@ -107,7 +107,6 @@ const Steps = () => {
           setSelectedCount(Object.keys(response.answer[0].answer).length);
         }
         setUserAnswer(response.answer);
-        debugger;
         setTotalAnswerCount(response.fields?.correct_answers);
         setStepType(response?.step_type);
       } catch (error: any) {

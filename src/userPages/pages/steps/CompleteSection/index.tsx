@@ -15,7 +15,7 @@ interface CompleteSectionParams {
 
 const CompleteSection = () => {
   const history = useHistory();
-  const { sectionId } = useParams<CompleteSectionParams>();
+  const { sectionId, programmeId } = useParams<CompleteSectionParams>();
   const [section, setSection] = useState<any>(null);
   const { enqueueSnackbar } = useSnackbar();
 
@@ -100,7 +100,10 @@ const CompleteSection = () => {
           fullWidth
           size="large"
           onClick={() => {
-            history.push(`/user-dashboard/`);
+            history.push({
+              pathname: "/user-dashboard/",
+              state: { id: programmeId },
+            });
           }}
         >
           Return To Dashboard
