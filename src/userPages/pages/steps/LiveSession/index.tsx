@@ -109,7 +109,9 @@ const LiveSession = () => {
                     <Grid sx={{ display: "flex", flexDirection: "column" }}>
                       <Grid sx={{ display: "flex" }}>
                         <p className={"live-title"}>{item.step.fields.title}</p>
-                        <p className={"live-title"} style={{ marginLeft: "0" }}>
+                      </Grid>
+                      <Grid>
+                        <p className={"live-title"}>
                           {item.step.fields.session_type === "one_one_session"
                             ? "1-1 Session"
                             : item.step.fields.session_type === "group_session"

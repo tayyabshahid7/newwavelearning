@@ -17,6 +17,10 @@
         background: #FFFFFF;
     }
     .live-title{
+        text-overflow: ellipsis;
+        max-width: 250px;
+        white-space: nowrap;
+        overflow: hidden;
         font-weight: 600;
         font-size: 16px;
         line-height: 27px;
@@ -31,7 +35,7 @@
         line-height: 22px;
         text-transform: capitalize;
         color: #003B50;
-        margin: 10% 0 8px 0;
+        margin: 5% 0 8px 0;
         padding-left: 10px;
         padding-right: 26px;
     }
