@@ -29,12 +29,16 @@ const LeaderBoard = () => {
         const learnersList = await getCohortLearners(cohortId);
         let array: any = learnersList;
         // change sort function
-        array.sort(function (a: any, b: any) {
-          return b.completed_section - a.completed_section;
+        let index = 0;
+        array.sort((a: any, b: any) => {
+          if (index !== 0) {
+            index++;
+            return b.completed_section - a.completed_section;
+          }
         });
 
         let rank = 1;
-        for (let i = 0; i < array.length; i++) {
+        for (let i = 1; i < array.length; i++) {
           if (i > 0 && array[i].completed_section < array[i - 1].completed_section) {
             rank++;
           }
