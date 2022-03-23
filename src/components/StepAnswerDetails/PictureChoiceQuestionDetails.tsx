@@ -20,7 +20,7 @@ const PictureChoiceQuestionDetails = ({ stepAnswer }: any) => {
                 <img src={answer.picture} alt={answer.text} height={100} />
                 <Typography>{answer.text}</Typography>
                 <Typography color={answer.correct ? "primary" : "error"}>
-                  {stepAnswer.answer.includes(answer.id) && "Learner Answer"}
+                  {stepAnswer.answer.answer.includes(answer.id) && "Learner Answer"}
                 </Typography>
                 {answer.correct && <Typography color="green">Correct Answer</Typography>}
               </Stack>

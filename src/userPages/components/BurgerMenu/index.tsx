@@ -53,7 +53,7 @@ const StyledMenu = styled.nav`
   }
 `;
 
-export const Menu = ({ open, close }: any) => {
+export const Menu = ({ cohortId, open, close }: any) => {
   const history = useHistory();
 
   const logout = () => {
@@ -64,22 +64,22 @@ export const Menu = ({ open, close }: any) => {
   return (
     // @ts-ignore
     <StyledMenu open={open}>
-      {/*<p*/}
-      {/*  onClick={() => {*/}
-      {/*    close(false);*/}
-      {/*    history.push("/user-dashboard");*/}
-      {/*  }}*/}
-      {/*>*/}
-      {/*  Dashboard*/}
-      {/*</p>*/}
       <p
         onClick={() => {
           close(false);
-          history.push("/user-programmes");
+          history.push(`/user-dashboard/${cohortId}`);
         }}
       >
-        Programmes
+        Dashboard
       </p>
+      {/*<p*/}
+      {/*  onClick={() => {*/}
+      {/*    close(false);*/}
+      {/*    history.push("/user-programmes");*/}
+      {/*  }}*/}
+      {/*>*/}
+      {/*  Programmes*/}
+      {/*</p>*/}
       <p
         onClick={() => {
           close(false);

@@ -6,11 +6,12 @@ import FeedbackIcon from "../../static/images/feedback.png";
 import LiveIcon from "../../static/images/live.png";
 import ArrowRightIcon from "../../static/images/right-arrow.png";
 import { useHistory } from "react-router";
-import { getProgrammes } from "../../../services/common";
-import "./style.scss";
+import { getUserCohortDetails } from "../../../services/common";
 import arrowIcon from "../../static/images/right-arrow 6.png";
 import { Burger, Menu } from "../../components/BurgerMenu";
 import Loading from "../../../components/Loading";
+import { useParams } from "react-router-dom";
+import "./style.scss";
 
 const dashboardData = [
   {
@@ -35,45 +36,39 @@ const dashboardData = [
   },
 ];
 
+interface DashboardParams {
+  cohortId: string;
+}
+
 const UserDashboard = () => {
   const history = useHistory();
+  const { cohortId } = useParams<DashboardParams>();
   const [programme, setProgramme] = useState<any>(null);
+  const [cohortDetail, setCohortDetail] = useState<any>(null);
   const [open, setOpen] = useState(false);
   const node: any = useRef();
   const [loading, setLoading] = useState<boolean>(false);
   // const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const response: any = await getProgrammes();
-        if (response?.data?.results && response?.data?.results?.length > 0) {
-          setProgramme(response.data.results[0]);
-        }
-        setTimeout(() => {
+    if (cohortId) {
+      const fetchData = async () => {
+        setLoading(true);
+        try {
+          const cohortDetails: any = await getUserCohortDetails(cohortId);
+          setProgramme(cohortDetails.data.programme);
+          setCohortDetail(cohortDetails.data);
+          setTimeout(() => {
+            setLoading(false);
+          }, 300);
+        } catch (error) {
           setLoading(false);
-        }, 300);
-      } catch (error) {
-        setLoading(false);
-        console.log(error);
-      }
-    };
-    fetchData();
-  }, []);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await getProgrammeSections(Number(programmeId));
-  //       debugger;
-  //       setSections(response.data);
-  //     } catch (error) {
-  //       enqueueSnackbar("Could not fetch sections", { variant: "error" });
-  //     }
-  //   };
-  //   fetchData();
-  // }, [programmeId, enqueueSnackbar]);
+          console.log(error);
+        }
+      };
+      fetchData();
+    }
+  }, [cohortId]);
 
   return (
     <Grid
@@ -129,6 +124,7 @@ const UserDashboard = () => {
           <Grid ref={node}>
             <Burger open={open} setOpen={setOpen} />
             <Menu
+              cohortId={cohortId}
               open={open}
               setOpen={setOpen}
               close={() => {
@@ -140,7 +136,7 @@ const UserDashboard = () => {
 
         <Grid
           onClick={() => {
-            history.push(`/user-programmes-section/${programme?.id}`);
+            history.push(`/user-programmes-section/${cohortDetail.id}/${programme?.id}`);
           }}
           className="all-programmes"
         >
@@ -163,8 +159,10 @@ const UserDashboard = () => {
               <Grid
                 key={index}
                 onClick={() => {
-                  if (index === 0) history.push(`/user-programmes-section/${programme?.id}`);
-                  if (index === 3) history.push(`/user-live-sessions/`);
+                  if (index === 0)
+                    history.push(`/user-programmes-section/${cohortDetail.id}/${programme?.id}`);
+                  if (index === 1) history.push(`/leaderboard/${cohortDetail.id}/${programme?.id}`);
+                  if (index === 3) history.push(`/user-live-sessions/${cohortDetail.id}/`);
                 }}
                 className="dashboard-card"
                 xs={6}

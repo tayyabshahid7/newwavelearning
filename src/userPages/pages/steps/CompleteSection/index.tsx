@@ -9,13 +9,14 @@ import "./style.scss";
 import arrowIcon from "../../../static/images/right-arrow 6.png";
 
 interface CompleteSectionParams {
+  cohortId: any;
   sectionId: any;
   programmeId: any;
 }
 
 const CompleteSection = () => {
   const history = useHistory();
-  const { sectionId } = useParams<CompleteSectionParams>();
+  const { cohortId, sectionId, programmeId } = useParams<CompleteSectionParams>();
   const [section, setSection] = useState<any>(null);
   const { enqueueSnackbar } = useSnackbar();
 
@@ -95,12 +96,37 @@ const CompleteSection = () => {
             backgroundColor: "#0E4A66",
             boxShadow: "0px 4px 15px rgba(14, 74, 102, 0.57)",
             borderRadius: "8px",
+            marginBottom: "4%",
           }}
           variant="contained"
           fullWidth
           size="large"
           onClick={() => {
-            history.push(`/user-dashboard/`);
+            history.push(`/user-programmes-section/${cohortId}/${programmeId}`);
+          }}
+        >
+          Continue Learning
+        </Button>
+        <Button
+          sx={{
+            padding: "16px 13.39px",
+            fontSize: "24px",
+            fontWeight: 800,
+            backgroundColor: "#FD773B",
+            boxShadow: "0px 4px 15px rgba(14, 74, 102, 0.57)",
+            borderRadius: "8px",
+            border: "1px solid #FD773B",
+            "&:hover": {
+              backgroundColor: "#ee8252",
+            },
+          }}
+          variant="contained"
+          fullWidth
+          size="large"
+          onClick={() => {
+            history.push({
+              pathname: `/user-dashboard/${cohortId}`,
+            });
           }}
         >
           Return To Dashboard

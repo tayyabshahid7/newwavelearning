@@ -20,7 +20,7 @@ const MultipleChoiceDetails = ({ stepAnswer }: any) => {
                 <Typography>{answer.text}</Typography>
                 {answer.correct && <Typography color="green">Correct Answer</Typography>}
                 <Typography color={answer.correct ? "primary" : "error"}>
-                  {stepAnswer.answer.includes(answer.id) && "Learner Answer"}
+                  {stepAnswer.answer.answer.includes(answer.id) && "Learner Answer"}
                 </Typography>
               </Stack>
             </li>

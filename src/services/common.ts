@@ -10,7 +10,7 @@ import {
 import { axs } from "./axiosAPI";
 
 export const getUserProgrammes = async (pageUrl: string | null = null) => {
-  const url = pageUrl || "/user-programmes/";
+  const url = pageUrl || "/user-cohort/";
   try {
     const response = await axs.get<ResponseData>(url);
     return response;
@@ -125,9 +125,13 @@ export const getSectionSteps = async (sectionId: number) => {
 
 export const addStep = async (data: FormData) => {
   try {
-    let type = data.get("step_type");
-    let timeOutValue = type === "video" || type === "audio" ? 30000 : 15000;
-    const response = await axs.post<StepData>("/steps/", data, { timeout: timeOutValue });
+    let timeOutValue = 60000;
+    const response = await axs.post<StepData>("/steps/", data, {
+      timeout: timeOutValue,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return response.data;
   } catch (error: any) {
     throw error;
@@ -136,10 +140,12 @@ export const addStep = async (data: FormData) => {
 
 export const editStep = async (stepId: number | string, data: FormData) => {
   try {
-    let type = data.get("step_type");
-    let timeOutValue = type === "video" || type === "audio" ? 30000 : 15000;
+    let timeOutValue = 60000;
     const response = await axs.patch<StepData>(`/steps/${stepId}/`, data, {
       timeout: timeOutValue,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     });
     return response.data;
   } catch (error: any) {
@@ -456,6 +462,24 @@ export const submitStepAnswer = async (data: any) => {
   try {
     const response = await axs.post<ResponseData>(`/stepanswers/`, data);
     return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const getCohortLiveSessions = async (cohortId: string) => {
+  try {
+    const response = await axs.get<ResponseData>(`/livesessions/${cohortId}/cohort-live-sessions/`);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const getUserCohortDetails = async (cohortId: string) => {
+  try {
+    const response = await axs.get<ResponseData>(`/user-cohort/${cohortId}/`);
+    return response;
   } catch (error: any) {
     throw error;
   }

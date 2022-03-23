@@ -34,7 +34,9 @@ const CohortSessionsTable = ({ sessions }: CohortSessionsTableProps) => {
           <TableBody>
             {sessions?.map(session => (
               <TableRow key={session.id}>
-                <TableCell>Session (Step: {session.step_number})</TableCell>
+                <TableCell>
+                  {session.step.fields.title} (Step: {session.step_number})
+                </TableCell>
                 <TableCell>
                   <SessionRanges session={session} />
                 </TableCell>

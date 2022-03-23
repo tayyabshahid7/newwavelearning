@@ -14,12 +14,13 @@ import "./style.scss";
 
 interface ProgrammePageParams {
   programmeId: string;
+  cohortId: string;
 }
 
 const ProgrammeSection = () => {
   const history = useHistory();
   const [programme, setProgramme] = useState<any>(null);
-  const { programmeId } = useParams<ProgrammePageParams>();
+  const { programmeId, cohortId } = useParams<ProgrammePageParams>();
   const { enqueueSnackbar } = useSnackbar();
   const [open, setOpen] = useState(false);
   const node: any = useRef();
@@ -70,13 +71,13 @@ const ProgrammeSection = () => {
 
   const sectionHandler = (item: any) => {
     // if (item.step_order) history.push(`/user-steps/${item.id}/${item.step_order[0]}`);
-    history.push(`/user-section-steps/${item.id}/`);
+    history.push(`/user-section-steps/${cohortId}/${item.id}/`);
   };
 
   const getStarted = () => {
     let obj = sections.filter((item: any) => item.is_section_completed === false);
     // if (item.step_order) history.push(`/user-steps/${item.id}/${item.step_order[0]}`);
-    history.push(`/user-section-steps/${obj[0].id}/`);
+    history.push(`/user-section-steps/${cohortId}/${obj[0].id}/`);
   };
 
   return (
@@ -117,6 +118,7 @@ const ProgrammeSection = () => {
           <Grid ref={node}>
             <Burger open={open} setOpen={setOpen} />
             <Menu
+              cohortId={cohortId}
               open={open}
               setOpen={setOpen}
               close={() => {

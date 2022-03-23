@@ -61,6 +61,7 @@ export interface Session {
   step_number: number;
   start_time: string;
   end_time: string;
+  step: any;
 }
 
 export interface Learner {

@@ -22,6 +22,7 @@ import KeyboardQuestion from "./KeyboardQuestion";
 import ModelQuestion from "./ModelQuestion";
 
 type IntroParams = {
+  cohortId: string;
   stepId: string;
   sectionId: any;
 };
@@ -29,7 +30,7 @@ type IntroParams = {
 const Steps = () => {
   const history = useHistory();
   const user = JSON.parse(localStorage.getItem("user") || "");
-  const { stepId, sectionId } = useParams<IntroParams>();
+  const { cohortId, stepId, sectionId } = useParams<IntroParams>();
   const [loading, setLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [selectedCount, setSelectedCount] = useState(0);
@@ -107,7 +108,6 @@ const Steps = () => {
           setSelectedCount(Object.keys(response.answer[0].answer).length);
         }
         setUserAnswer(response.answer);
-        debugger;
         setTotalAnswerCount(response.fields?.correct_answers);
         setStepType(response?.step_type);
       } catch (error: any) {
@@ -313,9 +313,9 @@ const Steps = () => {
                   setIsSubmitted(false);
                   setSelectedCount(0);
                   setText("");
-                  history.push(`/user-steps/${sectionId}/${nextStepId}`);
+                  history.push(`/user-steps/${cohortId}/${sectionId}/${nextStepId}`);
                 } else {
-                  history.push(`/section-success/${sectionId}/${steps[0]?.programme}`);
+                  history.push(`/section-success/${cohortId}/${sectionId}/${steps[0]?.programme}`);
                 }
               }}
               isCorrect={async (correct: boolean) => {
@@ -325,9 +325,9 @@ const Steps = () => {
                   setIsSubmitted(false);
                   setSelectedCount(0);
                   setText("");
-                  history.push(`/user-steps/${sectionId}/${nextStepId}`);
+                  history.push(`/user-steps/${cohortId}/${sectionId}/${nextStepId}`);
                 } else {
-                  history.push(`/section-success/${sectionId}/${steps[0]?.programme}`);
+                  history.push(`/section-success/${cohortId}/${sectionId}/${steps[0]?.programme}`);
                 }
               }}
               answeredQuestion={(text: string) => {
@@ -395,9 +395,9 @@ const Steps = () => {
                 setIsSubmitted(false);
                 setSelectedCount(0);
                 setText("");
-                history.push(`/user-steps/${sectionId}/${nextStepId}`);
+                history.push(`/user-steps/${cohortId}/${sectionId}/${nextStepId}`);
               } else {
-                history.push(`/section-success/${sectionId}/${steps[0]?.programme}`);
+                history.push(`/section-success/${cohortId}/${sectionId}/${steps[0]?.programme}`);
               }
             }}
             disabled={loading || selectedCount < totalAnswerCount}

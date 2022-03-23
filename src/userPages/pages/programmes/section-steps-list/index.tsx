@@ -13,12 +13,13 @@ import { Burger, Menu } from "../../../components/BurgerMenu";
 import Loading from "../../../../components/Loading";
 
 interface ProgrammePageParams {
+  cohortId: any;
   sectionId: any;
 }
 
 const StepsList = () => {
   const history = useHistory();
-  const { sectionId } = useParams<ProgrammePageParams>();
+  const { cohortId, sectionId } = useParams<ProgrammePageParams>();
   const [steps, setSteps] = useState<StepData[]>([]);
   const { enqueueSnackbar } = useSnackbar();
   const [section, setSection] = useState<any>(null);
@@ -84,12 +85,12 @@ const StepsList = () => {
   }, [getStepData, sectionId, enqueueSnackbar]);
 
   const stepHandler = (item: any) => {
-    history.push(`/user-steps/${sectionId}/${item.id}`);
+    history.push(`/user-steps/${cohortId}/${sectionId}/${item.id}`);
   };
 
   const getStarted = () => {
     let obj = steps.filter((item: any) => item.is_answered === false);
-    history.push(`/user-steps/${sectionId}/${obj[0].id}`);
+    history.push(`/user-steps/${cohortId}/${sectionId}/${obj[0].id}`);
   };
 
   return (
@@ -131,6 +132,7 @@ const StepsList = () => {
             <Burger open={open} setOpen={setOpen} />
           </Grid>
           <Menu
+            cohortId={cohortId}
             open={open}
             setOpen={setOpen}
             close={() => {

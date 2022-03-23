@@ -48,6 +48,7 @@ import StepsList from "./userPages/pages/programmes/section-steps-list";
 import CompleteSection from "./userPages/pages/steps/CompleteSection";
 import LiveSession from "./userPages/pages/steps/LiveSession";
 import LiveSessionDetail from "./userPages/pages/steps/LiveSession/Details";
+import LeaderBoard from "./userPages/pages/leaderboard";
 
 function App() {
   return (
@@ -55,25 +56,33 @@ function App() {
       <Switch>
         <Route exact path={LOGIN_PAGE} component={LoginPage} />
         <ProtectedRoute exact path={"/user-programmes"} component={Programmes} />
-        <ProtectedRoute exact path={"/user-live-sessions/:stepId"} component={LiveSession} />
-        <ProtectedRoute exact path={"/user-section-steps/:sectionId"} component={StepsList} />
+        <ProtectedRoute exact path={"/user-live-sessions/:cohortId"} component={LiveSession} />
+        <ProtectedRoute exact path={"/user-live-session-detail/"} component={LiveSessionDetail} />
         <ProtectedRoute
           exact
-          path={"/user-programmes-section/:programmeId"}
+          path={"/user-section-steps/:cohortId/:sectionId"}
+          component={StepsList}
+        />
+        <ProtectedRoute
+          exact
+          path={"/user-programmes-section/:cohortId/:programmeId"}
           component={ProgrammeSection}
         />
-        <ProtectedRoute exact path={"/user-dashboard/"} component={UserDashboard} />
-        <ProtectedRoute exact path={"/user-live-sessions/"} component={LiveSession} />
-        <ProtectedRoute exact path={"/user-live-session-detail/"} component={LiveSessionDetail} />
+        <ProtectedRoute exact path={"/user-dashboard/:cohortId"} component={UserDashboard} />
+        <ProtectedRoute
+          exact
+          path={"/leaderBoard/:cohortId/:programmeId"}
+          component={LeaderBoard}
+        />
         <Route exact path={"/user-login"} component={UserLogin} />
         <Route exact path={"/user-reset-password"} component={UserResetPassword} />
         <Route path="/user-set-password/:signature/:token" component={UserSetPassword} />
         <Route exact path="/forgotten-password" component={ForgottenPassword} />
         <Route path="/reset-password/:signature/:token" component={PasswordReset} />
-        <ProtectedRoute exact path={"/user-steps/:sectionId/:stepId"} component={Steps} />
+        <ProtectedRoute exact path={"/user-steps/:cohortId/:sectionId/:stepId"} component={Steps} />
         <ProtectedRoute
           exact
-          path={"/section-success/:sectionId/:programmeId"}
+          path={"/section-success/:cohortId/:sectionId/:programmeId"}
           component={CompleteSection}
         />
         {/*<ProtectedRoute exact path={"/user-intro/:stepId"} component={Intro} />*/}
