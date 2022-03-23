@@ -34,7 +34,7 @@ const StepsList = () => {
       try {
         if (sectionId) {
           let isCurrentStep = false;
-          const response = await getSectionSteps(sectionId);
+          const response = await getSectionSteps(sectionId, false);
 
           let arr: any = [];
           stepOrder.filter(function (order: any) {

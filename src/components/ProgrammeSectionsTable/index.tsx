@@ -14,7 +14,12 @@ import {
 import PromptDialog from "components/PromptDialog";
 import { useHistory } from "react-router";
 import AddSectionDialog from "components/AddSectionDialog";
-import { deleteSection, duplicateSection, editProgramme, getProgrammeSections } from "services/common";
+import {
+  deleteSection,
+  duplicateSection,
+  editProgramme,
+  getProgrammeSections,
+} from "services/common";
 import { SectionData } from "common/types";
 import { useSnackbar } from "notistack";
 import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
@@ -38,7 +43,7 @@ const ProgrammeSectionsTable = ({ programmeId, sectionOrder }: ProgrammeSections
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getProgrammeSections(programmeId);
+        const response = await getProgrammeSections(programmeId, true);
         setSections(response.data);
       } catch (error) {
         enqueueSnackbar("Could not fetch sections", { variant: "error" });

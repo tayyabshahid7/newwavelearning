@@ -37,7 +37,7 @@ const SectionStepsTable = ({ sectionId, stepOrder }: SectionStepsTableProps) => 
     const fetchData = async () => {
       try {
         if (sectionId) {
-          const response = await getSectionSteps(sectionId);
+          const response = await getSectionSteps(sectionId, true);
           setSteps(response.data);
         }
       } catch (error) {
