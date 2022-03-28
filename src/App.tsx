@@ -51,6 +51,10 @@ import LiveSessionDetail from "./userPages/pages/steps/LiveSession/Details";
 import LeaderBoard from "./userPages/pages/leaderboard";
 import Feedback from "./userPages/pages/feedback";
 import FeedbackDetail from "./userPages/pages/feedback/Details";
+import AddVideoResponsePage from "./pages/steps/AddVideoResponse";
+import EditVideoResponsePage from "./pages/steps/EditVideoResponse";
+import EditAudioResponsePage from "./pages/steps/EditAudioResponse";
+import AddAudioResponsePage from "./pages/steps/AddAudioResponse";
 
 function App() {
   return (
@@ -147,6 +151,31 @@ function App() {
           path="/sections/:sectionId/steps/add-video"
           component={AddVideoContent}
         />
+
+        <ProtectedRoute
+          exact
+          path="/sections/:sectionId/steps/add-video-response"
+          component={AddVideoResponsePage}
+        />
+
+        <ProtectedRoute
+          exact
+          path="/sections/:sectionId/steps/:stepId/edit-video_response"
+          component={EditVideoResponsePage}
+        />
+
+        <ProtectedRoute
+          exact
+          path="/sections/:sectionId/steps/add-audio-response"
+          component={AddAudioResponsePage}
+        />
+
+        <ProtectedRoute
+          exact
+          path="/sections/:sectionId/steps/:stepId/edit-audio_response"
+          component={EditAudioResponsePage}
+        />
+
         <ProtectedRoute
           exact
           path="/sections/:sectionId/steps/:stepId/edit-video"
