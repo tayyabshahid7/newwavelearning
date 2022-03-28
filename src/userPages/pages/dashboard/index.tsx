@@ -162,6 +162,7 @@ const UserDashboard = () => {
                   if (index === 0)
                     history.push(`/user-programmes-section/${cohortDetail.id}/${programme?.id}`);
                   if (index === 1) history.push(`/leaderboard/${cohortDetail.id}/${programme?.id}`);
+                  if (index === 2) history.push(`/user-feedback/${cohortDetail.id}/`);
                   if (index === 3) history.push(`/user-live-sessions/${cohortDetail.id}/`);
                 }}
                 className="dashboard-card"

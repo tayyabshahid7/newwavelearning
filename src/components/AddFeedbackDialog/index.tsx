@@ -25,7 +25,7 @@ const AddFeedbackDialog = ({ feedback, open, closeCallback }: AddFeedbackDialogP
   const [feedbackText, setFeedbackText] = useState<string>(feedback?.description || "");
   useEffect(() => {
     const fetchAnswer = async () => {
-      const response = await getStepAnswer(feedback.step_answer);
+      const response = await getStepAnswer(feedback.step_answer?.id);
       setStepAnswer(response);
       setFeedbackText(feedback.description);
     };

@@ -49,6 +49,8 @@ import CompleteSection from "./userPages/pages/steps/CompleteSection";
 import LiveSession from "./userPages/pages/steps/LiveSession";
 import LiveSessionDetail from "./userPages/pages/steps/LiveSession/Details";
 import LeaderBoard from "./userPages/pages/leaderboard";
+import Feedback from "./userPages/pages/feedback";
+import FeedbackDetail from "./userPages/pages/feedback/Details";
 
 function App() {
   return (
@@ -57,7 +59,9 @@ function App() {
         <Route exact path={LOGIN_PAGE} component={LoginPage} />
         <ProtectedRoute exact path={"/user-programmes"} component={Programmes} />
         <ProtectedRoute exact path={"/user-live-sessions/:cohortId"} component={LiveSession} />
+        <ProtectedRoute exact path={"/user-feedback/:cohortId"} component={Feedback} />
         <ProtectedRoute exact path={"/user-live-session-detail/"} component={LiveSessionDetail} />
+        <ProtectedRoute exact path={"/user-feedback-detail/"} component={FeedbackDetail} />
         <ProtectedRoute
           exact
           path={"/user-section-steps/:cohortId/:sectionId"}
