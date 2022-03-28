@@ -20,6 +20,7 @@ import ToggleQuestion from "./ToggleQuestion";
 import TextContentQuestion from "./TextContentQuestion";
 import KeyboardQuestion from "./KeyboardQuestion";
 import ModelQuestion from "./ModelQuestion";
+import AudioResponse from "./AudioResponse";
 
 type IntroParams = {
   cohortId: string;
@@ -134,7 +135,12 @@ const Steps = () => {
         answer: selectedAnswerIds,
         completed: true,
       };
-    } else if (stepType === "audio" || stepType === "video" || stepType === "text_content") {
+    } else if (
+      stepType === "audio_response" ||
+      stepType === "audio" ||
+      stepType === "video" ||
+      stepType === "text_content"
+    ) {
       obj = {
         answer: null,
         completed: true,
@@ -284,6 +290,8 @@ const Steps = () => {
             />
           ) : stepType === "audio" ? (
             <AudioQuestion audio={stepData.audio} />
+          ) : stepType === "audio_response" ? (
+            <AudioResponse audio={stepData.audio} />
           ) : stepType === "toggle" ? (
             <ToggleQuestion
               isSubmitted={isSubmitted}
@@ -345,6 +353,7 @@ const Steps = () => {
         !isSubmitted &&
         stepType !== "audio" &&
         stepType !== "video" &&
+        stepType !== "audio_response" &&
         stepType !== "toggle" &&
         stepType !== "text_content" ? (
           <Button
