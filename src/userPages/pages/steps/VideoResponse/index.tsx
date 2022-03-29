@@ -6,7 +6,7 @@ import "./style.scss";
 const VideoResponse = ({ isSubmitted, userAnswer, uploadVideo }: any) => {
   const [video, setVideo] = useState<any>(null);
   useEffect(() => {
-    if (userAnswer) {
+    if (userAnswer.length) {
       setVideo(userAnswer[0].file_answer);
     }
   }, [userAnswer]);
