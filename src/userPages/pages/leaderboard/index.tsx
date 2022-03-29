@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Grid, Typography } from "@mui/material";
 import { useHistory, useParams } from "react-router";
 import arrowIcon from "../../static/images/right-arrow 6.png";
+import LeaderBoardIcon from "../../static/images/leaderboard.png";
 import { Burger, Menu } from "../../components/BurgerMenu";
 import Loading from "../../../components/Loading";
 import "./style.scss";
@@ -115,15 +116,13 @@ const LeaderBoard = () => {
                     alignItems: "center",
                     width: "98px",
                     height: "98px",
-                    background: "#FD773B",
                     justifyContent: "center",
                     borderRadius: "50%",
                     fontSize: "22px",
                     fontWeight: "600",
                   }}
                 >
-                  {item.first_name.charAt(0).toLocaleUpperCase()}
-                  {item.last_name.charAt(0).toLocaleUpperCase()}
+                  <img src={LeaderBoardIcon} alt={""} width="78.81px" />
                 </Grid>
                 <Grid>
                   <Typography className={"first-user-name"}>

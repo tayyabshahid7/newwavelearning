@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Typography } from "@mui/material";
-import JourneyIcon from "../../../static/images/journey-icon.png";
+import JourneyIcon from "../../../static/images/Live icon 1.png";
 import { getCohortLiveSessions } from "../../../../services/common";
 import "./style.scss";
 import arrowIcon from "../../../static/images/right-arrow 6.png";
@@ -98,11 +98,11 @@ const LiveSession = () => {
                 direction="column"
               >
                 <Grid className="live-section">
-                  <Grid sx={{ display: "flex", alignItems: "center", padding: "0 13px" }}>
+                  <Grid sx={{ display: "flex", padding: "0 13px" }}>
                     <img
                       style={{ marginLeft: "10px" }}
-                      width="38px"
-                      height={"38px"}
+                      width="50px"
+                      height={"50px"}
                       src={JourneyIcon}
                       alt="img"
                     />
