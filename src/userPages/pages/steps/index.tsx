@@ -21,6 +21,7 @@ import TextContentQuestion from "./TextContentQuestion";
 import KeyboardQuestion from "./KeyboardQuestion";
 import ModelQuestion from "./ModelQuestion";
 import AudioResponse from "./AudioResponse";
+import VideoResponse from "./VideoResponse";
 
 type IntroParams = {
   cohortId: string;
@@ -42,6 +43,7 @@ const Steps = () => {
   const [selectedAnswerIds, setSelectedAnswerIds] = useState<any>([]);
   const [steps, setSteps] = useState<StepData[]>([]);
   const [userAnswer, setUserAnswer] = useState<StepData[]>([]);
+  const [videoFile, setVideoFile] = useState<File | any>(null);
   const [stepData, setStepData] = useState<any>({
     content: "",
     image: "",
@@ -145,6 +147,11 @@ const Steps = () => {
         answer: null,
         completed: true,
       };
+    } else if (stepType === "video_response") {
+      obj = {
+        answer: null,
+        completed: true,
+      };
     } else if (stepType === "keyword_question") {
       obj = {
         answer: null,
@@ -163,11 +170,11 @@ const Steps = () => {
       };
     }
 
-    let data = {
-      learner: user?.learner,
-      step: stepId,
-      answer: obj,
-    };
+    const data = new FormData();
+    data.append("learner", user?.learner);
+    data.append("step", stepId);
+    data.append("answer", JSON.stringify(obj));
+    stepType === "video_response" && data.append("file_answer", videoFile);
     await submitStepAnswer(data);
   };
 
@@ -292,6 +299,14 @@ const Steps = () => {
             <AudioQuestion audio={stepData.audio} />
           ) : stepType === "audio_response" ? (
             <AudioResponse audio={stepData.audio} />
+          ) : stepType === "video_response" ? (
+            <VideoResponse
+              isSubmitted={isSubmitted}
+              userAnswer={userAnswer}
+              uploadVideo={(video: any) => {
+                setVideoFile(video);
+              }}
+            />
           ) : stepType === "toggle" ? (
             <ToggleQuestion
               isSubmitted={isSubmitted}
@@ -372,7 +387,11 @@ const Steps = () => {
               setIsSubmitted(true);
               stepType !== "model_answer_question" && (await submitAnswer());
             }}
-            disabled={loading || selectedCount < totalAnswerCount || text.length === 0}
+            disabled={
+              loading || stepType === "video_response"
+                ? videoFile === null
+                : selectedCount < totalAnswerCount || text.length === 0
+            }
           >
             Submit
           </Button>
