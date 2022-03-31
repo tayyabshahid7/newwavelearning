@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Grid, Typography, Button } from "@mui/material";
+import { Grid, Typography, Button, Link } from "@mui/material";
 import {
   getSection,
   getSectionSteps,
@@ -22,6 +22,7 @@ import KeyboardQuestion from "./KeyboardQuestion";
 import ModelQuestion from "./ModelQuestion";
 import AudioResponse from "./AudioResponse";
 import VideoResponse from "./VideoResponse";
+import OpenEndedQuestion from "./OpenEndedQuestion";
 
 type IntroParams = {
   cohortId: string;
@@ -54,6 +55,7 @@ const Steps = () => {
     audio: "",
     video: "",
     answer: [],
+    url: "",
   });
 
   const getStepData = useCallback(
@@ -152,7 +154,7 @@ const Steps = () => {
         answer: null,
         completed: true,
       };
-    } else if (stepType === "keyword_question") {
+    } else if (stepType === "keyword_question" || stepType === "open_ended_question") {
       obj = {
         answer: null,
         text: text,
@@ -270,6 +272,26 @@ const Steps = () => {
           </Typography>
         </Grid>
 
+        {stepType === "text_content" && (
+          <Grid item sx={{ padding: "0% 10%", textAlign: "center", marginTop: "20px" }}>
+            <Link
+              sx={{
+                fontSize: "16px",
+                fontWeight: "400",
+                cursor: "pointer !important",
+                textDecoration: "none",
+                "&:hover": {
+                  textDecoration: "underline",
+                },
+              }}
+              href={stepData.url}
+              target="_blank"
+            >
+              Click link here
+            </Link>
+          </Grid>
+        )}
+
         <Grid item sx={{ marginTop: "20px" }}>
           {stepType === "multiple_choice_question" ? (
             <TextQuestion
@@ -298,7 +320,7 @@ const Steps = () => {
           ) : stepType === "audio" ? (
             <AudioQuestion audio={stepData.audio} />
           ) : stepType === "audio_response" ? (
-            <AudioResponse audio={stepData.audio} />
+            <AudioResponse />
           ) : stepType === "video_response" ? (
             <VideoResponse
               isSubmitted={isSubmitted}
@@ -320,6 +342,15 @@ const Steps = () => {
             />
           ) : stepType === "keyword_question" ? (
             <KeyboardQuestion
+              userAnswer={userAnswer}
+              answeredQuestion={(text: string) => {
+                setText(text);
+              }}
+              isSubmitted={isSubmitted}
+              keywords={stepData.keywords}
+            />
+          ) : stepType === "open_ended_question" ? (
+            <OpenEndedQuestion
               userAnswer={userAnswer}
               answeredQuestion={(text: string) => {
                 setText(text);
@@ -414,6 +445,7 @@ const Steps = () => {
                 stepType !== "picture_choice_question" &&
                 stepType !== "model_answer_question" &&
                 stepType !== "keyword_question" &&
+                stepType !== "open_ended_question" &&
                 stepType !== "multiple_choice_question"
               ) {
                 await submitAnswer();

@@ -13,6 +13,7 @@ const EditTextContentPage = () => {
   const [formErrors, setFormErrors] = useState<any>({
     title: false,
     content: false,
+    url: false,
   });
   const [formData, setFormData] = useState<any>({
     title: "",
@@ -20,6 +21,7 @@ const EditTextContentPage = () => {
     feedback: false,
     image: null,
     bgImage: null,
+    url: null,
   });
   const [changeBgImage, setChangeBgImage] = useState<boolean>(false);
   const [changeImage, setChangeImage] = useState<boolean>(false);
@@ -35,6 +37,7 @@ const EditTextContentPage = () => {
           feedback: response.fields.feedback,
           image: response.fields.image || null,
           bgImage: response.fields.background_image || null,
+          url: response.fields.url || null,
         };
         setStepData(data);
         setFormData({
@@ -43,6 +46,7 @@ const EditTextContentPage = () => {
           feedback: data.feedback,
           image: data.image,
           bgImage: data.bgImage,
+          url: data.url,
         });
         setChangeBgImage(response.fields.background_image instanceof String);
         setChangeImage(response.fields.image instanceof String);
@@ -116,6 +120,13 @@ const EditTextContentPage = () => {
       setFormErrors({ ...formErrors, content: true });
       valid = false;
     }
+    //@ts-ignore
+    let re =
+      /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/;
+    if (!re.test(formData.url)) {
+      setFormErrors({ ...formErrors, url: true });
+      valid = false;
+    }
     return valid;
   };
 
@@ -128,6 +139,7 @@ const EditTextContentPage = () => {
         content: formData.content,
         feedback: formData.feedback,
         image: formData.image,
+        url: formData.url,
         background_image: formData.bgImage,
       };
       data.append("fields", JSON.stringify(fields));
@@ -158,7 +170,7 @@ const EditTextContentPage = () => {
                 value={formData.title}
                 name="title"
                 label="Title"
-                onChange={handleTextChange}
+                helperText={formErrors.content && "This field is required"}
               />
               <TextField
                 fullWidth
@@ -167,7 +179,20 @@ const EditTextContentPage = () => {
                 value={formData.content}
                 name="content"
                 label="Content"
+                helperText={formErrors.content && "This field is required"}
+              />
+              <TextField
+                fullWidth
+                value={formData.url}
+                name="url"
+                label="Url"
                 onChange={handleTextChange}
+                error={formErrors.url}
+                helperText={
+                  formErrors.url && formErrors.url === ""
+                    ? "This field is required"
+                    : "Enter valid field is required"
+                }
               />
             </Stack>
           </Grid>

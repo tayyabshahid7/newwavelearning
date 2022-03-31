@@ -55,6 +55,8 @@ import AddVideoResponsePage from "./pages/steps/AddVideoResponse";
 import EditVideoResponsePage from "./pages/steps/EditVideoResponse";
 import EditAudioResponsePage from "./pages/steps/EditAudioResponse";
 import AddAudioResponsePage from "./pages/steps/AddAudioResponse";
+import AddOpenEndedQuestion from "./pages/steps/AddOpenEndedQuestion";
+import EditOpenEndedQuestion from "./pages/steps/EditOpenEndedQuestion";
 
 function App() {
   return (
@@ -150,6 +152,18 @@ function App() {
           exact
           path="/sections/:sectionId/steps/add-video"
           component={AddVideoContent}
+        />
+
+        <ProtectedRoute
+          exact
+          path="/sections/:sectionId/steps/add-open-ended-question"
+          component={AddOpenEndedQuestion}
+        />
+
+        <ProtectedRoute
+          exact
+          path="/sections/:sectionId/steps/:stepId/edit-open_ended_question"
+          component={EditOpenEndedQuestion}
         />
 
         <ProtectedRoute

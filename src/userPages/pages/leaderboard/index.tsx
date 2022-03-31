@@ -129,7 +129,7 @@ const LeaderBoard = () => {
                     {item.first_name} {item.last_name}
                   </Typography>
                   <Typography className={"first-section-completed"}>
-                    {item.completed_section}/{item.sections} Sections completed
+                    {item.completed_steps}/{item.steps} Steps completed
                   </Typography>
                 </Grid>
               </Grid>
@@ -155,7 +155,7 @@ const LeaderBoard = () => {
                     {item.first_name} {item.last_name}
                   </p>
                   <p className={"section-completed"}>
-                    {item.completed_section}/{item.sections} Sections completed
+                    {item.completed_steps}/{item.steps} Steps completed
                   </p>
                 </Grid>
               </Grid>

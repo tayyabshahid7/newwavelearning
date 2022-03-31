@@ -1,0 +1,37 @@
+.model-question{
+     margin-top: 5% !important;
+     margin-bottom: 16% !important;
+     .model-textarea{
+          padding: 20px;
+          background: #FFFFFF;
+          border: 2px solid #0E4A66;
+          box-sizing: border-box;
+          box-shadow: 3px 4px 4px 1px #0E4A66;
+          border-radius: 8px;
+          font-size: 16px;
+          line-height: 24px;
+          resize: none;
+          &:focus-visible{
+               outline: none;
+          }
+     }
+     .answer-title{
+          font-style: normal;
+          font-weight: 500;
+          font-size: 16px;
+          line-height: 24px;
+          text-align: center;
+          letter-spacing: -0.32px;
+          color: #0E4A66;
+          margin-bottom: 18px;
+     }
+     .answer{
+          font-style: normal;
+          font-weight: normal;
+          font-size: 16px;
+          line-height: 24px;
+          text-align: center;
+          letter-spacing: -0.32px;
+          color: #0E4A66;
+     }
+}

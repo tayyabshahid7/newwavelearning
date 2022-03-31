@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 // @ts-ignore
 import { Recorder } from "react-voice-recorder";
 import "react-voice-recorder/dist/index.css";
 import "./style.scss";
 
-const AudioResponse = ({ audio }: any) => {
+const AudioResponse = () => {
   const [audioDetails, setAudioDetails] = useState({
     url: null,
     blob: null,

@@ -15,6 +15,7 @@ const AddTextContentPage = () => {
     content: false,
     images: false,
     bgImages: false,
+    url: false,
   });
   const [formData, setFormData] = useState<any>({
     title: "",
@@ -22,6 +23,7 @@ const AddTextContentPage = () => {
     feedback: false,
     image: null,
     bgImage: null,
+    url: "",
   });
 
   const handleTextChange = (e: BaseSyntheticEvent) => {
@@ -53,6 +55,12 @@ const AddTextContentPage = () => {
       setFormErrors({ ...formErrors, content: true });
       valid = false;
     }
+    let re =
+      /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/;
+    if (!re.test(formData.url)) {
+      setFormErrors({ ...formErrors, url: true });
+      valid = false;
+    }
     return valid;
   };
 
@@ -66,6 +74,7 @@ const AddTextContentPage = () => {
         JSON.stringify({
           title: formData.title,
           content: formData.content,
+          url: formData.url,
           feedback: formData.feedback,
         })
       );
@@ -113,6 +122,19 @@ const AddTextContentPage = () => {
                 onChange={handleTextChange}
                 error={formErrors.content}
                 helperText={formErrors.content && "This field is required"}
+              />
+              <TextField
+                fullWidth
+                value={formData.url}
+                name="url"
+                label="Url"
+                onChange={handleTextChange}
+                error={formErrors.url}
+                helperText={
+                  formErrors.url && formErrors.url === ""
+                    ? "This field is required"
+                    : "Enter valid field is required"
+                }
               />
             </Stack>
           </Grid>
