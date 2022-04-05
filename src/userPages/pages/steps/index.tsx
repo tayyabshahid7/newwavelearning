@@ -241,7 +241,7 @@ const Steps = () => {
                 margin: "0% 0 2% 0",
                 padding: stepType === "model_answer_question" ? "0 7% !important" : "0 25px",
                 fontWeight: "600",
-                marginTop: "0%",
+                marginTop: "3%",
                 fontSize: "24px",
                 marginBottom: "5%",
                 color: "#0E4A66",
@@ -297,7 +297,15 @@ const Steps = () => {
             </Grid>
           )}
 
-          <Grid item sx={{ marginTop: "20px" }}>
+          <Grid
+            item
+            sx={{
+              marginTop: "20px",
+              minHeight: stepType === "picture_choice_question" ? "55vh" : "unset",
+              overflow: stepType === "picture_choice_question" ? "auto" : "unset",
+              marginBottom: "2%",
+            }}
+          >
             {stepType === "multiple_choice_question" ? (
               <TextQuestion
                 userAnswer={userAnswer}
@@ -419,6 +427,7 @@ const Steps = () => {
                 backgroundColor: "#0E4A66",
                 boxShadow: "0px 4px 15px rgba(14, 74, 102, 0.57)",
                 borderRadius: "8px",
+                marginBottom: "4%",
               }}
               variant="contained"
               fullWidth
@@ -444,6 +453,7 @@ const Steps = () => {
                 backgroundColor: "#0E4A66",
                 boxShadow: "0px 4px 15px rgba(14, 74, 102, 0.57)",
                 borderRadius: "8px",
+                marginBottom: "4%",
               }}
               variant="contained"
               fullWidth

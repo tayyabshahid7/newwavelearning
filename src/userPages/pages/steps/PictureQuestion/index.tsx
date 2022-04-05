@@ -56,10 +56,16 @@ const PictureQuestion = ({
 
   return (
     <>
-      <Grid container spacing={0} sx={{ marginBottom: "20px" }}>
+      <Grid
+        container
+        spacing={0}
+        sx={{
+          marginBottom: "20px",
+        }}
+      >
         {answerList?.map((item: any, index: number) => {
           return (
-            <Grid className="dashboard-card" xs={6}>
+            <Grid className="dashboard-card" xs={6} md={4}>
               <Grid
                 onClick={() => selectHandler(item, index)}
                 className={"picture-box ".concat(item.isSelected ? "selected" : "")}

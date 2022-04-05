@@ -78,12 +78,16 @@ const CompleteSection = () => {
           </Grid>
 
           <Grid item sx={{ padding: "2% 10%", textAlign: "center" }}>
-            <Typography sx={{ margin: "15% 0 5% 0", fontWeight: "600" }} variant="h5" gutterBottom>
+            <Typography
+              sx={{ margin: "10px 0 5px 0", fontWeight: "600" }}
+              variant="h5"
+              gutterBottom
+            >
               WELL DONE!
             </Typography>
           </Grid>
 
-          <Grid item sx={{ padding: "5% 10%", textAlign: "center" }}>
+          <Grid item sx={{ padding: "5px 10%", textAlign: "center" }}>
             <Typography component="h5" sx={{ fontSize: "16px", color: "#6A6E71" }}>
               You have completed {section?.title}. Click the button below to return to your
               dashboard.
