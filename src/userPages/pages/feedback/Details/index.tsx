@@ -4,6 +4,7 @@ import FeedbackIcon from "../../../static/images/feedback-icon.png";
 import arrowIcon from "../../../static/images/right-arrow 6.png";
 import { useHistory } from "react-router";
 import "./../style.scss";
+import SideNavbar from "../../../components/SideNavbar";
 
 const FeedbackDetail = () => {
   const history = useHistory();
@@ -12,6 +13,8 @@ const FeedbackDetail = () => {
   const [stepType, setStepType] = useState<any>("");
   const [feedbackText, setFeedbackText] = useState<string>("");
   const [facilitatorName, setFacilitatorName] = useState<string>("");
+  const [cohortId, setCohortId] = useState<string>("");
+  const [programmeId, setProgrammeId] = useState<any>("");
 
   useEffect(() => {
     let state: any = history.location.state;
@@ -19,16 +22,18 @@ const FeedbackDetail = () => {
     state && setFeedbackItem(state.data);
     state && setFeedbackText(state.data.description);
     state && setFacilitatorName(state.data.facilitator_name);
-    state && setStepType(state.data.step_type);
+    state && setStepType(state.data.cohortId);
+    state && setProgrammeId(state.data.programmeId);
   }, [history.location.state]);
 
   return (
-    <>
+    <Grid sx={{ display: "flex" }}>
+      <SideNavbar cohortId={cohortId} programmeId={programmeId} />
       <Grid
         container
+        className="mobile"
         style={{
           background: "#FFFFFF",
-          maxWidth: "420px",
           margin: "auto",
           minHeight: "100vh",
           width: "100%",
@@ -218,7 +223,7 @@ const FeedbackDetail = () => {
           </Grid>
         </Grid>
       </Grid>
-    </>
+    </Grid>
   );
 };
 

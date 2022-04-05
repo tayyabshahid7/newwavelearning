@@ -36,3 +36,28 @@
     transform: rotate(360deg);
   }
 }
+
+.mobile{
+  padding: 0 40px;
+}
+.burger-menu{
+  display: none;
+}
+.video{
+  width: 50%;
+  height: 60%;
+}
+
+@media screen and (max-width: 767px) {
+  .mobile {
+    min-width: 420px !important;
+    padding: 0 !important;
+  }
+  .burger-menu{
+    display: flex !important;
+  }
+  .video{
+    width: 90%;
+    height: 100%;
+  }
+}

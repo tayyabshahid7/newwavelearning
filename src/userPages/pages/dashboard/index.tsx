@@ -12,6 +12,7 @@ import { Burger, Menu } from "../../components/BurgerMenu";
 import Loading from "../../../components/Loading";
 import { useParams } from "react-router-dom";
 import "./style.scss";
+import SideNavbar from "../../components/SideNavbar";
 
 const dashboardData = [
   {
@@ -71,109 +72,117 @@ const UserDashboard = () => {
   }, [cohortId]);
 
   return (
-    <Grid
-      className="dashboard"
-      container
-      style={{
-        position: "relative",
-        backgroundColor: "#F1F5FF",
-        maxWidth: "420px",
-        margin: "auto",
-        minHeight: "100vh",
-        width: "100%",
-      }}
-    >
-      <Loading loading={loading} />
-      <Grid item container direction="column">
-        <Grid
-          item
-          sx={{
-            padding: "6% 5%",
-            display: "flex",
-            alignItems: "center",
-            marginBottom: "2%",
-            justifyContent: "space-between",
-          }}
-        >
+    <Grid sx={{ display: "flex" }}>
+      <SideNavbar cohortId={cohortId} programmeId={programme?.id} />
+      <Grid
+        className="dashboard mobile"
+        container
+        style={{
+          position: "relative",
+          backgroundColor: "#F1F5FF",
+          margin: "auto",
+          minHeight: "100vh",
+          width: "100%",
+        }}
+      >
+        <Loading loading={loading} />
+        <Grid item container direction="column">
           <Grid
+            item
             sx={{
+              padding: "6% 0",
               display: "flex",
               alignItems: "center",
+              marginBottom: "2%",
               justifyContent: "space-between",
             }}
           >
-            <img
-              onClick={() => history.goBack()}
-              style={{ cursor: "pointer" }}
-              src={arrowIcon}
-              width="27px"
-              height="27px"
-              alt="Arrow Logo"
-            />
-            <Typography
-              sx={{ fontWeight: "500" }}
-              ml="20px"
-              mb="0"
-              variant="h6"
-              gutterBottom
-              component="p"
-            >
-              Dashboard
-            </Typography>
-          </Grid>
-          <Grid ref={node}>
-            <Burger open={open} setOpen={setOpen} />
-            <Menu
-              cohortId={cohortId}
-              open={open}
-              setOpen={setOpen}
-              close={() => {
-                setOpen(false);
+            <Grid
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
               }}
+            >
+              <img
+                onClick={() => history.goBack()}
+                style={{ cursor: "pointer" }}
+                src={arrowIcon}
+                width="27px"
+                height="27px"
+                alt="Arrow Logo"
+              />
+              <Typography
+                sx={{ fontWeight: "500" }}
+                ml="20px"
+                mb="0"
+                variant="h6"
+                gutterBottom
+                component="p"
+              >
+                Dashboard
+              </Typography>
+            </Grid>
+            <Grid ref={node} className="burger-menu">
+              <Burger open={open} setOpen={setOpen} />
+              <Menu
+                cohortId={cohortId}
+                open={open}
+                setOpen={setOpen}
+                close={() => {
+                  setOpen(false);
+                }}
+              />
+            </Grid>
+          </Grid>
+
+          <Grid
+            onClick={() => {
+              history.push(`/user-programmes-section/${cohortDetail.id}/${programme?.id}`);
+            }}
+            className="all-programmes"
+          >
+            <Grid sx={{ display: "flex", alignItems: "center", padding: "0 13px" }}>
+              <img width="68px" src={programme?.image} alt="programme img" />
+              <p className={"programmes-title"}>{programme?.name}</p>
+            </Grid>
+            <img
+              style={{ marginRight: "20px", objectFit: "cover", borderRadius: "4px" }}
+              src={ArrowRightIcon}
+              width="24px"
+              height="40px"
+              alt="arrow icon"
             />
           </Grid>
-        </Grid>
 
-        <Grid
-          onClick={() => {
-            history.push(`/user-programmes-section/${cohortDetail.id}/${programme?.id}`);
-          }}
-          className="all-programmes"
-        >
-          <Grid sx={{ display: "flex", alignItems: "center", padding: "0 13px" }}>
-            <img width="68px" src={programme?.image} alt="programme img" />
-            <p className={"programmes-title"}>{programme?.name}</p>
+          <Grid
+            container
+            spacing={0}
+            sx={{ marginBottom: "20px", justifyContent: "space-between" }}
+          >
+            {dashboardData.map((item: any, index: number) => {
+              return (
+                <Grid
+                  key={index}
+                  onClick={() => {
+                    if (index === 0)
+                      history.push(`/user-programmes-section/${cohortDetail.id}/${programme?.id}`);
+                    if (index === 1)
+                      history.push(`/leaderboard/${cohortDetail.id}/${programme?.id}`);
+                    if (index === 2)
+                      history.push(`/user-feedback/${cohortDetail.id}/${programme?.id}`);
+                    if (index === 3) history.push(`/user-live-sessions/${cohortDetail.id}/`);
+                  }}
+                  className="dashboard-card"
+                  xs={6}
+                >
+                  <img src={item.icon} width={"50px"} alt={"icon"} />
+                  <p className={"dashboard-title"}>{item.title}</p>
+                  <p className={"dashboard-description"}>{item.description}</p>
+                </Grid>
+              );
+            })}
           </Grid>
-          <img
-            style={{ marginRight: "20px", objectFit: "cover", borderRadius: "4px" }}
-            src={ArrowRightIcon}
-            width="24px"
-            height="40px"
-            alt="arrow icon"
-          />
-        </Grid>
-
-        <Grid container spacing={0} sx={{ marginBottom: "20px" }}>
-          {dashboardData.map((item: any, index: number) => {
-            return (
-              <Grid
-                key={index}
-                onClick={() => {
-                  if (index === 0)
-                    history.push(`/user-programmes-section/${cohortDetail.id}/${programme?.id}`);
-                  if (index === 1) history.push(`/leaderboard/${cohortDetail.id}/${programme?.id}`);
-                  if (index === 2) history.push(`/user-feedback/${cohortDetail.id}/`);
-                  if (index === 3) history.push(`/user-live-sessions/${cohortDetail.id}/`);
-                }}
-                className="dashboard-card"
-                xs={6}
-              >
-                <img src={item.icon} width={"50px"} alt={"icon"} />
-                <p className={"dashboard-title"}>{item.title}</p>
-                <p className={"dashboard-description"}>{item.description}</p>
-              </Grid>
-            );
-          })}
         </Grid>
       </Grid>
     </Grid>

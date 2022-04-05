@@ -51,7 +51,7 @@ const VideoResponse = ({ isSubmitted, userAnswer, uploadVideo }: any) => {
             alignItems: "center",
           }}
         >
-          <video style={{ width: "90%", height: "100%" }} controls>
+          <video className="video" controls>
             <source src={video} type="video/mp4" />
             Your browser does not support HTML video.
           </video>

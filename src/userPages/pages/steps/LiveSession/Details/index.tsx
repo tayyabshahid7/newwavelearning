@@ -4,23 +4,29 @@ import JourneyIcon from "../../../../static/images/Live icon 1.png";
 import arrowIcon from "../../../../static/images/right-arrow 6.png";
 import { useHistory } from "react-router";
 import "./../style.scss";
+import SideNavbar from "../../../../components/SideNavbar";
 
 const LiveSessionDetail = () => {
   const history = useHistory();
   const [liveSession, setLiveSession] = useState<any>([]);
+  const [cohortId, setCohortId] = useState<any>("");
+  const [programmeId, setProgrammeId] = useState<any>("");
 
   useEffect(() => {
     let state: any = history.location.state;
     state && setLiveSession(state.data);
+    state && setCohortId(state.cohortId);
+    state && setCohortId(state.programmeId);
   }, [history.location.state]);
 
   return (
-    <>
+    <Grid sx={{ display: "flex" }}>
+      <SideNavbar cohortId={cohortId} programmeId={programmeId} />
       <Grid
         container
+        className="mobile"
         style={{
           background: "#FFFFFF",
-          maxWidth: "420px",
           margin: "auto",
           minHeight: "100vh",
           width: "100%",
@@ -31,7 +37,7 @@ const LiveSessionDetail = () => {
           item
           sx={{
             width: "100%",
-            padding: "6% 5%",
+            padding: "6% 0",
             display: "flex",
             alignItems: "center",
             marginBottom: "2%",
@@ -113,7 +119,7 @@ const LiveSessionDetail = () => {
           </Grid>
         </Grid>
       </Grid>
-    </>
+    </Grid>
   );
 };
 

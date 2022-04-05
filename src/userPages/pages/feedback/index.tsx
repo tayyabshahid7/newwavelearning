@@ -7,15 +7,16 @@ import arrowIcon from "../../static/images/right-arrow 6.png";
 import { useHistory } from "react-router";
 import { useParams } from "react-router-dom";
 import { getUser } from "../../../services/auth";
+import SideNavbar from "../../components/SideNavbar";
 
 interface FeedbackParams {
   cohortId: string;
+  programmeId: string;
 }
 
 const Feedback = () => {
   const history = useHistory();
-  const { cohortId } = useParams<FeedbackParams>();
-
+  const { cohortId, programmeId } = useParams<FeedbackParams>();
   const [feedbackList, setFeedbackList] = useState<any>([]);
 
   useEffect(() => {
@@ -34,17 +35,18 @@ const Feedback = () => {
   const detailHandler = (data: any) => {
     history.push({
       pathname: "/user-feedback-detail",
-      state: { data: data },
+      state: { data: data, cohortId: cohortId, programmeId: programmeId },
     });
   };
 
   return (
-    <>
+    <Grid sx={{ display: "flex" }}>
+      <SideNavbar cohortId={cohortId} programmeId={programmeId} />
       <Grid
         container
+        className="mobile"
         style={{
           background: "#FFFFFF",
-          maxWidth: "420px",
           margin: "auto",
           minHeight: "100vh",
           width: "100%",
@@ -55,7 +57,7 @@ const Feedback = () => {
           item
           sx={{
             width: "100%",
-            padding: "6% 5%",
+            padding: "6% 0",
             display: "flex",
             alignItems: "center",
             marginBottom: "2%",
@@ -124,7 +126,7 @@ const Feedback = () => {
             );
           })}
       </Grid>
-    </>
+    </Grid>
   );
 };
 

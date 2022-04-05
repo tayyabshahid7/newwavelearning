@@ -5,9 +5,17 @@ const VideoQuestion = ({ video }: any) => {
   return (
     <>
       <Grid
-        sx={{ display: "flex", justifyContent: "center", paddingTop: "15%", marginBottom: "10%" }}
+        sx={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          marginBottom: "10%",
+          "@media(maxWidth: 767px)": {
+            paddingTop: "15%",
+          },
+        }}
       >
-        <video style={{ width: "90%", height: "100%" }} controls>
+        <video className="video" controls>
           <source src={video} type="video/mp4" />
           Your browser does not support HTML video.
         </video>

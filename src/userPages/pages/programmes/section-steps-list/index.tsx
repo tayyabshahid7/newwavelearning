@@ -11,6 +11,7 @@ import "./style.scss";
 import arrowIcon from "../../../static/images/right-arrow 6.png";
 import { Burger, Menu } from "../../../components/BurgerMenu";
 import Loading from "../../../../components/Loading";
+import SideNavbar from "../../../components/SideNavbar";
 
 interface ProgrammePageParams {
   cohortId: any;
@@ -94,133 +95,143 @@ const StepsList = () => {
   };
 
   return (
-    <Grid
-      className="programmes-section"
-      container
-      style={{
-        position: "relative",
-        backgroundColor: "#F1F5FF",
-        maxWidth: "420px",
-        margin: "auto",
-        minHeight: "100vh",
-        width: "100%",
-      }}
-    >
-      <Loading loading={loading} />
-      <Grid item container direction="column">
-        <Grid
-          item
-          sx={{
-            padding: "6% 5%",
-            display: "flex",
-            alignItems: "center",
-            marginBottom: "2%",
-          }}
-        >
-          <img
-            onClick={() => history.goBack()}
-            style={{ cursor: "pointer" }}
-            src={arrowIcon}
-            width="27px"
-            height="27px"
-            alt="Arrow Logo"
-          />
-          <Typography sx={{ fontWeight: "500" }} ml="20px" variant="h6" gutterBottom component="p">
-            {section?.title}
-          </Typography>
-          <Grid ref={node}>
-            <Burger open={open} setOpen={setOpen} />
-          </Grid>
-          <Menu
-            cohortId={cohortId}
-            open={open}
-            setOpen={setOpen}
-            close={() => {
-              setOpen(false);
-            }}
-          />
-        </Grid>
-
-        <Grid className="step" onClick={getStarted}>
+    <Grid sx={{ display: "flex" }}>
+      <SideNavbar cohortId={cohortId} programmeId={""} />
+      <Grid
+        className="programmes-section mobile"
+        container
+        style={{
+          position: "relative",
+          backgroundColor: "#F1F5FF",
+          margin: "auto",
+          minHeight: "100vh",
+          width: "100%",
+        }}
+      >
+        <Loading loading={loading} />
+        <Grid item container direction="column">
           <Grid
+            item
             sx={{
+              padding: "6% 0",
               display: "flex",
               alignItems: "center",
-              padding: "0 13px 0 0",
-              marginBottom: "20px !important",
-              margin: "0 8px 0 0",
-              maxWidth: "10px",
+              marginBottom: "2%",
             }}
           >
-            <p className={"programmes-title"}>{section?.title}</p>
-          </Grid>
-          <Grid className="footer programme-footer">
+            <img
+              onClick={() => history.goBack()}
+              style={{ cursor: "pointer" }}
+              src={arrowIcon}
+              width="27px"
+              height="27px"
+              alt="Arrow Logo"
+            />
             <Typography
-              sx={{
-                fontWeight: "700",
-                margin: "0",
-                fontSize: "18px !important",
-                color: "white",
-              }}
-              variant="h5"
+              sx={{ fontWeight: "500" }}
+              ml="20px"
+              variant="h6"
               gutterBottom
               component="p"
             >
-              {completedStepCount > 0 ? "Continue" : "Get Started"}
+              {section?.title}
             </Typography>
-            <img
-              style={{ marginRight: "20px", objectFit: "cover", borderRadius: "4px" }}
-              src={ArrowWhiteIcon}
-              width="12px"
-              height="23px"
-              alt="arrow icon"
+            <Grid ref={node}>
+              <Burger open={open} setOpen={setOpen} />
+            </Grid>
+            <Menu
+              cohortId={cohortId}
+              open={open}
+              setOpen={setOpen}
+              close={() => {
+                setOpen(false);
+              }}
             />
           </Grid>
-        </Grid>
 
-        {steps &&
-          steps.map((item: any, index: number) => {
-            return (
-              <Grid
-                key={index}
-                className="step "
-                onClick={() => {
-                  (item.current_step || item.is_answered) && stepHandler(item);
+          <Grid className="step" onClick={getStarted}>
+            <Grid
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                padding: "0 13px 0 0",
+                marginBottom: "20px !important",
+                margin: "0 8px 0 0",
+                maxWidth: "10px",
+              }}
+            >
+              <p className={"programmes-title"}>{section?.title}</p>
+            </Grid>
+            <Grid className="footer programme-footer">
+              <Typography
+                sx={{
+                  fontWeight: "700",
+                  margin: "0",
+                  fontSize: "18px !important",
+                  color: "white",
                 }}
+                variant="h5"
+                gutterBottom
+                component="p"
               >
-                <p className={"step-title"}>{item.fields?.question || item.fields?.title}</p>
-                <p className={"section-step"}>{item.is_answered ? "Completed" : "Not Completed"}</p>
-                <Grid className={"footer ".concat(item?.is_answered ? "completed" : "")}>
-                  <Typography
-                    sx={{
-                      fontWeight: "700",
-                      margin: "0",
-                      fontSize: "18px !important",
-                      color: "white",
-                    }}
-                    variant="h5"
-                    gutterBottom
-                    component="p"
-                  >
-                    {item.is_answered ? "Completed" : "Continue"}
-                  </Typography>
-                  <img
-                    style={{ marginRight: "20px" }}
-                    src={
-                      item?.is_answered
-                        ? completedIcon
-                        : item.current_step
-                        ? ArrowWhiteIcon
-                        : LockIcon
-                    }
-                    width={item?.is_answered ? "18px" : item.is_locked ? "25px" : "12px"}
-                    height={item?.is_answered ? "16px" : item.is_locked ? "23px" : "23px"}
-                    alt="arrow icon"
-                  />
+                {completedStepCount > 0 ? "Continue" : "Get Started"}
+              </Typography>
+              <img
+                style={{ marginRight: "20px", objectFit: "cover", borderRadius: "4px" }}
+                src={ArrowWhiteIcon}
+                width="12px"
+                height="23px"
+                alt="arrow icon"
+              />
+            </Grid>
+          </Grid>
+
+          {steps &&
+            steps.map((item: any, index: number) => {
+              return (
+                <Grid
+                  key={index}
+                  className="step "
+                  onClick={() => {
+                    (item.current_step || item.is_answered) && stepHandler(item);
+                  }}
+                >
+                  <p className={"step-title"}>{item.fields?.question || item.fields?.title}</p>
+                  <p className={"section-step"}>
+                    {item.is_answered ? "Completed" : "Not Completed"}
+                  </p>
+                  <Grid className={"footer ".concat(item?.is_answered ? "completed" : "")}>
+                    <Typography
+                      sx={{
+                        fontWeight: "700",
+                        margin: "0",
+                        fontSize: "18px !important",
+                        color: "white",
+                      }}
+                      variant="h5"
+                      gutterBottom
+                      component="p"
+                    >
+                      {item.is_answered ? "Completed" : "Continue"}
+                    </Typography>
+                    <img
+                      style={{ marginRight: "20px" }}
+                      src={
+                        item?.is_answered
+                          ? completedIcon
+                          : item.current_step
+                          ? ArrowWhiteIcon
+                          : LockIcon
+                      }
+                      width={item?.is_answered ? "18px" : item.is_locked ? "25px" : "12px"}
+                      height={item?.is_answered ? "16px" : item.is_locked ? "23px" : "23px"}
+                      alt="arrow icon"
+                    />
+                  </Grid>
                 </Grid>
-              </Grid>
-            );
-          })}
+              );
+            })}
+        </Grid>
       </Grid>
     </Grid>
   );

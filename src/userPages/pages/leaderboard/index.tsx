@@ -8,6 +8,7 @@ import Loading from "../../../components/Loading";
 import "./style.scss";
 import { getCohortLearners } from "../../../services/common";
 import { useSnackbar } from "notistack";
+import SideNavbar from "../../components/SideNavbar";
 
 interface LeaderboardPageParams {
   programmeId: string;
@@ -17,7 +18,7 @@ interface LeaderboardPageParams {
 const LeaderBoard = () => {
   const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
-  const { cohortId } = useParams<LeaderboardPageParams>();
+  const { cohortId, programmeId } = useParams<LeaderboardPageParams>();
   const [open, setOpen] = useState(false);
   const node: any = useRef();
   const [learners, setLearners] = useState<any>(null);
@@ -55,112 +56,124 @@ const LeaderBoard = () => {
   }, [cohortId, enqueueSnackbar]);
 
   return (
-    <Grid
-      className="leaderboard"
-      container
-      style={{
-        position: "relative",
-        backgroundColor: "#F1F5FF",
-        maxWidth: "420px",
-        margin: "auto",
-        minHeight: "100vh",
-        width: "100%",
-      }}
-    >
-      <Loading loading={loading} />
-      <Grid item container direction="column">
-        <Grid
-          item
-          sx={{
-            padding: "6% 5%",
-            display: "flex",
-            alignItems: "center",
-            marginBottom: "2%",
-          }}
-        >
-          <img
-            onClick={() => history.goBack()}
-            style={{ cursor: "pointer" }}
-            src={arrowIcon}
-            width="27px"
-            height="27px"
-            alt="Arrow Logo"
-          />
-          <Typography sx={{ fontWeight: "500" }} ml="20px" variant="h6" gutterBottom component="p">
-            LEADERBOARD
-          </Typography>
-          <Grid ref={node}>
-            <Burger open={open} setOpen={setOpen} />
-            <Menu
-              cohortId={cohortId}
-              open={open}
-              setOpen={setOpen}
-              close={() => {
-                setOpen(false);
-              }}
+    <Grid sx={{ display: "flex" }}>
+      <SideNavbar cohortId={cohortId} programmeId={programmeId} />
+      <Grid
+        className="leaderboard mobile"
+        container
+        style={{
+          position: "relative",
+          backgroundColor: "#F1F5FF",
+          margin: "auto",
+          minHeight: "100vh",
+          width: "100%",
+        }}
+      >
+        <Loading loading={loading} />
+        <Grid item container direction="column">
+          <Grid
+            item
+            sx={{
+              padding: "6% 0%",
+              display: "flex",
+              alignItems: "center",
+              marginBottom: "2%",
+            }}
+          >
+            <img
+              onClick={() => history.goBack()}
+              style={{ cursor: "pointer" }}
+              src={arrowIcon}
+              width="27px"
+              height="27px"
+              alt="Arrow Logo"
             />
+            <Typography
+              sx={{ fontWeight: "500" }}
+              ml="20px"
+              variant="h6"
+              gutterBottom
+              component="p"
+            >
+              LEADERBOARD
+            </Typography>
+            <Grid ref={node}>
+              <Burger open={open} setOpen={setOpen} />
+              <Menu
+                cohortId={cohortId}
+                open={open}
+                setOpen={setOpen}
+                close={() => {
+                  setOpen(false);
+                }}
+              />
+            </Grid>
           </Grid>
-        </Grid>
 
-        {learners &&
-          learners.map((item: any, index: number) => {
-            return index === 0 ? (
-              <Grid
-                sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}
-                key={index}
-                className="section"
-              >
+          {learners &&
+            learners.map((item: any, index: number) => {
+              return index === 0 ? (
                 <Grid
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    width: "98px",
-                    height: "98px",
-                    justifyContent: "center",
-                    borderRadius: "50%",
-                    fontSize: "22px",
-                    fontWeight: "600",
-                  }}
+                  sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}
+                  key={index}
+                  className="section"
                 >
-                  <img src={LeaderBoardIcon} alt={""} width="78.81px" />
+                  <Grid
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      width: "98px",
+                      height: "98px",
+                      justifyContent: "center",
+                      borderRadius: "50%",
+                      fontSize: "22px",
+                      fontWeight: "600",
+                    }}
+                  >
+                    <img src={LeaderBoardIcon} alt={""} width="78.81px" />
+                  </Grid>
+                  <Grid>
+                    <Typography className={"first-user-name"}>
+                      {item.first_name} {item.last_name}
+                    </Typography>
+                    <Typography className={"first-section-completed"}>
+                      {item.completed_steps}/{item.steps} Steps completed
+                    </Typography>
+                  </Grid>
                 </Grid>
-                <Grid>
-                  <Typography className={"first-user-name"}>
-                    {item.first_name} {item.last_name}
-                  </Typography>
-                  <Typography className={"first-section-completed"}>
-                    {item.completed_steps}/{item.steps} Steps completed
-                  </Typography>
-                </Grid>
-              </Grid>
-            ) : (
-              <Grid sx={{ display: "flex", alignItems: "center" }} key={index} className="section">
+              ) : (
                 <Grid
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    width: "40px",
-                    height: "40px",
-                    background: "#22B9D4",
-                    justifyContent: "center",
-                    borderRadius: "50%",
-                    fontSize: "16px",
-                    fontWeight: "600",
-                  }}
+                  sx={{ display: "flex", alignItems: "center" }}
+                  key={index}
+                  className="section"
                 >
-                  #{item.rank}
+                  <Grid
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      width: "40px",
+                      height: "40px",
+                      background: "#22B9D4",
+                      justifyContent: "center",
+                      borderRadius: "50%",
+                      fontSize: "16px",
+                      fontWeight: "600",
+                    }}
+                  >
+                    #{item.rank}
+                  </Grid>
+                  <Grid>
+                    <p className={"user-name"}>
+                      {item.first_name} {item.last_name}
+                    </p>
+                    <p className={"section-completed"}>
+                      {item.completed_steps}/{item.steps} Steps completed
+                    </p>
+                  </Grid>
                 </Grid>
-                <Grid>
-                  <p className={"user-name"}>
-                    {item.first_name} {item.last_name}
-                  </p>
-                  <p className={"section-completed"}>
-                    {item.completed_steps}/{item.steps} Steps completed
-                  </p>
-                </Grid>
-              </Grid>
-            );
-          })}
+              );
+            })}
+        </Grid>
       </Grid>
     </Grid>
   );

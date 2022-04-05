@@ -6,6 +6,7 @@ import "./style.scss";
 import arrowIcon from "../../../static/images/right-arrow 6.png";
 import { useHistory } from "react-router";
 import { useParams } from "react-router-dom";
+import SideNavbar from "../../../components/SideNavbar";
 
 interface ProgrammePageParams {
   cohortId: string;
@@ -15,12 +16,16 @@ const LiveSession = () => {
   const history = useHistory();
   const { cohortId } = useParams<ProgrammePageParams>();
   const [liveSession, setLiveSession] = useState<any>([]);
+  const [programmeId, setProgrammeId] = useState<any>("");
 
   useEffect(() => {
     if (cohortId) {
       const fetchProgrammeData = async () => {
         try {
           const liveSessions: any = await getCohortLiveSessions(cohortId);
+          if (liveSessions.data.length > 0) {
+            setProgrammeId(liveSessions.data[0].step.programme);
+          }
           setLiveSession(liveSessions.data);
         } catch (error) {
           console.log(error);
@@ -33,17 +38,18 @@ const LiveSession = () => {
   const detailHandler = (data: any) => {
     history.push({
       pathname: "/user-live-session-detail",
-      state: { data: data },
+      state: { data: data, cohortId: cohortId, programmeId: programmeId },
     });
   };
 
   return (
-    <>
+    <Grid sx={{ display: "flex" }}>
+      <SideNavbar cohortId={cohortId} programmeId={programmeId} />
       <Grid
         container
+        className="mobile"
         style={{
           background: "#FFFFFF",
-          maxWidth: "420px",
           margin: "auto",
           minHeight: "100vh",
           width: "100%",
@@ -54,7 +60,7 @@ const LiveSession = () => {
           item
           sx={{
             width: "100%",
-            padding: "6% 5%",
+            padding: "6% 0",
             display: "flex",
             alignItems: "center",
             marginBottom: "2%",
@@ -134,7 +140,7 @@ const LiveSession = () => {
             );
           })}
       </Grid>
-    </>
+    </Grid>
   );
 };
 

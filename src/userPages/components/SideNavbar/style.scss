@@ -1,0 +1,25 @@
+.side-nav{
+  background: #0E4A66;
+  min-height: 100vh;
+  .name{
+    font-weight: 600;
+    font-size: 26px;
+    line-height: 27px;
+    text-align: center;
+    text-transform: capitalize;
+    color: #FFFFFF;
+  }
+  .items{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 75%;
+    cursor: pointer;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .side-nav {
+    display: none !important;
+  }
+}

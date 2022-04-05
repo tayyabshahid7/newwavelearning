@@ -65,7 +65,7 @@ function App() {
         <Route exact path={LOGIN_PAGE} component={LoginPage} />
         <ProtectedRoute exact path={"/user-programmes"} component={Programmes} />
         <ProtectedRoute exact path={"/user-live-sessions/:cohortId"} component={LiveSession} />
-        <ProtectedRoute exact path={"/user-feedback/:cohortId"} component={Feedback} />
+        <ProtectedRoute exact path={"/user-feedback/:cohortId/:programmeId"} component={Feedback} />
         <ProtectedRoute exact path={"/user-live-session-detail/"} component={LiveSessionDetail} />
         <ProtectedRoute exact path={"/user-feedback-detail/"} component={FeedbackDetail} />
         <ProtectedRoute
