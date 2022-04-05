@@ -264,7 +264,7 @@ const Steps = () => {
             </Grid>
           )}
 
-          <Grid item sx={{ padding: "0% 10%", textAlign: "center", marginTop: "20px" }}>
+          <Grid item sx={{ padding: "1.5% 10%", textAlign: "center", marginTop: "20px" }}>
             <Typography
               component="h5"
               sx={{

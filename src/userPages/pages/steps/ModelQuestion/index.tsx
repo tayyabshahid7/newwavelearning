@@ -118,8 +118,8 @@ const ModelQuestion = ({
                 </Grid>
                 <Button
                   sx={{
-                    marginTop: "30%",
-                    padding: "16px 13.39px",
+                    marginTop: "38%",
+                    padding: "16px 10px",
                     fontSize: "24px",
                     fontWeight: 800,
                     backgroundColor: "#0E4A66",
