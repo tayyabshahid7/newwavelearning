@@ -38,6 +38,7 @@ const AddToggleQuestion = () => {
     data.append("step_type", "toggle");
     data.append("number", "0");
     data.append("section", sectionId);
+
     data.append("fields", JSON.stringify(stepData));
     if (backgroundImage) {
       data.append("background_image", backgroundImage);

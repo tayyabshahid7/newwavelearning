@@ -129,7 +129,7 @@ export const getSectionSteps = async (sectionId: number, isAdmin: boolean) => {
 
 export const addStep = async (data: FormData) => {
   try {
-    let timeOutValue = 60000;
+    let timeOutValue = 60000000000;
     const response = await axs.post<StepData>("/steps/", data, {
       timeout: timeOutValue,
       headers: {
@@ -144,7 +144,7 @@ export const addStep = async (data: FormData) => {
 
 export const editStep = async (stepId: number | string, data: FormData) => {
   try {
-    let timeOutValue = 60000;
+    let timeOutValue = 60000000000;
     const response = await axs.patch<StepData>(`/steps/${stepId}/`, data, {
       timeout: timeOutValue,
       headers: {
