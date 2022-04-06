@@ -4,9 +4,20 @@ import { Box, Button, Grid, Paper, Stack, Switch, TextField, Typography } from "
 import DashboardLayout from "components/DashboardLayout";
 import FileDropZone from "components/FileDropZone";
 import { EditStepParams } from "common/types";
-import { editStep, getStepDetails } from "services/common";
+import { addStep, editStep, getStepDetails } from "services/common";
 import { UploadFile } from "@mui/icons-material";
 import Player from "components/Player";
+import { S3Client } from "@aws-sdk/client-s3";
+import { Upload } from "@aws-sdk/lib-storage";
+
+let bucketName = process.env.REACT_APP_S3_BUCKET_NAME;
+let s3Key: any = process.env.REACT_APP_S3_KEY;
+let s3Region: any = process.env.REACT_APP_S3_REGION;
+
+let credentials: any = {
+  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+};
 
 const EditVideoContent = () => {
   const { stepId } = useParams<EditStepParams>();
@@ -43,6 +54,29 @@ const EditVideoContent = () => {
     setBackgroundImage(newImages[0]);
   };
 
+  const uploadFile = async () => {
+    let target: any = {
+      Bucket: bucketName,
+      Key: s3Key + videoFile?.name,
+      Body: videoFile,
+    };
+    try {
+      const parallelUploads3 = new Upload({
+        client: new S3Client({ region: s3Region, credentials }),
+        leavePartsOnError: false, // optional manually handle dropped parts
+        params: target,
+      });
+
+      parallelUploads3.on("httpUploadProgress", progress => {
+        console.log(progress);
+      });
+
+      await parallelUploads3.done();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const cancelChangeBackground = () => {
     setBackgroundImage(null);
     setChangeBackground(false);
@@ -67,8 +101,18 @@ const EditVideoContent = () => {
     data.append("step_type", "video");
     let fields = stepData;
     if (videoFile instanceof File) {
-      data.append("video", videoFile);
+      await uploadFile();
+      let name = s3Key + videoFile?.name;
+      const s3ObjectUrl = `https://${bucketName}.s3.${s3Region}.amazonaws.com/${name}`;
+      fields["video"] = s3ObjectUrl;
+      data.append("fields", JSON.stringify(fields));
+      await saveData(data, fields);
+    } else {
+      await saveData(data, fields);
     }
+  };
+
+  const saveData = async (data: any, fields: any) => {
     if (deleteBackground) {
       fields.background_image = null;
     } else if (backgroundImage) {

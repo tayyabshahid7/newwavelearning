@@ -7,6 +7,17 @@ import { AddStepParams } from "common/types";
 import { addStep } from "services/common";
 import { UploadFile } from "@mui/icons-material";
 import Player from "components/Player";
+import { Upload } from "@aws-sdk/lib-storage";
+import { S3Client } from "@aws-sdk/client-s3";
+
+let bucketName = process.env.REACT_APP_S3_BUCKET_NAME;
+let s3Key: any = process.env.REACT_APP_S3_KEY;
+let s3Region: any = process.env.REACT_APP_S3_REGION;
+
+let credentials: any = {
+  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+};
 
 const AddVideoContent = () => {
   const { sectionId } = useParams<AddStepParams>();
@@ -36,21 +47,52 @@ const AddVideoContent = () => {
     setVideoFile(event.target.files[0]);
   };
 
+  const uploadFile = async () => {
+    let target: any = {
+      Bucket: bucketName,
+      Key: s3Key + videoFile?.name,
+      Body: videoFile,
+    };
+    try {
+      const parallelUploads3 = new Upload({
+        client: new S3Client({ region: s3Region, credentials }),
+        leavePartsOnError: false, // optional manually handle dropped parts
+        params: target,
+      });
+
+      parallelUploads3.on("httpUploadProgress", progress => {
+        console.log(progress);
+      });
+
+      await parallelUploads3.done();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const handleSave = async () => {
     setLoading(true);
     const data = new FormData();
     data.append("step_type", "video");
     data.append("number", "0");
     data.append("section", sectionId);
-    let fields = stepData;
-    data.append("fields", JSON.stringify(fields));
+    let fields: any = stepData;
     if (videoFile) {
-      data.append("video", videoFile);
+      await uploadFile();
+      let name = s3Key + videoFile?.name;
+      const s3ObjectUrl = `https://${bucketName}.s3.${s3Region}.amazonaws.com/${name}`;
+      fields["video"] = s3ObjectUrl;
+      data.append("fields", JSON.stringify(fields));
+      await saveData(data);
+    } else {
+      await saveData(data);
     }
+  };
+
+  const saveData = async (data: any) => {
     if (backgroundImage) {
       data.append("background_image", backgroundImage);
     }
-
     try {
       await addStep(data);
     } catch (error: any) {
