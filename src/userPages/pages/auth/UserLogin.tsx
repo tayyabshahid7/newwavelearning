@@ -33,7 +33,7 @@ const UserLogin = ({ history }: LoginPageProps) => {
     }
 
     try {
-      await loginUser(email, password);
+      await loginUser(email.toLowerCase(), password);
       window.location.href = "/user-programmes";
     } catch (error: any) {
       if (error.response?.status === 401) {
