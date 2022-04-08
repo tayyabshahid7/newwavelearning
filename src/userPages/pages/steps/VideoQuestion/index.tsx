@@ -10,13 +10,13 @@ const VideoQuestion = ({ video }: any) => {
           display: "flex",
           justifyContent: "center",
           marginBottom: "10%",
-          "@media(maxWidth: 767px)": {
+          "@media (max-width: 767px)": {
             paddingTop: "15%",
           },
         }}
       >
-        <video className="video" controls>
-          <source src={video} type="video/mp4" />
+        <video src={video} className="video" controls>
+          {/*<source src={stepVideo} />*/}
           Your browser does not support HTML video.
         </video>
       </Grid>

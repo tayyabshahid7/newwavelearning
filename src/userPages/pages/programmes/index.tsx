@@ -54,7 +54,7 @@ const Programmes = () => {
               justifyContent: "space-between",
               alignItems: "center",
               marginBottom: "2%",
-              "@media(maxWidth: 767px)": {
+              "@media (max-width: 767px)": {
                 padding: "6% 5%",
               },
             }}
@@ -104,7 +104,7 @@ const Programmes = () => {
             width: "100%",
             padding: "0 15px",
             marginTop: "35%",
-            "@media(maxWidth: 767px)": {
+            "@media (max-width: 767px)": {
               marginTop: "85%",
             },
           }}

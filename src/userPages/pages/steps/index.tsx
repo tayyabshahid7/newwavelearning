@@ -224,7 +224,9 @@ const Steps = () => {
         <Loading loading={loading} />
         <Grid item container direction="column" style={{ minHeight: "70vh" }}>
           {stepType === "video" && <VideoQuestion video={stepData.video} />}
-          {stepType === "text_content" && <TextContentQuestion image={stepData.image} />}
+          {stepType === "text_content" && stepData.image && (
+            <TextContentQuestion image={stepData.image} />
+          )}
           <Grid
             item
             sx={{
@@ -304,6 +306,10 @@ const Steps = () => {
               minHeight: stepType === "picture_choice_question" ? "55vh" : "unset",
               overflow: stepType === "picture_choice_question" ? "auto" : "unset",
               marginBottom: "2%",
+              "@media (max-width: 767px)": {
+                display: "flex !important",
+                margin: "auto",
+              },
             }}
           >
             {stepType === "multiple_choice_question" ? (

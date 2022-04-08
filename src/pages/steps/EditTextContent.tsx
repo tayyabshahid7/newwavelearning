@@ -171,6 +171,7 @@ const EditTextContentPage = () => {
                 name="title"
                 label="Title"
                 helperText={formErrors.content && "This field is required"}
+                onChange={handleTextChange}
               />
               <TextField
                 fullWidth
@@ -180,6 +181,7 @@ const EditTextContentPage = () => {
                 name="content"
                 label="Content"
                 helperText={formErrors.content && "This field is required"}
+                onChange={handleTextChange}
               />
               <TextField
                 fullWidth
