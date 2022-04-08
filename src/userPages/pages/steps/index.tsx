@@ -279,23 +279,24 @@ const Steps = () => {
             </Typography>
           </Grid>
 
-          {stepType === "text_content" && (
+          {stepType === "text_content" && stepData.url && (
             <Grid item sx={{ padding: "0% 10%", textAlign: "center", marginTop: "20px" }}>
-              <Link
+              <Button
                 sx={{
+                  background: "#F76639",
                   fontSize: "16px",
                   fontWeight: "400",
                   cursor: "pointer !important",
-                  textDecoration: "none",
                   "&:hover": {
-                    textDecoration: "underline",
+                    background: "#c96247",
                   },
                 }}
-                href={stepData.url}
-                target="_blank"
+                onClick={() => {
+                  window.open(stepData.url, "_blank");
+                }}
               >
                 Click link here
-              </Link>
+              </Button>
             </Grid>
           )}
 

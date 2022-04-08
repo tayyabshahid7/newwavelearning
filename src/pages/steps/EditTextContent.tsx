@@ -120,13 +120,13 @@ const EditTextContentPage = () => {
       setFormErrors({ ...formErrors, content: true });
       valid = false;
     }
-    //@ts-ignore
-    let re =
-      /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/;
-    if (!re.test(formData.url)) {
-      setFormErrors({ ...formErrors, url: true });
-      valid = false;
-    }
+    // //@ts-ignore
+    // let re =
+    //   /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/;
+    // if (!re.test(formData.url)) {
+    //   setFormErrors({ ...formErrors, url: true });
+    //   valid = false;
+    // }
     return valid;
   };
 
@@ -189,12 +189,6 @@ const EditTextContentPage = () => {
                 name="url"
                 label="Url"
                 onChange={handleTextChange}
-                error={formErrors.url}
-                helperText={
-                  formErrors.url && formErrors.url === ""
-                    ? "This field is required"
-                    : "Enter valid field is required"
-                }
               />
             </Stack>
           </Grid>
