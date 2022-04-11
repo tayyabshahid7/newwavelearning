@@ -28,6 +28,7 @@ const StepsList = () => {
   const [open, setOpen] = useState(false);
   const [completedStepCount, setCompletedStepCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
+  const [programmeId, setProgrammeId] = useState<any>("");
 
   const getStepData = useCallback(
     async (stepOrder: any) => {
@@ -36,7 +37,6 @@ const StepsList = () => {
         if (sectionId) {
           let isCurrentStep = false;
           const response = await getSectionSteps(sectionId, false);
-
           let arr: any = [];
           stepOrder.filter(function (order: any) {
             return response.data.forEach(function (list: any) {
@@ -77,6 +77,7 @@ const StepsList = () => {
       try {
         const sectionData: any = await getSection(sectionId);
         setSection(sectionData);
+        setProgrammeId(sectionData.programme);
         await getStepData(sectionData?.step_order);
       } catch (error: any) {
         enqueueSnackbar(error.response?.data.detail, { variant: "error" });
@@ -96,7 +97,7 @@ const StepsList = () => {
 
   return (
     <Grid sx={{ display: "flex" }}>
-      <SideNavbar cohortId={cohortId} programmeId={""} />
+      <SideNavbar cohortId={cohortId} programmeId={programmeId} />
       <Grid
         className="programmes-section mobile"
         container

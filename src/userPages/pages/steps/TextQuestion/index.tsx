@@ -28,6 +28,12 @@ const TextQuestion = ({
     }
   }, [answers, userAnswer]);
 
+  useEffect(() => {
+    if (isSubmitted) {
+      setSelectedCount(0);
+    }
+  }, [isSubmitted]);
+
   const selectHandler = (item: any, index: number) => {
     const ids: any = [...selectedIds];
     if (!isSubmitted) {

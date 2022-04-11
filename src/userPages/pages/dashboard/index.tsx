@@ -105,7 +105,7 @@ const UserDashboard = () => {
               }}
             >
               <img
-                onClick={() => history.goBack()}
+                onClick={() => history.push(`/user-programmes`)}
                 style={{ cursor: "pointer" }}
                 src={arrowIcon}
                 width="27px"

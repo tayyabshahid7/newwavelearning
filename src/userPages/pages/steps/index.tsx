@@ -223,7 +223,6 @@ const Steps = () => {
         </Grid>
         <Loading loading={loading} />
         <Grid item container direction="column" style={{ minHeight: "70vh" }}>
-          {stepType === "video" && <VideoQuestion video={stepData.video} />}
           {stepType === "text_content" && stepData.image && (
             <TextContentQuestion image={stepData.image} />
           )}
@@ -278,7 +277,7 @@ const Steps = () => {
               {stepData.description || stepData.content}
             </Typography>
           </Grid>
-
+          {stepType === "video" && <VideoQuestion video={stepData.video} />}
           {stepType === "text_content" && stepData.url && (
             <Grid item sx={{ padding: "0% 10%", textAlign: "center", marginTop: "20px" }}>
               <Button
@@ -472,12 +471,14 @@ const Steps = () => {
                   stepType !== "model_answer_question" &&
                   stepType !== "keyword_question" &&
                   stepType !== "open_ended_question" &&
+                  stepType !== "video_response" &&
                   stepType !== "multiple_choice_question"
                 ) {
                   await submitAnswer();
                 }
                 const nextStepId = getNextStepId();
                 if (nextStepId) {
+                  setSelectedAnswerIds([]);
                   setIsSubmitted(false);
                   setSelectedCount(0);
                   setText("");

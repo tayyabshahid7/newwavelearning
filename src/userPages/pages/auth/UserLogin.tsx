@@ -5,6 +5,7 @@ import nwLogo from "../../static/images/logo.png";
 import { isLoggedIn, loginUser } from "../../../services/auth";
 import { isValidEmail } from "../../../common/utils";
 import "./auth.scss";
+import SideNavbar from "../../components/SideNavbar";
 
 interface LoginPageProps {
   history: RouteComponentProps["history"];
@@ -69,132 +70,156 @@ const UserLogin = ({ history }: LoginPageProps) => {
   };
 
   return (
-    <Grid
-      className="user-login"
-      container
-      style={{
-        backgroundColor: "#F1F5FF",
-        maxWidth: "420px",
-        margin: "auto",
-        minHeight: "100vh",
-        width: "100%",
-      }}
-    >
-      <Grid item container direction="column">
-        <Grid
-          item
-          sx={{
-            padding: "10%",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            flexDirection: "column",
-          }}
-          mt="10%"
-        >
-          <img src={nwLogo} width="208px" height="121px" alt="New Wave Learning Logo" />
-          <Typography
-            sx={{ margin: "15% 0 8% 0", fontWeight: "500" }}
-            variant="h5"
-            gutterBottom
-            component="p"
+    <Grid sx={{ display: "flex" }}>
+      <Grid
+        className="user-login mobile"
+        container
+        style={{
+          backgroundColor: "#F1F5FF",
+          margin: "auto",
+          minHeight: "100vh",
+          width: "100%",
+        }}
+      >
+        <Grid item container direction="column">
+          <Grid
+            item
+            sx={{
+              width: "100%",
+              padding: "5%",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexDirection: "column",
+              "@media (max-width: 767px)": {
+                marginTop: "10%",
+                padding: "10%",
+              },
+            }}
           >
-            Login
-          </Typography>
-        </Grid>
-        <Grid item sx={{ padding: "5% 6% 10% 6%" }} container direction="column" spacing={2}>
-          <Grid item>
-            <Typography variant="body1" sx={{ fontWeight: 500 }} gutterBottom>
-              Email Address
+            <img src={nwLogo} width="208px" height="121px" alt="New Wave Learning Logo" />
+            <Typography
+              sx={{ margin: "5% 0 0% 0", fontWeight: "500" }}
+              variant="h5"
+              gutterBottom
+              component="p"
+            >
+              Login
             </Typography>
-            <TextField
-              inputProps={{
-                style: {
-                  padding: "11.5px",
-                  border: "1px solid #0E4A66",
-                },
-              }}
-              id="email"
-              value={email}
-              onKeyDown={handleKeyDown}
-              onChange={handleEmailChange}
-              fullWidth
-              error={emailError}
-              FormHelperTextProps={{
-                style: {
-                  marginLeft: 0,
-                },
-              }}
-              helperText={emailError && "Please input a valid email."}
-            />
           </Grid>
-          <Grid item sx={{ paddingTop: "10px !important" }}>
-            <Typography variant="body1" sx={{ fontWeight: 500 }} gutterBottom>
-              Password
-            </Typography>
-            <TextField
-              inputProps={{
-                style: {
-                  padding: "11.5px",
-                  border: "1px solid #0E4A66",
-                },
-              }}
-              id="password"
-              type="password"
-              value={password}
-              onKeyDown={handleKeyDown}
-              onChange={handlePasswordChange}
-              fullWidth
-              error={passwordError}
-              FormHelperTextProps={{
-                style: {
-                  marginLeft: 0,
-                },
-              }}
-              helperText={passwordError && "Please input a valid password."}
-            />
-          </Grid>
-          <Grid item container spacing={1} direction="column">
-            {loginError && (
-              <Grid item>
-                <Typography variant="body2" color="error">
-                  {loginError}
-                </Typography>
-              </Grid>
-            )}
-            <Grid item sx={{ paddingTop: "5px !important" }}>
-              <Link
-                sx={{
-                  color: "black",
-                  fontWeight: 500,
-                  "&:hover": {
-                    textDecoration: "underline",
+          <Grid
+            item
+            sx={{
+              padding: "2%",
+              "@media (max-width: 767px)": {
+                padding: "5% 6% 10% 6%",
+              },
+            }}
+            container
+            direction="column"
+            spacing={2}
+          >
+            <Grid item>
+              <Typography variant="body1" sx={{ fontWeight: 500 }} gutterBottom>
+                Email Address
+              </Typography>
+              <TextField
+                inputProps={{
+                  style: {
+                    padding: "11.5px",
+                    border: "1px solid #0E4A66",
                   },
                 }}
-                component={RouterLink}
-                to="/user-reset-password"
-                underline="none"
-              >
-                Forgotten password?
-              </Link>
-            </Grid>
-            <Grid mt="64%" item>
-              <Button
-                variant="contained"
-                sx={{
-                  padding: "16px 13.39px",
-                  fontSize: "24px",
-                  fontWeight: 800,
-                  backgroundColor: "#0E4A66",
-                  boxShadow: "0px 4px 15px rgba(14, 74, 102, 0.57)",
-                  borderRadius: "8px",
-                }}
+                id="email"
+                value={email}
+                onKeyDown={handleKeyDown}
+                onChange={handleEmailChange}
                 fullWidth
-                size="large"
-                onClick={handleLogin}
+                error={emailError}
+                FormHelperTextProps={{
+                  style: {
+                    marginLeft: 0,
+                  },
+                }}
+                helperText={emailError && "Please input a valid email."}
+              />
+            </Grid>
+            <Grid item sx={{ paddingTop: "10px !important" }}>
+              <Typography variant="body1" sx={{ fontWeight: 500 }} gutterBottom>
+                Password
+              </Typography>
+              <TextField
+                inputProps={{
+                  style: {
+                    padding: "11.5px",
+                    border: "1px solid #0E4A66",
+                  },
+                }}
+                id="password"
+                type="password"
+                value={password}
+                onKeyDown={handleKeyDown}
+                onChange={handlePasswordChange}
+                fullWidth
+                error={passwordError}
+                FormHelperTextProps={{
+                  style: {
+                    marginLeft: 0,
+                  },
+                }}
+                helperText={passwordError && "Please input a valid password."}
+              />
+            </Grid>
+            <Grid item container spacing={1} direction="column">
+              {loginError && (
+                <Grid item>
+                  <Typography variant="body2" color="error">
+                    {loginError}
+                  </Typography>
+                </Grid>
+              )}
+              <Grid item sx={{ paddingTop: "5px !important" }}>
+                <Link
+                  sx={{
+                    color: "black",
+                    fontWeight: 500,
+                    "&:hover": {
+                      textDecoration: "underline",
+                    },
+                  }}
+                  component={RouterLink}
+                  to="/user-reset-password"
+                  underline="none"
+                >
+                  Forgotten password?
+                </Link>
+              </Grid>
+              <Grid
+                sx={{
+                  marginTop: "10%",
+                  "@media (max-width: 767px)": {
+                    marginTop: "64%",
+                  },
+                }}
+                item
               >
-                Login
-              </Button>
+                <Button
+                  variant="contained"
+                  sx={{
+                    padding: "16px 13.39px",
+                    fontSize: "24px",
+                    fontWeight: 800,
+                    backgroundColor: "#0E4A66",
+                    boxShadow: "0px 4px 15px rgba(14, 74, 102, 0.57)",
+                    borderRadius: "8px",
+                  }}
+                  fullWidth
+                  size="large"
+                  onClick={handleLogin}
+                >
+                  Login
+                </Button>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>

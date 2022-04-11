@@ -68,7 +68,7 @@ const LiveSession = () => {
           }}
         >
           <img
-            onClick={() => history.goBack()}
+            onClick={() => history.push(`/user-dashboard/${cohortId}`)}
             style={{ cursor: "pointer" }}
             src={arrowIcon}
             width="27px"
