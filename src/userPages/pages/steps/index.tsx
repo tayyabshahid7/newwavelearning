@@ -24,6 +24,7 @@ import AudioResponse from "./AudioResponse";
 import VideoResponse from "./VideoResponse";
 import OpenEndedQuestion from "./OpenEndedQuestion";
 import SideNavbar from "../../components/SideNavbar";
+import nwLogo from "../../static/images/logo.png";
 
 type IntroParams = {
   cohortId: string;
@@ -47,6 +48,7 @@ const Steps = () => {
   const [userAnswer, setUserAnswer] = useState<StepData[]>([]);
   const [videoFile, setVideoFile] = useState<File | any>(null);
   const [programmeId, setProgrammeId] = useState<any>("");
+  const [bgImage, setBgImage] = useState<any>(null);
   const [stepData, setStepData] = useState<any>({
     content: "",
     image: "",
@@ -116,6 +118,9 @@ const Steps = () => {
           setIsSubmitted(true);
           setSelectedCount(Object.keys(response.answer[0].answer).length);
         }
+        let url = response.fields.background_image;
+        url = url.replace(/\ /g, "%20");
+        setBgImage(url);
         setUserAnswer(response.answer);
         setTotalAnswerCount(response.fields?.correct_answers);
         setStepType(response?.step_type);
@@ -191,9 +196,7 @@ const Steps = () => {
         container
         className="steps mobile"
         style={{
-          background: stepData.background_image
-            ? `url(${stepData.background_image}) 0 0 / cover no-repeat`
-            : "#FFFFFF",
+          background: bgImage ? `url(${bgImage}) 0 0 / cover no-repeat` : "#FFFFFF",
           margin: "auto",
           minHeight: "100vh",
           width: "100%",
@@ -307,8 +310,18 @@ const Steps = () => {
               overflow: stepType === "picture_choice_question" ? "auto" : "unset",
               marginBottom: "2%",
               "@media (max-width: 767px)": {
-                display: "flex !important",
-                margin: "auto",
+                display:
+                  stepType !== "toggle" &&
+                  stepType !== "audio_response" &&
+                  stepType !== "multiple_choice_question"
+                    ? "flex !important"
+                    : "block",
+                margin:
+                  stepType !== "audio_response" &&
+                  stepType !== "toggle" &&
+                  stepType !== "multiple_choice_question"
+                    ? "auto"
+                    : "unset",
               },
             }}
           >

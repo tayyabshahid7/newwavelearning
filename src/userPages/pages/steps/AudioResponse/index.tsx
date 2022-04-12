@@ -41,7 +41,14 @@ const AudioResponse = () => {
 
   return (
     <>
-      <Grid sx={{ display: "flex", justifyContent: "center", position: "relative" }}>
+      <Grid
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          position: "relative",
+          margin: "25px auto",
+        }}
+      >
         <Recorder
           hideHeader={true}
           record={false}

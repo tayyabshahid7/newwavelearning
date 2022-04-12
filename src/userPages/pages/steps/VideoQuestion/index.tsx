@@ -11,7 +11,7 @@ const VideoQuestion = ({ video }: any) => {
           justifyContent: "center",
           marginBottom: "10%",
           "@media (max-width: 767px)": {
-            paddingTop: "15%",
+            padding: "15% 10px",
           },
         }}
       >
