@@ -107,7 +107,7 @@ export const duplicateSection = async (sectionId: number | string) => {
 
 export const getProgrammeSections = async (programmeId: number, isAdmin: boolean) => {
   try {
-    const response = await axs.get<SectionData[]>(`/programmes/${programmeId}/sections`, {
+    const response = await axs.get<SectionData[]>(`/programmes/${programmeId}/sections/`, {
       params: { is_admin: isAdmin },
     });
     return response;
@@ -118,7 +118,7 @@ export const getProgrammeSections = async (programmeId: number, isAdmin: boolean
 
 export const getSectionSteps = async (sectionId: number, isAdmin: boolean) => {
   try {
-    const response = await axs.get<StepData[]>(`/sections/${sectionId}/steps`, {
+    const response = await axs.get<StepData[]>(`/sections/${sectionId}/steps/`, {
       params: { is_admin: isAdmin },
     });
     return response;
@@ -229,7 +229,7 @@ export const EditCohort = async (cohortId: number, data: CohortData) => {
   }
 };
 
-export const getCohorts = async (pageUrl: string = "/cohorts") => {
+export const getCohorts = async (pageUrl: string = "/cohorts/") => {
   try {
     const response = await axs.get<ResponseData>(pageUrl);
     return response;

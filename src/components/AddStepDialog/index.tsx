@@ -21,11 +21,7 @@ interface AddStepDialogProps {
   cancelCallback: (data?: any) => any;
 }
 
-const AddStepDialog = ({
-  open,
-  cancelCallback,
-  sectionId,
-}: AddStepDialogProps) => {
+const AddStepDialog = ({ open, cancelCallback, sectionId }: AddStepDialogProps) => {
   const history = useHistory();
   const [stepTypes, setStepTypes] = useState<any>(null);
   const [selectedType, setSelectedType] = useState<any>("");
@@ -33,7 +29,7 @@ const AddStepDialog = ({
   useEffect(() => {
     const getStepTypes = async () => {
       try {
-        const response = await axs.get("/steps/step-types");
+        const response = await axs.get("/steps/step-types/");
         setStepTypes(response.data);
       } catch (error: any) {
         console.log(error);
