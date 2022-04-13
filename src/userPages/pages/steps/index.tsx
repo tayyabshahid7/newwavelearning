@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Grid, Typography, Button, Link } from "@mui/material";
+import { Grid, Typography, Button } from "@mui/material";
 import {
   getSection,
   getSectionSteps,
@@ -24,7 +24,6 @@ import AudioResponse from "./AudioResponse";
 import VideoResponse from "./VideoResponse";
 import OpenEndedQuestion from "./OpenEndedQuestion";
 import SideNavbar from "../../components/SideNavbar";
-import nwLogo from "../../static/images/logo.png";
 
 type IntroParams = {
   cohortId: string;

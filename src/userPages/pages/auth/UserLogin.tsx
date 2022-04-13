@@ -5,7 +5,6 @@ import nwLogo from "../../static/images/logo.png";
 import { isLoggedIn, loginUser } from "../../../services/auth";
 import { isValidEmail } from "../../../common/utils";
 import "./auth.scss";
-import SideNavbar from "../../components/SideNavbar";
 
 interface LoginPageProps {
   history: RouteComponentProps["history"];

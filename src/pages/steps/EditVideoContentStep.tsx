@@ -4,7 +4,7 @@ import { Box, Button, Grid, Paper, Stack, Switch, TextField, Typography } from "
 import DashboardLayout from "components/DashboardLayout";
 import FileDropZone from "components/FileDropZone";
 import { EditStepParams } from "common/types";
-import { addStep, editStep, getStepDetails } from "services/common";
+import { editStep, getStepDetails } from "services/common";
 import { UploadFile } from "@mui/icons-material";
 import Player from "components/Player";
 import { S3Client } from "@aws-sdk/client-s3";

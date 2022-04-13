@@ -107,7 +107,7 @@ export const duplicateSection = async (sectionId: number | string) => {
 
 export const getProgrammeSections = async (programmeId: number, isAdmin: boolean) => {
   try {
-    const response = await axs.get<SectionData[]>(`/programmes/${programmeId}/sections/`, {
+    const response = await axs.get<SectionData[]>(`/programmes/${programmeId}/sections`, {
       params: { is_admin: isAdmin },
     });
     return response;

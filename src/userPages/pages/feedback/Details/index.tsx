@@ -22,8 +22,9 @@ const FeedbackDetail = () => {
     state && setFeedbackItem(state.data);
     state && setFeedbackText(state.data.description);
     state && setFacilitatorName(state.data.facilitator_name);
-    state && setStepType(state.data.cohortId);
+    state && setCohortId(state.data.cohortId);
     state && setProgrammeId(state.data.programmeId);
+    state && setStepType(state.data.step_type);
   }, [history.location.state]);
 
   return (

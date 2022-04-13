@@ -48,7 +48,7 @@ const SideNavbar = ({ cohortId, programmeId }: any) => {
 
   return (
     <Grid className="side-nav">
-      <img src={SideNavbarLogo} style={{ marginBottom: "30px" }} />
+      <img src={SideNavbarLogo} style={{ marginBottom: "30px" }} alt="" />
       <Grid
         sx={{
           display: "flex",

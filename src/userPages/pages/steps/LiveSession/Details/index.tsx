@@ -16,7 +16,7 @@ const LiveSessionDetail = () => {
     let state: any = history.location.state;
     state && setLiveSession(state.data);
     state && setCohortId(state.cohortId);
-    state && setCohortId(state.programmeId);
+    state && setProgrammeId(state.programmeId);
   }, [history.location.state]);
 
   return (
