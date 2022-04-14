@@ -117,9 +117,11 @@ const Steps = () => {
           setIsSubmitted(true);
           setSelectedCount(Object.keys(response.answer[0].answer).length);
         }
-        let url = response.fields.background_image;
-        url = url.replace(/\ /g, "%20");
-        setBgImage(url);
+        if (response.fields.background_image) {
+          let url = response.fields.background_image;
+          url = url.replace(/\ /g, "%20");
+          setBgImage(url);
+        }
         setUserAnswer(response.answer);
         setTotalAnswerCount(response.fields?.correct_answers);
         setStepType(response?.step_type);

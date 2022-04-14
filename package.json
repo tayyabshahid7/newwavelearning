@@ -27,6 +27,7 @@
     "crypto-js": "^4.1.1",
     "date-fns": "^2.25.0",
     "filestream": "^5.0.0",
+    "lodash": "^4.17.21",
     "notistack": "^2.0.3",
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.0",
@@ -64,5 +65,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.181"
   }
 }
