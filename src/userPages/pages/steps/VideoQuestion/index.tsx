@@ -15,7 +15,7 @@ const VideoQuestion = ({ video }: any) => {
           },
         }}
       >
-        <video src={video} className="video" controls>
+        <video src={video} className="video" controls controlsList="nodownload">
           {/*<source src={stepVideo} />*/}
           Your browser does not support HTML video.
         </video>

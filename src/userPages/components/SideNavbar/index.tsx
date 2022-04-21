@@ -1,9 +1,9 @@
 import React from "react";
 import { Grid } from "@mui/material";
-import JourneyIcon from "../../static/images/journey-icon.png";
-import LeaderboardIcon from "../../static/images/leaderboard.png";
-import FeedbackIcon from "../../static/images/feedback.png";
-import LiveIcon from "../../static/images/live.png";
+import JourneyIcon from "../../static/images/journey-icon-white.png";
+import LeaderboardIcon from "../../static/images/leaderboard-white.png";
+import FeedbackIcon from "../../static/images/feedback-icon-white.png";
+import LiveIcon from "../../static/images/live-session-white.png";
 import SideNavbarLogo from "../../static/images/side-logo.png";
 import "./style.scss";
 import { useHistory } from "react-router";
