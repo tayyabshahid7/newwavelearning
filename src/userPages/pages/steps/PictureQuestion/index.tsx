@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 import removeIcon from "../../../static/images/remove.png";
 import pictureSelected from "../../../static/images/picture-selected.png";
+import * as _ from "lodash";
 
 const PictureQuestion = ({
   selectedAnswerList,
@@ -31,12 +32,20 @@ const PictureQuestion = ({
     const ids: any = [...selectedIds];
     if (!isSubmitted) {
       const data: any = [...answerList];
-      if (selectedCount < totalAnswerCount && !data[index].isSelected) {
+      if (selectedCount < Number(totalAnswerCount) && !data[index].isSelected) {
         data[index].isSelected = true;
         setAnswerList(data);
         setSelectedCount(selectedCount + 1);
         ids.push(item.id);
         getTotalSelected(selectedCount + 1);
+      } else if (selectedCount === Number(totalAnswerCount) && !data[index].isSelected) {
+        let objIndex = _.findIndex(data, (item: any) => item.isSelected === true);
+        if (objIndex > -1) {
+          data[objIndex].isSelected = false;
+        }
+        data[index].isSelected = true;
+        setAnswerList(data);
+        ids.push(item.id);
       } else {
         if (data[index].isSelected) {
           let indx = ids.findIndex((value: any) => item.id === value);

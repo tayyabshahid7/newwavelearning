@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link as RouterLink, RouteComponentProps } from "react-router-dom";
 import { Grid, Typography, TextField, Button, Link } from "@mui/material";
-import nwLogo from "../../static/images/logo.png";
+import image from "../../static/images/login-image.png";
+import nwLogo from "../../static/images/nw-logo.png";
 import { isLoggedIn, loginUser } from "../../../services/auth";
-import { isValidEmail } from "../../../common/utils";
-import "./auth.scss";
 
 interface LoginPageProps {
   history: RouteComponentProps["history"];
@@ -18,15 +17,14 @@ const UserLogin = ({ history }: LoginPageProps) => {
   const [loginError, setLoginError] = useState<any>(null);
 
   useEffect(() => {
-    isLoggedIn() && history.push("/user-programmes");
+    isLoggedIn() && history.push("/cohorts");
   });
 
   const handleLogin = async () => {
-    if (email.length <= 0 || !isValidEmail(email)) {
+    if (email.length <= 0) {
       setEmailError(true);
       return;
     }
-
     if (password.length <= 0) {
       setPasswordError(true);
       return;
@@ -34,7 +32,7 @@ const UserLogin = ({ history }: LoginPageProps) => {
 
     try {
       await loginUser(email.toLowerCase(), password);
-      window.location.href = "/user-programmes";
+      window.location.href = "/cohorts";
     } catch (error: any) {
       if (error.response?.status === 401) {
         setLoginError(error.response.data.detail);
@@ -69,156 +67,108 @@ const UserLogin = ({ history }: LoginPageProps) => {
   };
 
   return (
-    <Grid sx={{ display: "flex" }}>
+    <Grid container sx={{ backgroundColor: "#F9FAFB", width: "100%" }}>
       <Grid
-        className="user-login mobile"
-        container
-        style={{
-          backgroundColor: "#F1F5FF",
-          margin: "auto",
-          minHeight: "100vh",
-          width: "100%",
+        item
+        md={6}
+        xs={12}
+        sx={{
+          background: `url(${image}) no-repeat center center`,
+          backgroundSize: "cover",
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          "@media (max-width: 767px)": {
+            maxHeight: "25vh",
+          },
         }}
       >
-        <Grid item container direction="column">
-          <Grid
-            item
+        <Typography variant="h4" color="white" sx={{ textAlign: "center" }}>
+          Inspiring people to build a better future
+        </Typography>
+      </Grid>
+
+      <Grid
+        item
+        md={6}
+        xs={12}
+        container
+        sx={{
+          "@media (max-width: 767px)": {
+            justifyContent: "center",
+          },
+        }}
+      >
+        <Grid
+          item
+          sx={{
+            width: "100%",
+            padding: "10%",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            "@media (max-width: 767px)": {
+              flexDirection: "column-reverse",
+            },
+          }}
+        >
+          <Typography
+            variant="body1"
             sx={{
-              width: "100%",
-              padding: "5%",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              flexDirection: "column",
               "@media (max-width: 767px)": {
-                marginTop: "10%",
-                padding: "10%",
+                marginTop: "15px",
               },
             }}
           >
-            <img src={nwLogo} width="208px" height="121px" alt="New Wave Learning Logo" />
-            <Typography
-              sx={{ margin: "5% 0 0% 0", fontWeight: "500" }}
-              variant="h5"
-              gutterBottom
-              component="p"
-            >
-              Login
-            </Typography>
+            Account Login
+          </Typography>
+          <img src={nwLogo} alt="New Wave Learning Logo" />
+        </Grid>
+
+        <Grid item sx={{ padding: "10% 20%" }} container direction="column" spacing={2}>
+          <Grid item>
+            <TextField
+              id="email"
+              label="Email Address"
+              value={email}
+              onKeyDown={handleKeyDown}
+              onChange={handleEmailChange}
+              fullWidth
+              error={emailError}
+              helperText={emailError && "This field is required"}
+            />
           </Grid>
-          <Grid
-            item
-            sx={{
-              padding: "2%",
-              "@media (max-width: 767px)": {
-                padding: "5% 6% 10% 6%",
-              },
-            }}
-            container
-            direction="column"
-            spacing={2}
-          >
+          <Grid item>
+            <TextField
+              id="password"
+              label="Password"
+              type="password"
+              value={password}
+              onKeyDown={handleKeyDown}
+              onChange={handlePasswordChange}
+              fullWidth
+              error={passwordError}
+              helperText={passwordError && "This field is required"}
+            />
+          </Grid>
+          <Grid item container spacing={1} direction="column">
+            {loginError && (
+              <Grid item>
+                <Typography variant="body2" color="error">
+                  {loginError}
+                </Typography>
+              </Grid>
+            )}
             <Grid item>
-              <Typography variant="body1" sx={{ fontWeight: 500 }} gutterBottom>
-                Email Address
-              </Typography>
-              <TextField
-                inputProps={{
-                  style: {
-                    padding: "11.5px",
-                    border: "1px solid #0E4A66",
-                  },
-                }}
-                id="email"
-                value={email}
-                onKeyDown={handleKeyDown}
-                onChange={handleEmailChange}
-                fullWidth
-                error={emailError}
-                FormHelperTextProps={{
-                  style: {
-                    marginLeft: 0,
-                  },
-                }}
-                helperText={emailError && "Please input a valid email."}
-              />
+              <Button variant="contained" fullWidth size="large" onClick={handleLogin}>
+                Login
+              </Button>
             </Grid>
-            <Grid item sx={{ paddingTop: "10px !important" }}>
-              <Typography variant="body1" sx={{ fontWeight: 500 }} gutterBottom>
-                Password
-              </Typography>
-              <TextField
-                inputProps={{
-                  style: {
-                    padding: "11.5px",
-                    border: "1px solid #0E4A66",
-                  },
-                }}
-                id="password"
-                type="password"
-                value={password}
-                onKeyDown={handleKeyDown}
-                onChange={handlePasswordChange}
-                fullWidth
-                error={passwordError}
-                FormHelperTextProps={{
-                  style: {
-                    marginLeft: 0,
-                  },
-                }}
-                helperText={passwordError && "Please input a valid password."}
-              />
-            </Grid>
-            <Grid item container spacing={1} direction="column">
-              {loginError && (
-                <Grid item>
-                  <Typography variant="body2" color="error">
-                    {loginError}
-                  </Typography>
-                </Grid>
-              )}
-              <Grid item sx={{ paddingTop: "5px !important" }}>
-                <Link
-                  sx={{
-                    color: "black",
-                    fontWeight: 500,
-                    "&:hover": {
-                      textDecoration: "underline",
-                    },
-                  }}
-                  component={RouterLink}
-                  to="/user-reset-password"
-                  underline="none"
-                >
-                  Forgotten password?
-                </Link>
-              </Grid>
-              <Grid
-                sx={{
-                  marginTop: "10%",
-                  "@media (max-width: 767px)": {
-                    marginTop: "64%",
-                  },
-                }}
-                item
-              >
-                <Button
-                  variant="contained"
-                  sx={{
-                    padding: "16px 13.39px",
-                    fontSize: "24px",
-                    fontWeight: 800,
-                    backgroundColor: "#0E4A66",
-                    boxShadow: "0px 4px 15px rgba(14, 74, 102, 0.57)",
-                    borderRadius: "8px",
-                  }}
-                  fullWidth
-                  size="large"
-                  onClick={handleLogin}
-                >
-                  Login
-                </Button>
-              </Grid>
+            <Grid item>
+              <Link component={RouterLink} to="/forgotten-password" underline="none">
+                Forgot password?
+              </Link>
             </Grid>
           </Grid>
         </Grid>
