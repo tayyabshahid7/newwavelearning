@@ -5,6 +5,7 @@ import "./style.scss";
 
 const VideoResponse = ({ isSubmitted, userAnswer, uploadVideo }: any) => {
   const [video, setVideo] = useState<any>(null);
+
   useEffect(() => {
     if (userAnswer.length) {
       setVideo(userAnswer[0].file_answer);
@@ -51,7 +52,7 @@ const VideoResponse = ({ isSubmitted, userAnswer, uploadVideo }: any) => {
             alignItems: "center",
           }}
         >
-          <video className="video" controls>
+          <video className="video" controls controlsList="nodownload">
             <source src={video} type="video/mp4" />
             Your browser does not support HTML video.
           </video>

@@ -45,7 +45,7 @@ const FeedbackDetail = () => {
           item
           sx={{
             width: "100%",
-            padding: "6% 5%",
+            padding: "6% 0",
             display: "flex",
             alignItems: "center",
             marginBottom: "2%",
@@ -81,7 +81,10 @@ const FeedbackDetail = () => {
           container
           direction="column"
         >
-          <Grid className="feedback-section">
+          <Grid
+            className="feedback-section"
+            sx={{ overflow: "auto", minHeight: stepType === "video_response" ? "45vh" : "100%" }}
+          >
             <Grid sx={{ display: "flex", alignItems: "center", padding: "0 13px" }}>
               <img
                 style={{ marginLeft: "10px" }}
@@ -124,7 +127,10 @@ const FeedbackDetail = () => {
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                alignItems: "center",
+                alignItems:
+                  stepType === "video_response" || stepType === "audio_response"
+                    ? "baseline"
+                    : "center",
                 padding: "0 13px",
               }}
             >
@@ -174,6 +180,27 @@ const FeedbackDetail = () => {
                 </Stack>
               )}
 
+              {stepType === "video_response" && (
+                <Stack sx={{ width: "50%", height: "50%" }} spacing={2}>
+                  <video
+                    src={stepAnswer?.file_answer}
+                    className="video"
+                    controls
+                    controlsList="nodownload"
+                  ></video>
+                  <Typography> {stepAnswer?.answer.text}</Typography>
+                </Stack>
+              )}
+
+              {stepType === "audio_response" && (
+                <Stack sx={{ width: "50%", height: "50%" }} spacing={2}>
+                  <audio controls src={stepAnswer?.file_answer}>
+                    Your browser does not support html audio element.
+                  </audio>
+                  <Typography> {stepAnswer?.answer.text}</Typography>
+                </Stack>
+              )}
+
               {stepType === "keyword_question" && (
                 <Stack sx={{ width: "100%" }} spacing={2}>
                   <Stack direction="row" spacing={1}>
@@ -182,6 +209,12 @@ const FeedbackDetail = () => {
                     ))}
                   </Stack>
                   <Typography variant="h6">Learner Answer</Typography>
+                  <Typography> {stepAnswer?.answer.text}</Typography>
+                </Stack>
+              )}
+
+              {stepType === "open_ended_question" && (
+                <Stack sx={{ width: "100%" }} spacing={2}>
                   <Typography> {stepAnswer?.answer.text}</Typography>
                 </Stack>
               )}
@@ -194,6 +227,7 @@ const FeedbackDetail = () => {
                 lineHeight: " 27px",
                 marginLeft: "10px",
                 marginTop: "15px",
+                marginBottom: "10px",
               }}
             >
               Feedback From{" "}

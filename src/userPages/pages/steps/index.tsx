@@ -46,6 +46,7 @@ const Steps = () => {
   const [steps, setSteps] = useState<StepData[]>([]);
   const [userAnswer, setUserAnswer] = useState<StepData[]>([]);
   const [videoFile, setVideoFile] = useState<File | any>(null);
+  const [audioFile, setAudioFile] = useState<File | any>(null);
   const [programmeId, setProgrammeId] = useState<any>("");
   const [bgImage, setBgImage] = useState<any>(null);
   const [stepData, setStepData] = useState<any>({
@@ -187,6 +188,7 @@ const Steps = () => {
     data.append("step", stepId);
     data.append("answer", JSON.stringify(obj));
     stepType === "video_response" && data.append("file_answer", videoFile);
+    stepType === "audio_response" && data.append("file_answer", audioFile);
     await submitStepAnswer(data);
   };
 
@@ -353,7 +355,13 @@ const Steps = () => {
             ) : stepType === "audio" ? (
               <AudioQuestion audio={stepData.audio} />
             ) : stepType === "audio_response" ? (
-              <AudioResponse />
+              <AudioResponse
+                isSubmitted={isSubmitted}
+                userAnswer={userAnswer}
+                uploadAudio={(video: any) => {
+                  setAudioFile(video);
+                }}
+              />
             ) : stepType === "video_response" ? (
               <VideoResponse
                 isSubmitted={isSubmitted}

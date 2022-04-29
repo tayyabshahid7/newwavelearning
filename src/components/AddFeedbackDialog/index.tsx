@@ -23,14 +23,21 @@ interface AddFeedbackDialogProps {
 const AddFeedbackDialog = ({ feedback, open, closeCallback }: AddFeedbackDialogProps) => {
   const [stepAnswer, setStepAnswer] = useState<any>(null);
   const [feedbackText, setFeedbackText] = useState<string>(feedback?.description || "");
+
+  useEffect(() => {
+    if (feedbackText?.length === 0 && feedback?.description) {
+      setFeedbackText(feedback?.description);
+    }
+  }, [feedbackText, feedback?.description]);
+
   useEffect(() => {
     const fetchAnswer = async () => {
       const response = await getStepAnswer(feedback.step_answer?.id);
       setStepAnswer(response);
-      setFeedbackText(feedback.description);
     };
     if (feedback) {
       fetchAnswer();
+      setFeedbackText(feedback.description);
     }
     console.log(feedback);
   }, [feedback]);

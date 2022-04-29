@@ -15,7 +15,7 @@ const Player = React.memo(({ source, fileType }: PlayerProps) => {
     );
   } else if (fileType === "video") {
     return (
-      <video width="400" controls src={sourceURL}>
+      <video width="400" controls src={sourceURL} controlsList="nodownload">
         Your browser does not suppor html video element.
       </video>
     );
