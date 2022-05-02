@@ -24,6 +24,7 @@ import AudioResponse from "./AudioResponse";
 import VideoResponse from "./VideoResponse";
 import OpenEndedQuestion from "./OpenEndedQuestion";
 import SideNavbar from "../../components/SideNavbar";
+import LiveSession from "./LiveSession";
 
 type IntroParams = {
   cohortId: string;
@@ -49,6 +50,7 @@ const Steps = () => {
   const [audioFile, setAudioFile] = useState<File | any>(null);
   const [programmeId, setProgrammeId] = useState<any>("");
   const [bgImage, setBgImage] = useState<any>(null);
+  const [liveSessionDetail, setLiveSessionDetail] = useState<any>([]);
   const [stepData, setStepData] = useState<any>({
     content: "",
     image: "",
@@ -112,8 +114,9 @@ const Steps = () => {
     const fetchStepData = async () => {
       setLoading(true);
       try {
-        const response: any = await getStepDetails(stepId);
+        const response: any = await getStepDetails(stepId, cohortId);
         setStepData(response.fields);
+        setLiveSessionDetail(response.live_session_details);
         if (response.answer.length > 0) {
           setIsSubmitted(true);
           setSelectedCount(Object.keys(response.answer[0].answer).length);
@@ -132,7 +135,7 @@ const Steps = () => {
       setLoading(false);
     };
     fetchStepData();
-  }, [stepId]);
+  }, [stepId, cohortId]);
 
   const getNextStepId = () => {
     let index = steps.findIndex((item: any) => Number(stepId) === item.id);
@@ -232,33 +235,36 @@ const Steps = () => {
           {stepType === "text_content" && stepData.image && (
             <TextContentQuestion image={stepData.image} />
           )}
-          <Grid
-            item
-            sx={{
-              // marginTop: "10%",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              flexDirection: "column",
-            }}
-          >
-            <Typography
+
+          {stepType !== "live_session" && (
+            <Grid
+              item
               sx={{
-                textAlign: "center",
-                margin: "0% 0 2% 0",
-                padding: stepType === "model_answer_question" ? "0 7% !important" : "0 25px",
-                fontWeight: "600",
-                marginTop: "3%",
-                fontSize: "24px",
-                marginBottom: "5%",
-                color: "#0E4A66",
+                // marginTop: "10%",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                flexDirection: "column",
               }}
-              variant="h5"
-              gutterBottom
             >
-              {stepData.question || stepData.title}
-            </Typography>
-          </Grid>
+              <Typography
+                sx={{
+                  textAlign: "center",
+                  margin: "0% 0 2% 0",
+                  padding: stepType === "model_answer_question" ? "0 7% !important" : "0 25px",
+                  fontWeight: "600",
+                  marginTop: "3%",
+                  fontSize: "24px",
+                  marginBottom: "5%",
+                  color: "#0E4A66",
+                }}
+                variant="h5"
+                gutterBottom
+              >
+                {stepData.question || stepData.title}
+              </Typography>
+            </Grid>
+          )}
 
           {totalAnswerCount && (
             <Grid item sx={{ padding: "5% 10% 0 10%", textAlign: "center" }}>
@@ -271,19 +277,25 @@ const Steps = () => {
             </Grid>
           )}
 
-          <Grid item sx={{ padding: "1.5% 10%", textAlign: "center", marginTop: "20px" }}>
-            <Typography
-              component="h5"
-              sx={{
-                color: "#0E4A66",
-                fontSize: "16px",
-                fontWeight: "400",
-              }}
-            >
-              {stepData.description || stepData.content}
-            </Typography>
-          </Grid>
+          {stepType !== "live_session" && (
+            <Grid item sx={{ padding: "1.5% 10%", textAlign: "center", marginTop: "20px" }}>
+              <Typography
+                component="h5"
+                sx={{
+                  color: "#0E4A66",
+                  fontSize: "16px",
+                  fontWeight: "400",
+                }}
+              >
+                {stepData.description || stepData.content}
+              </Typography>
+            </Grid>
+          )}
+
           {stepType === "video" && <VideoQuestion video={stepData.video} />}
+          {stepType === "live_session" && (
+            <LiveSession data={stepData} liveSessionDetail={liveSessionDetail} />
+          )}
           {stepType === "text_content" && stepData.url && (
             <Grid item sx={{ padding: "0% 10%", textAlign: "center", marginTop: "20px" }}>
               <Button
@@ -446,6 +458,7 @@ const Steps = () => {
           stepType !== "video" &&
           stepType !== "audio_response" &&
           stepType !== "toggle" &&
+          stepType !== "live_session" &&
           stepType !== "text_content" ? (
             <Button
               sx={{

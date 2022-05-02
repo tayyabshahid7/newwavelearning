@@ -164,9 +164,15 @@ export const deleteStep = async (stepId: number | string) => {
   }
 };
 
-export const getStepDetails = async (stepId: number | string) => {
+export const getStepDetails = async (stepId: number | string, cohortId?: any) => {
   try {
-    const response = await axs.get<StepData>(`/steps/${stepId}/`);
+    let url = "";
+    if (cohortId) {
+      url = `/steps/${stepId}/?cohort_id=${cohortId}`;
+    } else {
+      url = `/steps/${stepId}/`;
+    }
+    const response = await axs.get<StepData>(url);
     return response.data;
   } catch (error: any) {
     throw error;

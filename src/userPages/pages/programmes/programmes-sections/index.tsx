@@ -184,7 +184,7 @@ const ProgrammeSection = () => {
                 >
                   <p className={"section-title"}>{item.title}</p>
                   <p className={"section-step"}>
-                    {item.completed_steps} / {item.steps_user} Steps completed
+                    {item.completed_steps} / {item.steps} Steps completed
                   </p>
                   <Grid className={"footer ".concat(item.is_section_completed ? "completed" : "")}>
                     <Typography

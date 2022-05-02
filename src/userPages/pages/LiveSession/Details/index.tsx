@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Typography } from "@mui/material";
-import JourneyIcon from "../../../../static/images/Live icon 1.png";
-import arrowIcon from "../../../../static/images/right-arrow 6.png";
+import JourneyIcon from "../../../static/images/Live icon 1.png";
+import arrowIcon from "../../../static/images/right-arrow 6.png";
 import { useHistory } from "react-router";
-import "./../style.scss";
-import SideNavbar from "../../../../components/SideNavbar";
+import "../style.scss";
+import SideNavbar from "../../../components/SideNavbar";
 
 const LiveSessionDetail = () => {
   const history = useHistory();
