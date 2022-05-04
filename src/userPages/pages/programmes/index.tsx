@@ -124,6 +124,7 @@ const Programmes = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
+              marginBottom: "50px",
             }}
             fullWidth
             size="large"

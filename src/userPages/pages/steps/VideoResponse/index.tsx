@@ -45,11 +45,13 @@ const VideoResponse = ({ isSubmitted, userAnswer, uploadVideo }: any) => {
       {video && (
         <Grid
           sx={{
+            width: "100%",
             display: "flex",
             justifyContent: "center",
             flexDirection: "column",
             position: "relative",
             alignItems: "center",
+            marginBottom: "30px",
           }}
         >
           <video className="video" controls controlsList="nodownload">

@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Grid, Typography } from "@mui/material";
 import JourneyIcon from "../../../static/images/Live icon 1.png";
-import { useHistory } from "react-router";
 import "../style.scss";
 
 const LiveSession = ({ data, liveSessionDetail }: any) => {
@@ -27,15 +26,15 @@ const LiveSession = ({ data, liveSessionDetail }: any) => {
             />
             <Grid sx={{ display: "flex", flexDirection: "column" }}>
               <Grid sx={{ display: "flex" }}>
-                <p className={"live-title"}>{data.title}</p>
+                <p className={"live-title"}>{data?.title}</p>
               </Grid>
               <Grid>
                 <p className={"live-title"}>
-                  {data.session_type === "one_one_session"
+                  {data?.session_type === "one_one_session"
                     ? "1-1 Session"
-                    : data.session_type === "group_session"
+                    : data?.session_type === "group_session"
                     ? "Group Session"
-                    : data.session_type === "cohort_session"
+                    : data?.session_type === "cohort_session"
                     ? "Cohort Session"
                     : null}
                 </p>
@@ -50,12 +49,12 @@ const LiveSession = ({ data, liveSessionDetail }: any) => {
           </Grid>
 
           <Grid sx={{ display: "flex", alignItems: "center", padding: "0 13px" }}>
-            <p className={"live-description"}>{data.description}</p>
+            <p className={"live-description"}>{data?.step_description}</p>
           </Grid>
 
           <Grid sx={{ display: "flex", alignItems: "center", padding: "0 13px" }}>
             <Typography variant="h4" component="p" className={"live-time"}>
-              Duration: {data.hours} Hr {data.minutes} {data.minutes ? "Min" : ""}
+              Duration: {data?.hours} Hr {data?.minutes} {data?.minutes ? "Min" : ""}
             </Typography>
           </Grid>
         </Grid>
