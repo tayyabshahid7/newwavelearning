@@ -81,7 +81,7 @@ const PictureQuestion = ({
                 key={index}
                 item
               >
-                <img width="85px" height="56px" src={item.picture} alt="logo" />
+                <img width="200px" height="150px" src={item.picture} alt="logo" />
 
                 {isSubmitted && item.isSelected && (
                   <img
