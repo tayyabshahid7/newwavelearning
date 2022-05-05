@@ -122,7 +122,7 @@ const UserSetPassword = ({ history }: PasswordResetProps) => {
                   You have successfully set your password - click the button below to login.
                 </Typography>
               </Grid>
-              <Grid mt="100%" item container direction="column">
+              <Grid mt="20%" item container direction="column">
                 <Grid sx={{ padding: "0 6%" }} item>
                   <Button
                     sx={{
@@ -136,7 +136,7 @@ const UserSetPassword = ({ history }: PasswordResetProps) => {
                     variant="contained"
                     fullWidth
                     size="large"
-                    onClick={() => history.push("user-login")}
+                    onClick={() => history.push("/user-login")}
                     disabled={loading}
                   >
                     Login
