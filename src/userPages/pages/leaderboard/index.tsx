@@ -39,7 +39,7 @@ const LeaderBoard = () => {
           }
         });
 
-        let rank = 1;
+        let rank = 2;
         for (let i = 1; i < array.length; i++) {
           if (i > 0 && array[i].completed_section < array[i - 1].completed_section) {
             rank++;
@@ -112,65 +112,69 @@ const LeaderBoard = () => {
 
           {learners &&
             learners.map((item: any, index: number) => {
-              return index === 0 ? (
-                <Grid
-                  sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}
-                  key={index}
-                  className="section"
-                >
+              return (
+                <>
+                  {index === 0 && (
+                    <Grid
+                      sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}
+                      key={index}
+                      className="section"
+                    >
+                      <Grid
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          width: "98px",
+                          height: "98px",
+                          justifyContent: "center",
+                          borderRadius: "50%",
+                          fontSize: "22px",
+                          fontWeight: "600",
+                        }}
+                      >
+                        <img src={LeaderBoardIcon} alt={""} width="78.81px" />
+                      </Grid>
+                      <Grid>
+                        <Typography className={"first-user-name"}>
+                          {item.first_name} {item.last_name}
+                        </Typography>
+                        <Typography className={"first-section-completed"}>
+                          {item.completed_steps}/{item.steps} Steps completed
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  )}
+
                   <Grid
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      width: "98px",
-                      height: "98px",
-                      justifyContent: "center",
-                      borderRadius: "50%",
-                      fontSize: "22px",
-                      fontWeight: "600",
-                    }}
+                    sx={{ display: "flex", alignItems: "center" }}
+                    key={index}
+                    className="section"
                   >
-                    <img src={LeaderBoardIcon} alt={""} width="78.81px" />
+                    <Grid
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        width: "40px",
+                        height: "40px",
+                        background: "#22B9D4",
+                        justifyContent: "center",
+                        borderRadius: "50%",
+                        fontSize: "16px",
+                        fontWeight: "600",
+                      }}
+                    >
+                      {index === 0 ? "#1" : "#" + item.rank}
+                    </Grid>
+                    <Grid>
+                      <p className={"user-name"}>
+                        {item.first_name} {item.last_name}
+                      </p>
+                      <p className={"section-completed"}>
+                        {item.completed_steps}/{item.steps} Steps completed
+                      </p>
+                    </Grid>
                   </Grid>
-                  <Grid>
-                    <Typography className={"first-user-name"}>
-                      {item.first_name} {item.last_name}
-                    </Typography>
-                    <Typography className={"first-section-completed"}>
-                      {item.completed_steps}/{item.steps} Steps completed
-                    </Typography>
-                  </Grid>
-                </Grid>
-              ) : (
-                <Grid
-                  sx={{ display: "flex", alignItems: "center" }}
-                  key={index}
-                  className="section"
-                >
-                  <Grid
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      width: "40px",
-                      height: "40px",
-                      background: "#22B9D4",
-                      justifyContent: "center",
-                      borderRadius: "50%",
-                      fontSize: "16px",
-                      fontWeight: "600",
-                    }}
-                  >
-                    #{item.rank}
-                  </Grid>
-                  <Grid>
-                    <p className={"user-name"}>
-                      {item.first_name} {item.last_name}
-                    </p>
-                    <p className={"section-completed"}>
-                      {item.completed_steps}/{item.steps} Steps completed
-                    </p>
-                  </Grid>
-                </Grid>
+                </>
               );
             })}
         </Grid>

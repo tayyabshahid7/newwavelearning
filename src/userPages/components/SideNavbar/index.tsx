@@ -40,7 +40,6 @@ const SideNavbar = ({ cohortId, programmeId }: any) => {
   };
 
   const clickHandler = (item: any) => {
-    debugger;
     item.name === "Leaderboard" || item.name === "Feedback"
       ? history.push(`/${item.link}/${cohortId}/${programmeId}`)
       : history.push(`/${item.link}/${cohortId}`);
