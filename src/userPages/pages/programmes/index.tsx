@@ -32,7 +32,16 @@ const Programmes = () => {
 
   return (
     <Grid sx={{ display: "flex" }}>
-      <SideNavbar cohortId={""} programmeId={""} />
+      <SideNavbar
+        openProgramme={() => {
+          programmeList &&
+            history.push({
+              pathname: `/user-dashboard/${programmeList[0]?.id}`,
+            });
+        }}
+        cohortId={""}
+        programmeId={""}
+      />
       <Grid
         className="programmes"
         container

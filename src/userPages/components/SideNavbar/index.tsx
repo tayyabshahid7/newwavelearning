@@ -31,7 +31,13 @@ const options = [
   },
 ];
 
-const SideNavbar = ({ cohortId, programmeId }: any) => {
+interface ISideNavbar {
+  cohortId: any;
+  programmeId: any;
+  openProgramme?: any;
+}
+
+const SideNavbar = ({ cohortId, programmeId, openProgramme }: ISideNavbar) => {
   const history = useHistory();
 
   const logout = () => {
@@ -40,9 +46,13 @@ const SideNavbar = ({ cohortId, programmeId }: any) => {
   };
 
   const clickHandler = (item: any) => {
-    item.name === "Leaderboard" || item.name === "Feedback"
-      ? history.push(`/${item.link}/${cohortId}/${programmeId}`)
-      : history.push(`/${item.link}/${cohortId}`);
+    if (openProgramme) {
+      openProgramme();
+    } else {
+      item.name === "Leaderboard" || item.name === "Feedback"
+        ? history.push(`/${item.link}/${cohortId}/${programmeId}`)
+        : history.push(`/${item.link}/${cohortId}`);
+    }
   };
 
   return (
