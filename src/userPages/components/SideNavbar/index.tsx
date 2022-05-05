@@ -72,6 +72,7 @@ const SideNavbar = ({ cohortId, programmeId, openProgramme }: ISideNavbar) => {
               <Grid
                 key={index}
                 sx={{
+                  cursor: "pointer",
                   justifyContent: "center",
                   display: "flex",
                   alignItems: "center",
@@ -97,7 +98,7 @@ const SideNavbar = ({ cohortId, programmeId, openProgramme }: ISideNavbar) => {
             );
           })}
         </Grid>
-        <Grid>
+        <Grid sx={{ cursor: "pointer" }}>
           <p
             onClick={() => {
               logout();
