@@ -87,9 +87,16 @@ export const deleteSection = async (sectionId: number | string) => {
   }
 };
 
-export const getSection = async (sectionId: number | string) => {
+export const getSection = async (sectionId: number | string, cohortId?: Number) => {
   try {
-    const response = await axs.get<SectionData>(`sections/${sectionId}/`);
+    let url = "";
+    if (cohortId) {
+      url = `sections/${sectionId}/?cohort_id=${cohortId}`;
+    } else {
+      url = `sections/${sectionId}/`;
+    }
+
+    const response = await axs.get<SectionData>(url);
     return response.data;
   } catch (error: any) {
     throw error;
@@ -105,19 +112,29 @@ export const duplicateSection = async (sectionId: number | string) => {
   }
 };
 
-export const getProgrammeSections = async (programmeId: number, isAdmin: boolean) => {
+export const getProgrammeSections = async (
+  programmeId: number,
+  isAdmin: boolean,
+  cohortId?: number
+) => {
   try {
-    const response = await axs.get<SectionData[]>(`/programmes/${programmeId}/sections/`);
+    let url = "";
+    if (cohortId) {
+      url = `/programmes/${programmeId}/sections/?cohort_id=${cohortId}`;
+    } else {
+      url = `/programmes/${programmeId}/sections/`;
+    }
+    const response = await axs.get<SectionData[]>(url);
     return response;
   } catch (error: any) {
     throw error;
   }
 };
 
-export const getSectionSteps = async (sectionId: number, isAdmin: boolean) => {
+export const getSectionSteps = async (sectionId: number, isAdmin: boolean, cohortId?: number) => {
   try {
     const response = await axs.get<StepData[]>(`/sections/${sectionId}/steps/`, {
-      params: { is_admin: isAdmin },
+      params: { is_admin: isAdmin, cohort_id: cohortId },
     });
     return response;
   } catch (error: any) {

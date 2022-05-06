@@ -35,3 +35,12 @@
           color: #0E4A66;
      }
 }
+
+
+@media (max-width: 767px) {
+     .model-question{
+          width: 100vw;
+          max-width: 100% !important;
+     }
+}
+

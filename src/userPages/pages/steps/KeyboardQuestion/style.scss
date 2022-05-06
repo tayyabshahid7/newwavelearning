@@ -1,6 +1,6 @@
 .keyboard-question{
      margin-top: 5% !important;
-     margin-bottom: 16% !important;
+     margin-bottom: 20% !important;
      .keyboard-textarea{
           padding: 20px;
           background: #FFFFFF;
@@ -25,3 +25,12 @@
           color: #0E4A66;
      }
 }
+
+
+@media (max-width: 767px) {
+     .keyboard-question{
+          width: 100vw;
+          max-width: 100% !important;
+     }
+}
+

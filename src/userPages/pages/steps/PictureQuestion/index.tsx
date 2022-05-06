@@ -3,6 +3,7 @@ import { Grid } from "@mui/material";
 import removeIcon from "../../../static/images/remove.png";
 import pictureSelected from "../../../static/images/picture-selected.png";
 import * as _ from "lodash";
+import "./style.scss";
 
 const PictureQuestion = ({
   selectedAnswerList,
@@ -81,7 +82,7 @@ const PictureQuestion = ({
                 key={index}
                 item
               >
-                <img width="200px" height="150px" src={item.picture} alt="logo" />
+                <img className="picture" src={item.picture} alt="logo" />
 
                 {isSubmitted && item.isSelected && (
                   <img

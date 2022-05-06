@@ -59,11 +59,12 @@ const EditVideoContent = () => {
       Bucket: bucketName,
       Key: s3Key + videoFile?.name,
       Body: videoFile,
+      partSize: 10,
     };
     try {
       const parallelUploads3 = new Upload({
         client: new S3Client({ region: s3Region, credentials }),
-        leavePartsOnError: false, // optional manually handle dropped parts
+        leavePartsOnError: true, // optional manually handle dropped parts
         params: target,
       });
 
@@ -100,6 +101,7 @@ const EditVideoContent = () => {
     const data = new FormData();
     data.append("step_type", "video");
     let fields = stepData;
+    debugger;
     if (videoFile instanceof File) {
       await uploadFile();
       let name = s3Key + videoFile?.name;

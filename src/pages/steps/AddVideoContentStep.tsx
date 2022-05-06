@@ -52,6 +52,7 @@ const AddVideoContent = () => {
       Bucket: bucketName,
       Key: s3Key + videoFile?.name,
       Body: videoFile,
+      partSize: 10,
     };
     try {
       const parallelUploads3 = new Upload({

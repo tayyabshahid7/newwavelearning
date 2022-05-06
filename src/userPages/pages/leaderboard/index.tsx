@@ -41,7 +41,7 @@ const LeaderBoard = () => {
 
         let rank = 2;
         for (let i = 1; i < array.length; i++) {
-          if (i > 0 && array[i].completed_section < array[i - 1].completed_section) {
+          if (i > 1 && array[i].completed_section <= array[i - 1].completed_section) {
             rank++;
           }
           array[i].rank = rank;

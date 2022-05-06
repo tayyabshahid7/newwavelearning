@@ -36,7 +36,7 @@ const StepsList = () => {
       try {
         if (sectionId) {
           let isCurrentStep = false;
-          const response = await getSectionSteps(sectionId, false);
+          const response = await getSectionSteps(sectionId, false, cohortId);
           let arr: any = [];
           stepOrder.filter(function (order: any) {
             return response.data.forEach(function (list: any) {
@@ -75,7 +75,7 @@ const StepsList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const sectionData: any = await getSection(sectionId);
+        const sectionData: any = await getSection(sectionId, cohortId);
         setSection(sectionData);
         setProgrammeId(sectionData.programme);
         await getStepData(sectionData?.step_order);

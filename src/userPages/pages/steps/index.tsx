@@ -49,6 +49,7 @@ const Steps = () => {
   const [videoFile, setVideoFile] = useState<File | any>(null);
   const [audioFile, setAudioFile] = useState<File | any>(null);
   const [programmeId, setProgrammeId] = useState<any>("");
+  const [learner, setLearner] = useState<any>("");
   const [bgImage, setBgImage] = useState<any>(null);
   const [liveSessionDetail, setLiveSessionDetail] = useState<any>([]);
   const [stepData, setStepData] = useState<any>({
@@ -69,7 +70,7 @@ const Steps = () => {
       try {
         if (sectionId) {
           let isCurrentStep = false;
-          const response = await getSectionSteps(sectionId, false);
+          const response = await getSectionSteps(sectionId, false, Number(cohortId));
           if (response.data.length > 0) {
             setProgrammeId(response?.data[0]?.programme);
           }
@@ -103,7 +104,7 @@ const Steps = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const sectionData: any = await getSection(sectionId);
+        const sectionData: any = await getSection(sectionId, Number(cohortId));
         await getStepData(sectionData?.step_order);
       } catch (error: any) {}
     };
@@ -116,6 +117,7 @@ const Steps = () => {
       try {
         const response: any = await getStepDetails(stepId, cohortId);
         setStepData(response.fields);
+        setLearner(response.learner);
         setLiveSessionDetail(response.live_session_details);
         if (response.answer.length > 0) {
           setIsSubmitted(true);
@@ -187,7 +189,7 @@ const Steps = () => {
     }
 
     const data = new FormData();
-    data.append("learner", user?.learner);
+    data.append("learner", learner);
     data.append("step", stepId);
     data.append("answer", JSON.stringify(obj));
     stepType === "video_response" && data.append("file_answer", videoFile);

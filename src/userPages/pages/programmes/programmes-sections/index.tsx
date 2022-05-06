@@ -33,7 +33,7 @@ const ProgrammeSection = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await getProgrammeSections(Number(programmeId), false);
+        const response = await getProgrammeSections(Number(programmeId), false, Number(cohortId));
         const programmeDetails: any = await getProgrammeDetails(programmeId);
         setProgramme(programmeDetails.data);
         let arr: any = [];

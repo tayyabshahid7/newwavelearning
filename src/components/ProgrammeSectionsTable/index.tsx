@@ -32,6 +32,7 @@ interface ProgrammeSectionsTableProps {
 
 const ProgrammeSectionsTable = ({ programmeId, sectionOrder }: ProgrammeSectionsTableProps) => {
   const history = useHistory();
+
   const { enqueueSnackbar } = useSnackbar();
   const [sections, setSections] = useState<SectionData[]>([]);
   const [sectionsOrder, setSectionsOrder] = useState<Array<number>>(sectionOrder);
