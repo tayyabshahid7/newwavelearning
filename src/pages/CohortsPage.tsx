@@ -20,17 +20,18 @@ import {
 } from "@mui/material";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { RouteComponentProps } from "react-router";
+import { RouteComponentProps, useHistory } from "react-router";
 import DashboardLayout from "../components/DashboardLayout";
 import PromptDialog from "../components/PromptDialog";
 import { deleteCohort, getCohorts } from "../services/common";
 
 interface CohortsPageProps {
-  history: RouteComponentProps["history"];
+  history1: RouteComponentProps["history"];
 }
 
-const CohortsPage = ({ history }: CohortsPageProps) => {
+const CohortsPage = ({ history1 }: CohortsPageProps) => {
   const { enqueueSnackbar } = useSnackbar();
+  const history = useHistory();
   const [cohortStatus, setCohortStatus] = useState("all");
   const [loading, setLoading] = useState<boolean>(false);
   const [cohortList, setCohortList] = useState<any>(null);

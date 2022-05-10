@@ -68,7 +68,7 @@ const ProgrammeSection = () => {
       }
     };
     fetchData();
-  }, [programmeId, enqueueSnackbar]);
+  }, [programmeId, enqueueSnackbar, cohortId]);
 
   const sectionHandler = (item: any) => {
     // if (item.step_order) history.push(`/user-steps/${item.id}/${item.step_order[0]}`);

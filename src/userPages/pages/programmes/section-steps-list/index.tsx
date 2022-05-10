@@ -69,7 +69,7 @@ const StepsList = () => {
         console.log(error);
       }
     },
-    [sectionId]
+    [sectionId, cohortId]
   );
 
   useEffect(() => {
@@ -84,7 +84,7 @@ const StepsList = () => {
       }
     };
     fetchData();
-  }, [getStepData, sectionId, enqueueSnackbar]);
+  }, [getStepData, sectionId, enqueueSnackbar, cohortId]);
 
   const stepHandler = (item: any) => {
     history.push(`/user-steps/${cohortId}/${sectionId}/${item.id}`);

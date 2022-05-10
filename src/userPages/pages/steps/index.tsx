@@ -34,7 +34,6 @@ type IntroParams = {
 
 const Steps = () => {
   const history = useHistory();
-  const user = JSON.parse(localStorage.getItem("user") || "");
   const { cohortId, stepId, sectionId } = useParams<IntroParams>();
   const [loading, setLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -98,7 +97,7 @@ const Steps = () => {
         console.log(error);
       }
     },
-    [sectionId]
+    [sectionId, cohortId]
   );
 
   useEffect(() => {
@@ -109,7 +108,7 @@ const Steps = () => {
       } catch (error: any) {}
     };
     fetchData();
-  }, [getStepData, sectionId]);
+  }, [getStepData, sectionId, cohortId]);
 
   useEffect(() => {
     const fetchStepData = async () => {
