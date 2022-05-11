@@ -26,14 +26,14 @@ function App() {
     <Router>
       <Switch>
         <Route exact path={LOGIN_PAGE} component={LoginPage} />
-        <PrivateRoutes />
         <Route exact path={"/user-login"} component={UserLogin} />
         <Route exact path={"/user-reset-password"} component={UserResetPassword} />
-        <Route path="/user-set-password/:signature/:token" component={UserSetPassword} />
+        <Route exact path="/user-set-password/:signature/:token" component={UserSetPassword} />
         <Route exact path="/forgotten-password" component={ForgottenPassword} />
-        <Route path="/reset-password/:signature/:token" component={PasswordReset} />
-        <Route component={NotFoundPage} />
+        <Route exact path="/reset-password/:signature/:token" component={PasswordReset} />
+        <PrivateRoutes />
         {/*<ProtectedRoute exact path={"/user-intro/:stepId"} component={Intro} />*/}
+        <Route component={NotFoundPage} />
       </Switch>
     </Router>
   );

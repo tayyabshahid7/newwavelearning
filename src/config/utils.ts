@@ -1,5 +1,3 @@
-import { intersection } from "lodash";
-
 export function isArrayWithLength(arr: any) {
   return Array.isArray(arr) && arr.length;
 }

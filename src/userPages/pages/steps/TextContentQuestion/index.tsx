@@ -3,7 +3,6 @@ import { Grid } from "@mui/material";
 import "./style.scss";
 
 const TextContentQuestion = ({ image }: any) => {
-  debugger;
   return (
     <>
       <Grid className="text-question text-image">

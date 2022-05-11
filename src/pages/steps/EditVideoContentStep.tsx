@@ -101,7 +101,6 @@ const EditVideoContent = () => {
     const data = new FormData();
     data.append("step_type", "video");
     let fields = stepData;
-    debugger;
     if (videoFile instanceof File) {
       await uploadFile();
       let name = s3Key + videoFile?.name;
