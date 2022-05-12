@@ -7,7 +7,7 @@ const TextContentQuestion = ({ image }: any) => {
     <>
       <Grid className="text-question text-image">
         <img
-          style={{ borderRadius: "50%", padding: "5%" }}
+          style={{ padding: "3%" }}
           src={image}
           width="220px"
           height="220px"
