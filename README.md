@@ -4,7 +4,21 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
-In the project directory, you can run:
+In the project directory, you can run multiple entry points by specifying port and env variable:
+
+To run learner side we can use following command:
+
+### `REACT_APP_BUILD_TARGET=learner PORT=3000 yarn start`
+
+To run admin side we can use following command:
+
+### `REACT_APP_BUILD_TARGET=admin PORT=3001 yarn start`
+
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
 
 ### `yarn start`
 

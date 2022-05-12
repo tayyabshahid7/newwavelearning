@@ -7,6 +7,7 @@ import theme from "./common/theme";
 import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import { SnackbarProvider } from "notistack";
+import Learner from "./Learner";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -18,7 +19,8 @@ ReactDOM.render(
           horizontal: "center",
         }}
       >
-        <App />
+        {process.env.REACT_APP_BUILD_TARGET === "admin" && <App />}
+        {process.env.REACT_APP_BUILD_TARGET === "learner" && <Learner />}
       </SnackbarProvider>
     </ThemeProvider>
   </React.StrictMode>,
