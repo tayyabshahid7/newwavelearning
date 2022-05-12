@@ -115,6 +115,7 @@ const Steps = () => {
       setLoading(true);
       try {
         const response: any = await getStepDetails(stepId, cohortId);
+        debugger;
         setStepData(response.fields);
         setLearner(response.learner);
         setLiveSessionDetail(response.live_session_details);
@@ -124,6 +125,10 @@ const Steps = () => {
         }
         if (response.fields.background_image) {
           let url = response.fields.background_image;
+          url = url.replace(/\ /g, "%20");
+          setBgImage(url);
+        } else if (response.programme_data.background_image) {
+          let url = response.programme_data.background_image;
           url = url.replace(/\ /g, "%20");
           setBgImage(url);
         }
