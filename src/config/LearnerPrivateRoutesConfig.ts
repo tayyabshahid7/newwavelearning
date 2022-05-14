@@ -13,7 +13,7 @@ import LeaderBoard from "../userPages/pages/leaderboard";
 import Steps from "../userPages/pages/steps";
 import CompleteSection from "../userPages/pages/steps/CompleteSection";
 
-export default [
+const privateRoutes = [
   {
     component: Programmes,
     path: "/user-programmes",
@@ -81,3 +81,5 @@ export default [
     permission: [Roles.ADMIN, Roles.LEARNER],
   },
 ];
+
+export default privateRoutes;

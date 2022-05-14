@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./App.css";
-import { BrowserRouter as Router, Route, Switch, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import ForgottenPassword from "./pages/ForgottenPassword";
 import PasswordReset from "./pages/PasswordReset";
 import NotFoundPage from "pages/NotFoundPage";
