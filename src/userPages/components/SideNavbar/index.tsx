@@ -35,9 +35,19 @@ interface ISideNavbar {
   cohortId: any;
   programmeId: any;
   openProgramme?: any;
+  openLiveSession?: any;
+  openFeedback?: any;
+  openLeaderboard?: any;
 }
 
-const SideNavbar = ({ cohortId, programmeId, openProgramme }: ISideNavbar) => {
+const SideNavbar = ({
+  cohortId,
+  programmeId,
+  openProgramme,
+  openLiveSession,
+  openFeedback,
+  openLeaderboard,
+}: ISideNavbar) => {
   const history = useHistory();
 
   const logout = () => {
@@ -46,8 +56,14 @@ const SideNavbar = ({ cohortId, programmeId, openProgramme }: ISideNavbar) => {
   };
 
   const clickHandler = (item: any) => {
-    if (openProgramme) {
+    if (item.name === "Dashboard" && openProgramme) {
       openProgramme();
+    } else if (item.name === "Live Sessions" && openLiveSession) {
+      openLiveSession();
+    } else if (item.name === "Feedback" && openFeedback) {
+      openFeedback();
+    } else if (item.name === "Leaderboard" && openLeaderboard) {
+      openLeaderboard();
     } else {
       item.name === "Leaderboard" || item.name === "Feedback"
         ? history.push(`/${item.link}/${cohortId}/${programmeId}`)

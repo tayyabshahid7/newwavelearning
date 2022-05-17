@@ -121,6 +121,7 @@ const StepsList = () => {
             }}
           >
             <img
+              className={"back-arrow"}
               onClick={() => history.goBack()}
               style={{ cursor: "pointer" }}
               src={arrowIcon}

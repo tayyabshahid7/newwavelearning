@@ -65,6 +65,7 @@ const Feedback = () => {
           }}
         >
           <img
+            className={"back-arrow"}
             onClick={() => history.push(`/user-dashboard/${cohortId}`)}
             style={{ cursor: "pointer" }}
             src={arrowIcon}

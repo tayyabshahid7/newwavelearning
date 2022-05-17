@@ -115,7 +115,6 @@ const Steps = () => {
       setLoading(true);
       try {
         const response: any = await getStepDetails(stepId, cohortId);
-        debugger;
         setStepData(response.fields);
         setLearner(response.learner);
         setLiveSessionDetail(response.live_session_details);
@@ -228,6 +227,7 @@ const Steps = () => {
           }}
         >
           <img
+            className={"back-arrow"}
             onClick={() => history.goBack()}
             style={{ cursor: "pointer" }}
             src={arrowIcon}

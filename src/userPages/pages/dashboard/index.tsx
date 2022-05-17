@@ -105,6 +105,7 @@ const UserDashboard = () => {
               }}
             >
               <img
+                className={"back-arrow"}
                 onClick={() => history.push(`/user-programmes`)}
                 style={{ cursor: "pointer" }}
                 src={arrowIcon}
