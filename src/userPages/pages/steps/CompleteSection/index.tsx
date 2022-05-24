@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Typography, Button } from "@mui/material";
 import { useParams } from "react-router-dom";
-import successIcon from "../../../static/images/success.png";
+import successIcon from "../../../static/images/well-done.png";
 import { getSection } from "../../../../services/common";
 import { useHistory } from "react-router";
 import { useSnackbar } from "notistack";
@@ -58,6 +58,7 @@ const CompleteSection = () => {
           }}
         >
           <img
+            className={"back-arrow"}
             onClick={() => history.goBack()}
             style={{ cursor: "pointer" }}
             src={arrowIcon}
@@ -68,13 +69,7 @@ const CompleteSection = () => {
         </Grid>
         <Grid item container direction="column">
           <Grid className="success-image">
-            <img
-              style={{ borderRadius: "50%", padding: "5%" }}
-              src={successIcon}
-              width="220px"
-              height="220px"
-              alt="New Wave Learning Logo"
-            />
+            <img src={successIcon} width="220px" height="220px" alt="New Wave Learning Logo" />
           </Grid>
 
           <Grid item sx={{ padding: "2% 10%", textAlign: "center" }}>
@@ -103,7 +98,7 @@ const CompleteSection = () => {
               backgroundColor: "#0E4A66",
               boxShadow: "0px 4px 15px rgba(14, 74, 102, 0.57)",
               borderRadius: "8px",
-              marginBottom: "4%",
+              marginBottom: "3%",
             }}
             variant="contained"
             fullWidth
@@ -123,6 +118,7 @@ const CompleteSection = () => {
               boxShadow: "0px 4px 15px rgba(14, 74, 102, 0.57)",
               borderRadius: "8px",
               border: "1px solid #FD773B",
+              marginBottom: "40px",
               "&:hover": {
                 backgroundColor: "#ee8252",
               },

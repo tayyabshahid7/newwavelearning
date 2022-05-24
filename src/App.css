@@ -60,4 +60,10 @@
     width: 100%;
     height: 100%;
   }
+  .burger-menu button{
+    right: 27px;
+  }
+  .back-arrow{
+    margin-left: 10%;
+  }
 }

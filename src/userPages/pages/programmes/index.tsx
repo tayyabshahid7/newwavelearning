@@ -39,6 +39,24 @@ const Programmes = () => {
               pathname: `/user-dashboard/${programmeList[0]?.id}`,
             });
         }}
+        openLiveSession={() => {
+          programmeList &&
+            history.push({
+              pathname: `/user-live-sessions/${programmeList[0]?.id}`,
+            });
+        }}
+        openFeedback={() => {
+          programmeList &&
+            history.push({
+              pathname: `/user-feedback/${programmeList[0]?.id}/${programmeList[0]?.programme?.id}`,
+            });
+        }}
+        openLeaderboard={() => {
+          programmeList &&
+            history.push({
+              pathname: `/leaderBoard/${programmeList[0]?.id}/${programmeList[0]?.programme?.id}`,
+            });
+        }}
         cohortId={""}
         programmeId={""}
       />

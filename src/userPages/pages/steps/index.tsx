@@ -10,6 +10,7 @@ import "./style.scss";
 import Loading from "../../../components/Loading";
 import { useParams } from "react-router-dom";
 import arrowIcon from "../../static/images/right-arrow 6.png";
+import rightSideBarIcon from "../../static/images/right-side-bar-image.png";
 import TextQuestion from "./TextQuestion";
 import PictureQuestion from "./PictureQuestion";
 import AudioQuestion from "./AudioQuestion";
@@ -32,6 +33,8 @@ type IntroParams = {
   sectionId: any;
 };
 
+const arr = [{}, {}, {}, {}, {}];
+
 const Steps = () => {
   const history = useHistory();
   const { cohortId, stepId, sectionId } = useParams<IntroParams>();
@@ -48,6 +51,7 @@ const Steps = () => {
   const [videoFile, setVideoFile] = useState<File | any>(null);
   const [audioFile, setAudioFile] = useState<File | any>(null);
   const [programmeId, setProgrammeId] = useState<any>("");
+  const [sectionName, setSectionName] = useState<any>("");
   const [learner, setLearner] = useState<any>("");
   const [bgImage, setBgImage] = useState<any>(null);
   const [liveSessionDetail, setLiveSessionDetail] = useState<any>([]);
@@ -69,8 +73,9 @@ const Steps = () => {
       try {
         if (sectionId) {
           let isCurrentStep = false;
-          const response = await getSectionSteps(sectionId, false, Number(cohortId));
+          const response: any = await getSectionSteps(sectionId, false, Number(cohortId));
           if (response.data.length > 0) {
+            setSectionName(response?.data[0]?.section_name);
             setProgrammeId(response?.data[0]?.programme);
           }
           let arr: any = [];
@@ -91,6 +96,7 @@ const Steps = () => {
             }
           });
           setLoading(false);
+          debugger;
           setSteps(arr);
         }
       } catch (error) {
@@ -115,7 +121,6 @@ const Steps = () => {
       setLoading(true);
       try {
         const response: any = await getStepDetails(stepId, cohortId);
-        debugger;
         setStepData(response.fields);
         setLearner(response.learner);
         setLiveSessionDetail(response.live_session_details);
@@ -209,10 +214,10 @@ const Steps = () => {
         className="steps mobile"
         style={{
           background: bgImage ? `url(${bgImage}) 0 0 / cover no-repeat` : "#FFFFFF",
-          margin: "auto",
           minHeight: "100vh",
           width: "100%",
           display: "block",
+          marginTop: "0 !important",
         }}
       >
         <Grid
@@ -228,6 +233,7 @@ const Steps = () => {
           }}
         >
           <img
+            className={"back-arrow"}
             onClick={() => history.goBack()}
             style={{ cursor: "pointer" }}
             src={arrowIcon}
@@ -533,6 +539,78 @@ const Steps = () => {
               Next
             </Button>
           ) : null}
+        </Grid>
+      </Grid>
+
+      <Grid
+        container
+        sx={{
+          background: "#e2f6f9",
+          minHeight: "100vh",
+          width: "30%",
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "column",
+          padding: "4% 0",
+          "@media (max-width: 767px)": {
+            display: "none",
+          },
+        }}
+      >
+        <img
+          style={{ cursor: "pointer" }}
+          src={rightSideBarIcon}
+          width="164px"
+          height="113px"
+          alt="Arrow Logo"
+        />
+        <Grid sx={{ width: "100%", position: "relative", paddingLeft: "20%", marginTop: "16%" }}>
+          <Grid
+            sx={{
+              position: "relative",
+              width: "10px",
+              height: "10px",
+              background: "#FD773B",
+              borderRadius: "50%",
+              marginTop: "4.88%",
+            }}
+          >
+            <Typography className="right-side-bar-title">{sectionName}</Typography>
+          </Grid>
+          <div
+            style={{
+              top: "48px",
+            }}
+            className="dot"
+          ></div>
+          {steps.map((item: any, ind: number) => {
+            return (
+              <>
+                <Grid
+                  sx={{
+                    position: "relative",
+                    width: "10px",
+                    height: "10px",
+                    background: "#0E4A66",
+                    borderRadius: "50%",
+                    marginTop: `20%`,
+                  }}
+                >
+                  <Typography className="right-side-bar-title">
+                    {item.fields?.question || item.fields?.title}
+                  </Typography>
+                </Grid>
+                {ind !== steps.length - 1 && (
+                  <div
+                    style={{
+                      top: ind === 0 ? "110px" : `${108 + ind * 65}px`,
+                    }}
+                    className="dot"
+                  ></div>
+                )}
+              </>
+            );
+          })}
         </Grid>
       </Grid>
     </Grid>
