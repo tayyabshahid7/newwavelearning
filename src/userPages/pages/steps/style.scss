@@ -63,3 +63,30 @@
         }
     }
 }
+
+.dot{
+    width: 15%;
+    float: left;
+    display: block;
+    transform: rotate(90deg);
+    border-radius: 0;
+    border: 1px dashed #000000;
+    left: 47px;
+    position: absolute;
+}
+
+.right-side-bar-title{
+    position: absolute;
+    left: 22px;
+    max-width: 225px !important;
+    top: -6px;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    line-height: 22px !important;
+    width: 225px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
