@@ -564,50 +564,17 @@ const Steps = () => {
           height="113px"
           alt="Arrow Logo"
         />
-        <Grid sx={{ width: "100%", position: "relative", paddingLeft: "20%", marginTop: "16%" }}>
-          <Grid
-            sx={{
-              position: "relative",
-              width: "10px",
-              height: "10px",
-              background: "#FD773B",
-              borderRadius: "50%",
-              marginTop: "4.88%",
-            }}
-          >
-            <Typography className="right-side-bar-title">{sectionName}</Typography>
-          </Grid>
-          <div
-            style={{
-              top: "48px",
-            }}
-            className="dot"
-          ></div>
+
+        <Grid sx={{ width: "100%", position: "relative", marginTop: "16%" }}>
+          <ul className="bar bar-first">
+            <li>{sectionName}</li>
+          </ul>
           {steps.map((item: any, ind: number) => {
             return (
               <>
-                <Grid
-                  sx={{
-                    position: "relative",
-                    width: "10px",
-                    height: "10px",
-                    background: "#0E4A66",
-                    borderRadius: "50%",
-                    marginTop: `20%`,
-                  }}
-                >
-                  <Typography className="right-side-bar-title">
-                    {item.fields?.question || item.fields?.title}
-                  </Typography>
-                </Grid>
-                {ind !== steps.length - 1 && (
-                  <div
-                    style={{
-                      top: ind === 0 ? "110px" : `${108 + ind * 65}px`,
-                    }}
-                    className="dot"
-                  ></div>
-                )}
+                <ul className="bar">
+                  <li>{item.fields?.question || item.fields?.title}</li>
+                </ul>
               </>
             );
           })}
