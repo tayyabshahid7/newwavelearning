@@ -49,7 +49,7 @@ import UsersPage from "../pages/UsersPage";
 import UserDetailsPage from "../pages/UserDetailsPage";
 import AddLearnerPage from "../pages/AddLearnerPage";
 
-export default [
+const privateRoutes = [
   {
     component: Programmes,
     path: "/user-programmes",
@@ -299,3 +299,5 @@ export default [
     permission: [Roles.ADMIN],
   },
 ];
+
+export default privateRoutes;

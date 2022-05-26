@@ -31,13 +31,13 @@ const LeaderBoard = () => {
         const learnersList = await getCohortLearners(cohortId);
         let array: any = learnersList;
         // change sort function
-        let index = 0;
-        array.sort((a: any, b: any) => {
-          if (index !== 0) {
-            index++;
-            return b.completed_section - a.completed_section;
-          }
-        });
+        // let index = 0;
+        // array.sort((a: any, b: any) => {
+        //   if (index !== 0) {
+        //     index++;
+        //     return b.completed_section - a.completed_section;
+        //   }
+        // });
 
         let rank = 2;
         for (let i = 1; i < array.length; i++) {

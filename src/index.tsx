@@ -1,30 +1,42 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import App from "./App";
+// import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import theme from "./common/theme";
 import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import { SnackbarProvider } from "notistack";
-import Learner from "./Learner";
+// import Learner from "./Learner";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <SnackbarProvider
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "center",
-        }}
-      >
-        {process.env.REACT_APP_BUILD_TARGET === "admin" && <App />}
-        {process.env.REACT_APP_BUILD_TARGET === "learner" && <Learner />}
-      </SnackbarProvider>
-    </ThemeProvider>
-  </React.StrictMode>,
-  document.getElementById("root")
+function importBuildTarget() {
+  if (process.env.REACT_APP_BUILD_TARGET === "admin") {
+    return import("./App");
+  } else if (process.env.REACT_APP_BUILD_TARGET === "learner") {
+    return import("./Learner");
+  } else {
+    return Promise.reject(new Error("No such build target: " + process.env.REACT_APP_BUILD_TARGET));
+  }
+}
+
+// Import the entry point and render it's default export
+importBuildTarget().then(({ default: Environment }) =>
+  ReactDOM.render(
+    <React.StrictMode>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <SnackbarProvider
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "center",
+          }}
+        >
+          <Environment />
+        </SnackbarProvider>
+      </ThemeProvider>
+    </React.StrictMode>,
+    document.getElementById("root")
+  )
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -132,11 +132,11 @@ const Steps = () => {
         }
         if (response.fields.background_image) {
           let url = response.fields.background_image;
-          url = url.replace(/\ /g, "%20");
+          url = url.replace(/ /g, "%20");
           setBgImage(url);
         } else if (response.programme_data.background_image) {
           let url = response.programme_data.background_image;
-          url = url.replace(/\ /g, "%20");
+          url = url.replace(/ /g, "%20");
           setBgImage(url);
         }
         setUserAnswer(response.answer);
