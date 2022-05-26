@@ -73,7 +73,12 @@ const SideNavbar = ({
 
   return (
     <Grid className="side-nav">
-      <img src={SideNavbarLogo} style={{ marginBottom: "30px" }} alt="" />
+      <img
+        width={"100%"}
+        src={SideNavbarLogo}
+        style={{ marginBottom: "30px", objectFit: "cover" }}
+        alt=""
+      />
       <Grid
         sx={{
           display: "flex",
