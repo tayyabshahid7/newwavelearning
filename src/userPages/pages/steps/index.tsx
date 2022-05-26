@@ -26,6 +26,7 @@ import VideoResponse from "./VideoResponse";
 import OpenEndedQuestion from "./OpenEndedQuestion";
 import SideNavbar from "../../components/SideNavbar";
 import LiveSession from "./LiveSession";
+import ProgressBar from "@ramonak/react-progress-bar";
 
 type IntroParams = {
   cohortId: string;
@@ -54,6 +55,7 @@ const Steps = () => {
   const [sectionName, setSectionName] = useState<any>("");
   const [learner, setLearner] = useState<any>("");
   const [bgImage, setBgImage] = useState<any>(null);
+  const [sectionData, setSectionData] = useState<any>({});
   const [liveSessionDetail, setLiveSessionDetail] = useState<any>([]);
   const [stepData, setStepData] = useState<any>({
     content: "",
@@ -96,7 +98,6 @@ const Steps = () => {
             }
           });
           setLoading(false);
-          debugger;
           setSteps(arr);
         }
       } catch (error) {
@@ -109,8 +110,9 @@ const Steps = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const sectionData: any = await getSection(sectionId, Number(cohortId));
-        await getStepData(sectionData?.step_order);
+        const sectionInfo: any = await getSection(sectionId, Number(cohortId));
+        setSectionData(sectionInfo);
+        await getStepData(sectionInfo?.step_order);
       } catch (error: any) {}
     };
     fetchData();
@@ -204,6 +206,8 @@ const Steps = () => {
     stepType === "video_response" && data.append("file_answer", videoFile);
     stepType === "audio_response" && data.append("file_answer", audioFile);
     await submitStepAnswer(data);
+    const sectionInfo: any = await getSection(sectionId, Number(cohortId));
+    setSectionData(sectionInfo);
   };
 
   return (
@@ -228,7 +232,6 @@ const Steps = () => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            marginBottom: "2%",
             height: "85px",
           }}
         >
@@ -244,10 +247,16 @@ const Steps = () => {
         </Grid>
         <Loading loading={loading} />
         <Grid item container direction="column" style={{ minHeight: "70vh" }}>
+          <ProgressBar
+            height={"9px"}
+            borderRadius={"8px"}
+            bgColor={"#0E4A66"}
+            className={"progress-bar"}
+            completed={(sectionData?.completed_steps / sectionData.steps) * 100}
+          />
           {stepType === "text_content" && stepData.image && (
             <TextContentQuestion image={stepData.image} />
           )}
-
           {stepType !== "live_session" && (
             <Grid
               item
@@ -277,7 +286,6 @@ const Steps = () => {
               </Typography>
             </Grid>
           )}
-
           {totalAnswerCount && (
             <Grid item sx={{ padding: "5% 10% 0 10%", textAlign: "center" }}>
               <Typography
@@ -288,7 +296,6 @@ const Steps = () => {
               </Typography>
             </Grid>
           )}
-
           {stepType !== "live_session" && (
             <Grid item sx={{ padding: "1.5% 10%", textAlign: "center", marginTop: "20px" }}>
               <Typography
@@ -303,7 +310,6 @@ const Steps = () => {
               </Typography>
             </Grid>
           )}
-
           {stepType === "video" && <VideoQuestion video={stepData.video} />}
           {stepType === "live_session" && (
             <LiveSession data={stepData} liveSessionDetail={liveSessionDetail} />
@@ -328,7 +334,6 @@ const Steps = () => {
               </Button>
             </Grid>
           )}
-
           <Grid
             item
             sx={{

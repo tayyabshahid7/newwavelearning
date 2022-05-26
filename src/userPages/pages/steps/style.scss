@@ -101,3 +101,10 @@
 .bar-first>li:after {
     height: 0%;
 }
+
+.progress-bar {
+    margin-bottom: 4%;
+    span{
+        display: none !important;
+    }
+}
