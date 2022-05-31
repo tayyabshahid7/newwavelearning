@@ -10,7 +10,7 @@ const AudioResponse = ({ stepAnswer }: any) => {
         <Typography variant="h6">Description</Typography>
         <Typography>{stepAnswer?.step.fields.content}</Typography>
         <Typography variant="h6">Learner Answer</Typography>
-        <audio controls src={stepAnswer?.file_answer}>
+        <audio controls src={stepAnswer?.file_answer} controlsList="nodownload">
           Your browser does not support html audio element.
         </audio>
       </Stack>
