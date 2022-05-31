@@ -208,7 +208,7 @@ const FeedbackDetail = () => {
 
               {stepType === "audio_response" && (
                 <Stack sx={{ width: "50%", height: "50%" }} spacing={2}>
-                  <audio controls src={stepAnswer?.file_answer}>
+                  <audio controls src={stepAnswer?.file_answer} controlsList="nodownload">
                     Your browser does not support html audio element.
                   </audio>
                   <Typography> {stepAnswer?.answer.text}</Typography>

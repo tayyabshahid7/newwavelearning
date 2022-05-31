@@ -70,7 +70,7 @@ const AudioResponse = ({ isSubmitted, userAnswer, uploadAudio }: any) => {
             handleReset={handleReset}
           />
         ) : (
-          <audio controls src={audio}>
+          <audio controls src={audio} controlsList="nodownload">
             Your browser does not support html audio element.
           </audio>
         )}

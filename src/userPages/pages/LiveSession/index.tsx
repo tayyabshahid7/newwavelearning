@@ -35,13 +35,6 @@ const LiveSession = () => {
     }
   }, [cohortId]);
 
-  const detailHandler = (data: any) => {
-    history.push({
-      pathname: "/user-live-session-detail",
-      state: { data: data, cohortId: cohortId, programmeId: programmeId },
-    });
-  };
-
   return (
     <Grid sx={{ display: "flex" }}>
       <Grid
@@ -105,9 +98,6 @@ const LiveSession = () => {
           liveSession.map((item: any, index: number) => {
             return (
               <Grid
-                onClick={() => {
-                  detailHandler(item);
-                }}
                 key={index}
                 sx={{
                   paddingTop: "30px",
@@ -147,6 +137,18 @@ const LiveSession = () => {
                           {item.end_time}
                         </p>
                       </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid>
+                    <Grid sx={{ display: "flex", alignItems: "center", padding: "0 13px" }}>
+                      <p className={"live-description"}>{item.step?.fields.description}</p>
+                    </Grid>
+
+                    <Grid sx={{ display: "flex", alignItems: "center", padding: "0 13px" }}>
+                      <Typography variant="h4" component="p" className={"live-time"}>
+                        Duration: {item.step?.fields.hours} Hr {item.step?.fields.minutes}{" "}
+                        {item.step?.fields.minutes ? "Min" : ""}
+                      </Typography>
                     </Grid>
                   </Grid>
                 </Grid>
