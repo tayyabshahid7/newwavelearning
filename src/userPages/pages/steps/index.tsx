@@ -215,7 +215,7 @@ const Steps = () => {
     <Grid sx={{ display: "flex" }}>
       <Grid
         sx={{
-          width: "22%",
+          width: "29%",
           position: "relative",
           "@media (max-width: 768px)": {
             width: "0 !important",
