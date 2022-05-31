@@ -27,6 +27,7 @@ import OpenEndedQuestion from "./OpenEndedQuestion";
 import SideNavbar from "../../components/SideNavbar";
 import LiveSession from "./LiveSession";
 import ProgressBar from "@ramonak/react-progress-bar";
+import { Burger, Menu } from "../../components/BurgerMenu";
 
 type IntroParams = {
   cohortId: string;
@@ -245,6 +246,7 @@ const Steps = () => {
             alt="Arrow Logo"
           />
         </Grid>
+
         <Loading loading={loading} />
         <Grid item container direction="column" style={{ minHeight: "70vh" }}>
           <ProgressBar

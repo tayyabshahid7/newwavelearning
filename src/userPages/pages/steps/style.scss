@@ -108,3 +108,9 @@
         display: none !important;
     }
 }
+
+@media (max-width: 767px) {
+    .progress-bar{
+        margin: 7px 10px;
+    }
+}
