@@ -44,7 +44,20 @@ const LiveSession = () => {
 
   return (
     <Grid sx={{ display: "flex" }}>
-      <SideNavbar cohortId={cohortId} programmeId={programmeId} />
+      <Grid
+        sx={{
+          width: "22%",
+          position: "relative",
+          "@media (max-width: 768px)": {
+            width: "0 !important",
+          },
+          "@media (max-width: 1024px)": {
+            width: "36%",
+          },
+        }}
+      >
+        <SideNavbar cohortId={cohortId} programmeId={programmeId} />
+      </Grid>
       <Grid
         container
         className="mobile"
