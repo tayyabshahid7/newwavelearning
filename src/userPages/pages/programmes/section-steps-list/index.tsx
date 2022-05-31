@@ -110,7 +110,7 @@ const StepsList = () => {
         }}
       >
         <SideNavbar cohortId={cohortId} programmeId={programmeId} />
-      </Grid>{" "}
+      </Grid>
       <Grid
         className="programmes-section mobile"
         container
@@ -172,7 +172,6 @@ const StepsList = () => {
                 padding: "0 13px 0 0",
                 marginBottom: "20px !important",
                 margin: "0 8px 0 0",
-                maxWidth: "10px",
               }}
             >
               <p className={"programmes-title"}>{section?.title}</p>
