@@ -41,7 +41,6 @@ const Feedback = () => {
 
   return (
     <Grid sx={{ display: "flex" }}>
-      <SideNavbar cohortId={cohortId} programmeId={programmeId} />
       <Grid
         container
         className="mobile"
