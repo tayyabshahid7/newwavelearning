@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Grid, Typography, Button } from "@mui/material";
 import {
   getSection,
@@ -35,10 +35,10 @@ type IntroParams = {
   sectionId: any;
 };
 
-const arr = [{}, {}, {}, {}, {}];
-
 const Steps = () => {
   const history = useHistory();
+  const [open, setOpen] = useState(false);
+  const node: any = useRef();
   const { cohortId, stepId, sectionId } = useParams<IntroParams>();
   const [loading, setLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -244,6 +244,17 @@ const Steps = () => {
             width="27px"
             height="27px"
             alt="Arrow Logo"
+          />
+        </Grid>
+        <Grid ref={node} className="burger-menu">
+          <Burger open={open} setOpen={setOpen} />
+          <Menu
+            cohortId={cohortId}
+            open={open}
+            setOpen={setOpen}
+            close={() => {
+              setOpen(false);
+            }}
           />
         </Grid>
 
