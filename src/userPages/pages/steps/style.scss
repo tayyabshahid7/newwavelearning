@@ -71,6 +71,7 @@
     position: relative;
     font-size: 13px;
 }
+
 .bar>li:before {
     content: '\25CF';
     margin-right: 10px;
@@ -84,18 +85,31 @@
     margin-left: 5px;
     height: 100%;
 }
+
+
+.first-item>li:after {
+   top: 20px !important;
+}
+
+
+.completed>li:before {
+   color: orange;
+}
+
 .bar >li:first-of-type:after {
     top: 50%;
 }
 .bar >li:last-of-type:after {
-    top: -50%;
+    top: -72%;
 }
+
 
 .bar-first > li:before {
     content: "●";
     margin-right: 10px;
     font-size: 20px;
     color: #FD773B;
+    z-index: 99;
 }
 
 .bar-first>li:after {
@@ -114,3 +128,10 @@
         margin: 7px 10px;
     }
 }
+
+
+li span {
+    position: absolute;
+    top: 7px;
+}
+
