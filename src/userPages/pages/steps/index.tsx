@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Grid, Typography, Button } from "@mui/material";
+import { Grid, Typography, Button, TextField } from "@mui/material";
 import {
   getSection,
   getSectionSteps,
@@ -10,7 +10,6 @@ import "./style.scss";
 import Loading from "../../../components/Loading";
 import { useParams } from "react-router-dom";
 import arrowIcon from "../../static/images/right-arrow 6.png";
-import rightSideBarIcon from "../../static/images/right-side-bar-image.png";
 import TextQuestion from "./TextQuestion";
 import PictureQuestion from "./PictureQuestion";
 import AudioQuestion from "./AudioQuestion";
@@ -53,6 +52,7 @@ const Steps = () => {
   const [videoFile, setVideoFile] = useState<File | any>(null);
   const [audioFile, setAudioFile] = useState<File | any>(null);
   const [programmeId, setProgrammeId] = useState<any>("");
+  const [programmeImage, setProgrammeImage] = useState<any>("");
   const [sectionName, setSectionName] = useState<any>("");
   const [learner, setLearner] = useState<any>("");
   const [bgImage, setBgImage] = useState<any>(null);
@@ -124,6 +124,7 @@ const Steps = () => {
       setLoading(true);
       try {
         const response: any = await getStepDetails(stepId, cohortId);
+        setProgrammeImage(response.programme_data.image);
         setStepData(response.fields);
         setLearner(response.learner);
         setLiveSessionDetail(response.live_session_details);
@@ -139,6 +140,8 @@ const Steps = () => {
           let url = response.programme_data.background_image;
           url = url.replace(/ /g, "%20");
           setBgImage(url);
+        } else {
+          setBgImage(null);
         }
         setUserAnswer(response.answer);
         setTotalAnswerCount(response.fields?.correct_answers);
@@ -209,6 +212,7 @@ const Steps = () => {
     await submitStepAnswer(data);
     const sectionInfo: any = await getSection(sectionId, Number(cohortId));
     setSectionData(sectionInfo);
+    await getStepData(sectionInfo?.step_order);
   };
 
   return (
@@ -332,7 +336,20 @@ const Steps = () => {
                   fontWeight: "400",
                 }}
               >
-                {stepData.description || stepData.content}
+                <TextField
+                  className={"text-content"}
+                  fullWidth
+                  multiline
+                  variant="standard" // <== changed this
+                  margin="normal"
+                  required
+                  value={stepData.description || stepData.content}
+                  autoFocus
+                  disabled={true}
+                  InputProps={{
+                    disableUnderline: true, // <== added this
+                  }}
+                />
               </Typography>
             </Grid>
           )}
@@ -589,21 +606,24 @@ const Steps = () => {
       >
         <img
           style={{ cursor: "pointer" }}
-          src={rightSideBarIcon}
+          src={programmeImage}
           width="164px"
           height="113px"
           alt="Arrow Logo"
         />
 
         <Grid sx={{ width: "100%", position: "relative", marginTop: "16%" }}>
-          <ul className="bar bar-first">
-            <li>{sectionName}</li>
-          </ul>
           {steps.map((item: any, ind: number) => {
             return (
               <>
-                <ul className="bar">
-                  <li>{item.fields?.question || item.fields?.title}</li>
+                <ul
+                  className={`bar ${item.is_answered ? "completed " : ""}`.concat(
+                    ind === 0 ? "first-item " : ""
+                  )}
+                >
+                  <li>
+                    <span>{item.fields?.question || item.fields?.title}</span>
+                  </li>
                 </ul>
               </>
             );

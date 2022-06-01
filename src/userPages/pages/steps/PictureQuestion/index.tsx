@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 import removeIcon from "../../../static/images/remove.png";
 import pictureSelected from "../../../static/images/picture-selected.png";
+import correctIcon from "../../../static/images/correct.png";
 import * as _ from "lodash";
 import "./style.scss";
 
@@ -90,6 +91,15 @@ const PictureQuestion = ({
                       item.isSelected !== item.correct ? "error-icon" : ""
                     )}
                     src={item.isSelected === item.correct ? pictureSelected : removeIcon}
+                    width="27px"
+                    height="27px"
+                    alt="Burger Logo"
+                  />
+                )}
+                {isSubmitted && !item.isSelected && item.correct && (
+                  <img
+                    className={"box-icon "}
+                    src={correctIcon}
                     width="27px"
                     height="27px"
                     alt="Burger Logo"
