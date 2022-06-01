@@ -140,6 +140,8 @@ const Steps = () => {
           let url = response.programme_data.background_image;
           url = url.replace(/ /g, "%20");
           setBgImage(url);
+        } else {
+          setBgImage(null);
         }
         setUserAnswer(response.answer);
         setTotalAnswerCount(response.fields?.correct_answers);
@@ -338,7 +340,6 @@ const Steps = () => {
                   className={"text-content"}
                   fullWidth
                   multiline
-                  minRows={10}
                   variant="standard" // <== changed this
                   margin="normal"
                   required

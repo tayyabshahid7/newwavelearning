@@ -136,7 +136,9 @@ li span {
 }
 
 .text-content{
+    background: transparent !important;
     textarea{
+        text-align: center !important;
         &.Mui-disabled {
             opacity: 1;
             -webkit-text-fill-color: black;

@@ -3,6 +3,7 @@ import { Grid, Typography } from "@mui/material";
 import selectedIcon from "../../../static/images/selected.png";
 import removeIcon from "../../../static/images/remove.png";
 import * as _ from "lodash";
+import correctIcon from "../../../static/images/correct.png";
 
 const TextQuestion = ({
   userAnswer,
@@ -95,6 +96,15 @@ const TextQuestion = ({
                 src={item.isSelected === item.correct ? selectedIcon : removeIcon}
                 width="27px"
                 height="27px"
+                alt="Burger Logo"
+              />
+            )}
+            {isSubmitted && !item.isSelected && item.correct && (
+              <img
+                className={"box-icon "}
+                src={correctIcon}
+                width="32px"
+                height="32px"
                 alt="Burger Logo"
               />
             )}
