@@ -135,3 +135,11 @@ li span {
     top: 7px;
 }
 
+.text-content{
+    textarea{
+        &.Mui-disabled {
+            opacity: 1;
+            -webkit-text-fill-color: black;
+        }
+    }
+}

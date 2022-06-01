@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Grid, Typography, Button } from "@mui/material";
+import { Grid, Typography, Button, TextField } from "@mui/material";
 import {
   getSection,
   getSectionSteps,
@@ -334,7 +334,21 @@ const Steps = () => {
                   fontWeight: "400",
                 }}
               >
-                {stepData.description || stepData.content}
+                <TextField
+                  className={"text-content"}
+                  fullWidth
+                  multiline
+                  minRows={10}
+                  variant="standard" // <== changed this
+                  margin="normal"
+                  required
+                  value={stepData.description || stepData.content}
+                  autoFocus
+                  disabled={true}
+                  InputProps={{
+                    disableUnderline: true, // <== added this
+                  }}
+                />
               </Typography>
             </Grid>
           )}
