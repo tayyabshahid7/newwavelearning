@@ -1,9 +1,9 @@
 import React from "react";
 import { Grid } from "@mui/material";
-import JourneyIcon from "../../static/images/journey-icon-white.png";
-import LeaderboardIcon from "../../static/images/leaderboard-white.png";
-import FeedbackIcon from "../../static/images/feedback-icon-white.png";
-import LiveIcon from "../../static/images/live-session-white.png";
+import JourneyIcon from "../../static/images/dashboard-icon.svg";
+import LeaderboardIcon from "../../static/images/leaderboard-icon.svg";
+import FeedbackIcon from "../../static/images/feedback-icon.svg";
+import LiveIcon from "../../static/images/live-session-icon.svg";
 import SideNavbarLogo from "../../static/images/nw-logo-white.svg";
 import "./style.scss";
 import { useHistory } from "react-router";
@@ -123,7 +123,7 @@ const SideNavbar = ({
                   className="items"
                 >
                   <img
-                    style={{ objectFit: "cover", marginRight: "10px" }}
+                    style={{ marginRight: "10px" }}
                     src={item.icon}
                     width="35px"
                     height="35px"
