@@ -216,7 +216,7 @@ const Steps = () => {
   };
 
   return (
-    <Grid sx={{ display: "flex" }}>
+    <Grid sx={{ display: "flex", marginBottom: "100px" }}>
       <Grid
         sx={{
           width: "29%",
@@ -511,7 +511,16 @@ const Steps = () => {
           </Grid>
         </Grid>
 
-        <Grid item px="18px" width="100%">
+        <Grid
+          item
+          sx={{
+            width: "100%",
+            position: "fixed",
+            bottom: "0",
+            padding: "10px",
+            backgroundColor: "white",
+          }}
+        >
           {!loading &&
           !isSubmitted &&
           stepType !== "audio" &&
