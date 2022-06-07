@@ -216,7 +216,14 @@ const Steps = () => {
   };
 
   return (
-    <Grid sx={{ display: "flex", marginBottom: "100px" }}>
+    <Grid
+      sx={{
+        display: "flex",
+        "@media (max-width: 768px)": {
+          marginBottom: "100px",
+        },
+      }}
+    >
       <Grid
         sx={{
           width: "29%",
@@ -515,10 +522,11 @@ const Steps = () => {
           item
           sx={{
             width: "100%",
-            position: "fixed",
-            bottom: "0",
+            "@media (max-width: 768px)": {
+              position: "fixed",
+              backgroundColor: "white",
+            },
             padding: "10px",
-            backgroundColor: "white",
           }}
         >
           {!loading &&
