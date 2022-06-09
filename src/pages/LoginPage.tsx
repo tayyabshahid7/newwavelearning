@@ -3,13 +3,14 @@ import { Link as RouterLink, RouteComponentProps } from "react-router-dom";
 import { Grid, Typography, TextField, Button, Link } from "@mui/material";
 import image from "../static/login-image.png";
 import nwLogo from "../static/nw-logo.png";
-import { isLoggedIn, loginUser } from "../services/auth";
+import { getUser, isLoggedIn, loginUser } from "../services/auth";
 
 interface LoginPageProps {
   history: RouteComponentProps["history"];
 }
 
 const LoginPage = ({ history }: LoginPageProps) => {
+  const user = getUser();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState(false);
@@ -17,7 +18,9 @@ const LoginPage = ({ history }: LoginPageProps) => {
   const [loginError, setLoginError] = useState<any>(null);
 
   useEffect(() => {
-    isLoggedIn() && history.push("/cohorts");
+    if (isLoggedIn()) {
+      user.role === "admin" ? history.push("/cohorts") : history.push("/feedback");
+    }
   });
 
   const handleLogin = async () => {
@@ -32,7 +35,11 @@ const LoginPage = ({ history }: LoginPageProps) => {
 
     try {
       await loginUser(email.toLowerCase(), password);
-      window.location.href = "/cohorts";
+      if (user.role === "admin") {
+        window.location.href = "/cohorts";
+      } else {
+        window.location.href = "/feedback";
+      }
     } catch (error: any) {
       if (error.response?.status === 401) {
         setLoginError(error.response.data.detail);

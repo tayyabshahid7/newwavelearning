@@ -1,5 +1,6 @@
 const roles = {
-  ADMIN: "facilitator",
+  ADMIN: "admin",
+  FACILITATOR: "facilitator",
   LEARNER: "learner",
 };
 
