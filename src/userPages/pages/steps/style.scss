@@ -119,7 +119,7 @@ li.bar-first:after {
     height: 0%;
 }
 
-li.bar:last-child::after {
+li.bar:last-of-type::after {
     border: none;
 }
 
