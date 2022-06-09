@@ -52,21 +52,28 @@ const SidebarMenu = ({ selected }: SidebarMenuProps) => {
           </ListItemIcon>
           <ListItemText primary={user.name} secondary={user.role.toUpperCase()} />
         </ListItem>
-        <ListItemButton onClick={() => history.push("/cohorts")} selected={selected === "cohorts"}>
-          <ListItemIcon>
-            <CohortsIcon />
-          </ListItemIcon>
-          <ListItemText primary={"Cohorts"} />
-        </ListItemButton>
-        <ListItemButton
-          onClick={() => history.push("/programmes")}
-          selected={selected === "programmes"}
-        >
-          <ListItemIcon>
-            <ProgrammesIcons />
-          </ListItemIcon>
-          <ListItemText primary={"Programmes"} />
-        </ListItemButton>
+        {user.role === "admin" && (
+          <>
+            <ListItemButton
+              onClick={() => history.push("/cohorts")}
+              selected={selected === "cohorts"}
+            >
+              <ListItemIcon>
+                <CohortsIcon />
+              </ListItemIcon>
+              <ListItemText primary={"Cohorts"} />
+            </ListItemButton>
+            <ListItemButton
+              onClick={() => history.push("/programmes")}
+              selected={selected === "programmes"}
+            >
+              <ListItemIcon>
+                <ProgrammesIcons />
+              </ListItemIcon>
+              <ListItemText primary={"Programmes"} />
+            </ListItemButton>
+          </>
+        )}
         <ListItemButton
           onClick={() => history.push("/feedback")}
           selected={selected === "feedback"}
@@ -76,12 +83,14 @@ const SidebarMenu = ({ selected }: SidebarMenuProps) => {
           </ListItemIcon>
           <ListItemText primary={"Feedback"} />
         </ListItemButton>
-        <ListItemButton onClick={() => history.push("/users")} selected={selected === "users"}>
-          <ListItemIcon>
-            <UsersIcon />
-          </ListItemIcon>
-          <ListItemText primary={"Users"} />
-        </ListItemButton>
+        {user.role === "admin" && (
+          <ListItemButton onClick={() => history.push("/users")} selected={selected === "users"}>
+            <ListItemIcon>
+              <UsersIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Users"} />
+          </ListItemButton>
+        )}
       </List>
       <Divider />
       <List style={{ marginTop: `auto` }}>

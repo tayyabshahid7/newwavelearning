@@ -66,7 +66,7 @@ const privateRoutes = [
     component: Feedback,
     path: "/user-feedback/:cohortId/:programmeId",
     exact: true,
-    permission: [Roles.ADMIN, Roles.LEARNER],
+    permission: [Roles.ADMIN, Roles.FACILITATOR, Roles.LEARNER],
   },
   {
     component: LiveSessionDetail,
@@ -78,7 +78,7 @@ const privateRoutes = [
     component: FeedbackDetail,
     path: "/user-feedback-detail/",
     exact: true,
-    permission: [Roles.ADMIN, Roles.LEARNER],
+    permission: [Roles.ADMIN, Roles.FACILITATOR, Roles.LEARNER],
   },
   {
     component: StepsList,
@@ -281,7 +281,7 @@ const privateRoutes = [
   {
     component: FeedbackPage,
     path: "/feedback",
-    permission: [Roles.ADMIN],
+    permission: [Roles.ADMIN, Roles.FACILITATOR],
   },
   {
     component: UsersPage,
