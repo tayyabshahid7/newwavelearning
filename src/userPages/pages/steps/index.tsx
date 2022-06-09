@@ -634,6 +634,7 @@ const Steps = () => {
             {steps.map((item: any, ind: number) => {
               return (
                 <li
+                  key={ind}
                   className={`bar ${item.is_answered ? "completed " : ""}`.concat(
                     ind === 0 ? "first-item " : ""
                   )}
