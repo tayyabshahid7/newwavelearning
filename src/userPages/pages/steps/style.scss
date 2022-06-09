@@ -67,19 +67,22 @@
 .bar {
     list-style: none;
 }
-.bar >li {
+li.bar {
     position: relative;
     font-size: 13px;
+    min-height: 60px;
+    max-width: 210px;;
 }
 
-.bar>li:before {
+li.bar:before {
     content: '\25CF';
     margin-right: 10px;
     font-size: 20px;
 }
-.bar>li:after {
+li.bar:after {
     position: absolute;
     left: 0;
+    top:20px;
     content: "";
     border-left: 1px dashed black;
     margin-left: 5px;
@@ -87,33 +90,37 @@
 }
 
 
-.first-item>li:after {
+li.first-item:after {
    top: 20px !important;
 }
 
 
-.completed>li:before {
-   color: orange;
+li.completed:before {
+   color: #FC783B;
 }
 
-.bar >li:first-of-type:after {
+li.bar:first-of-type:after {
     top: 50%;
 }
-.bar >li:last-of-type:after {
+li.bar >li:last-of-type:after {
     top: -72%;
 }
 
 
-.bar-first > li:before {
+li.bar-first:before {
     content: "●";
     margin-right: 10px;
     font-size: 20px;
-    color: #FD773B;
+    color: #FC783B;
     z-index: 99;
 }
 
-.bar-first>li:after {
+li.bar-first:after {
     height: 0%;
+}
+
+li.bar:last-of-type::after {
+    border: none;
 }
 
 .progress-bar {

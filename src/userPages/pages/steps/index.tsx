@@ -630,21 +630,20 @@ const Steps = () => {
         />
 
         <Grid sx={{ width: "100%", position: "relative", marginTop: "16%" }}>
-          {steps.map((item: any, ind: number) => {
-            return (
-              <>
-                <ul
+          <ul>
+            {steps.map((item: any, ind: number) => {
+              return (
+                <li
+                  key={ind}
                   className={`bar ${item.is_answered ? "completed " : ""}`.concat(
                     ind === 0 ? "first-item " : ""
                   )}
                 >
-                  <li>
-                    <span>{item.fields?.question || item.fields?.title}</span>
-                  </li>
-                </ul>
-              </>
-            );
-          })}
+                  <span>{item.fields?.question || item.fields?.title}</span>
+                </li>
+              );
+            })}
+          </ul>
         </Grid>
       </Grid>
     </Grid>
