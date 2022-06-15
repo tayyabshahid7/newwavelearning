@@ -7,6 +7,7 @@ import { useHistory } from "react-router";
 import Loading from "../../../components/Loading";
 import "./style.scss";
 import SideNavbar from "../../components/SideNavbar";
+import sidebarBgImage from "../../static/images/leftBar.svg";
 
 const Programmes = () => {
   const [programmeList, setProgrammeList] = useState<any>(null);
@@ -81,7 +82,7 @@ const Programmes = () => {
           backgroundColor: "#F1F5FF",
           margin: "auto",
           minHeight: "100vh",
-          width: "100%",
+          width: "54%",
         }}
       >
         <Loading loading={loading} />
@@ -181,6 +182,13 @@ const Programmes = () => {
           </Button>
         </Grid>
       </Grid>
+      <Grid
+        sx={{
+          width:"23%",
+          background: `url(${sidebarBgImage}) no-repeat center center`,
+          backgroundSize: "cover",
+        }}
+      ></Grid>
     </Grid>
   );
 };

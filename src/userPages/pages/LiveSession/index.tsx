@@ -7,6 +7,7 @@ import arrowIcon from "../../static/images/right-arrow 6.png";
 import { useHistory } from "react-router";
 import { useParams } from "react-router-dom";
 import SideNavbar from "../../components/SideNavbar";
+import sidebarBgImage from "../../static/images/leftBar.svg";
 
 interface ProgrammePageParams {
   cohortId: string;
@@ -36,10 +37,10 @@ const LiveSession = () => {
   }, [cohortId]);
 
   return (
-    <Grid sx={{ display: "flex" }}>
+    <Grid container sx={{ display: "flex" }}>
       <Grid
+        item
         sx={{
-          width: "22%",
           position: "relative",
           "@media (max-width: 768px)": {
             width: "0 !important",
@@ -48,11 +49,14 @@ const LiveSession = () => {
             width: "36%",
           },
         }}
+        xs={2}
       >
         <SideNavbar cohortId={cohortId} programmeId={programmeId} />
       </Grid>
       <Grid
         container
+        item
+        xs={8}
         className="mobile"
         style={{
           background: "#FFFFFF",
@@ -156,6 +160,14 @@ const LiveSession = () => {
             );
           })}
       </Grid>
+      <Grid
+        item
+        xs={2}
+        sx={{
+          background: `url(${sidebarBgImage}) no-repeat center center`,
+          backgroundSize: "cover",
+        }}
+      ></Grid>
     </Grid>
   );
 };

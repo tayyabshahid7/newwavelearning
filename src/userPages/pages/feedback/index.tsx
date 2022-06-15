@@ -8,6 +8,7 @@ import { useHistory } from "react-router";
 import { useParams } from "react-router-dom";
 import { getUser } from "../../../services/auth";
 import SideNavbar from "../../components/SideNavbar";
+import sidebarBgImage from "../../static/images/leftBar.svg";
 
 interface FeedbackParams {
   cohortId: string;
@@ -40,8 +41,10 @@ const Feedback = () => {
   };
 
   return (
-    <Grid sx={{ display: "flex" }}>
+    <Grid container sx={{ display: "flex" }}>
       <Grid
+        xs={2}
+        item
         sx={{
           width: "22%",
           position: "relative",
@@ -56,6 +59,8 @@ const Feedback = () => {
         <SideNavbar cohortId={cohortId} programmeId={programmeId} />
       </Grid>
       <Grid
+        item
+        xs={8}
         container
         className="mobile"
         style={{
@@ -140,6 +145,14 @@ const Feedback = () => {
             );
           })}
       </Grid>
+      <Grid
+        item
+        xs={2}
+        sx={{
+          background: `url(${sidebarBgImage}) no-repeat center center`,
+          backgroundSize: "cover",
+        }}
+      ></Grid>
     </Grid>
   );
 };

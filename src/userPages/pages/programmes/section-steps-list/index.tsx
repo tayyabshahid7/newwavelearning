@@ -12,6 +12,7 @@ import arrowIcon from "../../../static/images/right-arrow 6.png";
 import { Burger, Menu } from "../../../components/BurgerMenu";
 import Loading from "../../../../components/Loading";
 import SideNavbar from "../../../components/SideNavbar";
+import sidebarBgImage from "../../../static/images/leftBar.svg";
 
 interface ProgrammePageParams {
   cohortId: any;
@@ -96,8 +97,10 @@ const StepsList = () => {
   };
 
   return (
-    <Grid sx={{ display: "flex" }}>
+    <Grid container sx={{ display: "flex" }}>
       <Grid
+        item
+        xs={2}
         sx={{
           width: "22%",
           position: "relative",
@@ -112,6 +115,8 @@ const StepsList = () => {
         <SideNavbar cohortId={cohortId} programmeId={programmeId} />
       </Grid>
       <Grid
+        item
+        xs={8}
         className="programmes-section mobile"
         container
         style={{
@@ -119,7 +124,6 @@ const StepsList = () => {
           backgroundColor: "#F1F5FF",
           margin: "auto",
           minHeight: "100vh",
-          width: "100%",
         }}
       >
         <Loading loading={loading} />
@@ -247,6 +251,14 @@ const StepsList = () => {
             })}
         </Grid>
       </Grid>
+      <Grid
+        item
+        xs={2}
+        sx={{
+          background: `url(${sidebarBgImage}) no-repeat center center`,
+          backgroundSize: "cover",
+        }}
+      ></Grid>
     </Grid>
   );
 };

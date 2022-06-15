@@ -13,6 +13,7 @@ import Loading from "../../../components/Loading";
 import { useParams } from "react-router-dom";
 import "./style.scss";
 import SideNavbar from "../../components/SideNavbar";
+import sidebarBgImage from "../../static/images/leftBar.svg";
 
 const dashboardData = [
   {
@@ -72,10 +73,11 @@ const UserDashboard = () => {
   }, [cohortId]);
 
   return (
-    <Grid sx={{ display: "flex" }}>
+    <Grid container sx={{ display: "flex" }}>
       <Grid
+        item
+        xs={2}
         sx={{
-          width: "22%",
           position: "relative",
           "@media (max-width: 768px)": {
             width: "0 !important",
@@ -88,14 +90,15 @@ const UserDashboard = () => {
         <SideNavbar cohortId={cohortId} programmeId={programme?.id} />
       </Grid>
       <Grid
+        item
         className="dashboard mobile"
         container
+        xs={8}
         style={{
           position: "relative",
           backgroundColor: "#F1F5FF",
           margin: "auto",
           minHeight: "100vh",
-          width: "100%",
         }}
       >
         <Loading loading={loading} />
@@ -177,6 +180,7 @@ const UserDashboard = () => {
             {dashboardData.map((item: any, index: number) => {
               return (
                 <Grid
+                  item
                   key={index}
                   onClick={() => {
                     if (index === 0)
@@ -199,6 +203,14 @@ const UserDashboard = () => {
           </Grid>
         </Grid>
       </Grid>
+      <Grid
+        item
+        xs={2}
+        sx={{
+          background: `url(${sidebarBgImage}) no-repeat center center`,
+          backgroundSize: "cover",
+        }}
+      ></Grid>
     </Grid>
   );
 };

@@ -9,6 +9,7 @@ import "./style.scss";
 import { getCohortLearners } from "../../../services/common";
 import { useSnackbar } from "notistack";
 import SideNavbar from "../../components/SideNavbar";
+import sidebarBgImage from "../../static/images/leftBar.svg";
 
 interface LeaderboardPageParams {
   programmeId: string;
@@ -56,8 +57,10 @@ const LeaderBoard = () => {
   }, [cohortId, enqueueSnackbar]);
 
   return (
-    <Grid sx={{ display: "flex" }}>
+    <Grid container sx={{ display: "flex" }}>
       <Grid
+        item
+        xs={2}
         sx={{
           width: "22%",
           position: "relative",
@@ -72,6 +75,8 @@ const LeaderBoard = () => {
         <SideNavbar cohortId={cohortId} programmeId={programmeId} />
       </Grid>{" "}
       <Grid
+        item
+        xs={8}
         className="leaderboard mobile"
         container
         style={{
@@ -193,6 +198,14 @@ const LeaderBoard = () => {
             })}
         </Grid>
       </Grid>
+      <Grid
+        item
+        xs={2}
+        sx={{
+          background: `url(${sidebarBgImage}) no-repeat center center`,
+          backgroundSize: "cover",
+        }}
+      ></Grid>
     </Grid>
   );
 };
