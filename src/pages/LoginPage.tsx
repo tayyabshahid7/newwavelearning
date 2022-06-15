@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link as RouterLink, RouteComponentProps } from "react-router-dom";
 import { Grid, Typography, TextField, Button, Link } from "@mui/material";
-import image from "../static/login-image.png";
+import image from "../static/login-image.svg";
 import nwLogo from "../static/nw-logo.png";
 import { getUser, isLoggedIn, loginUser } from "../services/auth";
 
@@ -87,9 +87,6 @@ const LoginPage = ({ history }: LoginPageProps) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant="h4" color="white" sx={{ textAlign: "center" }}>
-          Inspiring people to build a better future
-        </Typography>
       </Grid>
       <Grid item xs={6} container direction="column">
         <Grid

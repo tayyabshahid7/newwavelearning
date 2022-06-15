@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Typography, TextField, Button, Link, Backdrop } from "@mui/material";
 import { Link as RouterLink, RouteComponentProps, useParams } from "react-router-dom";
-import image from "../static/login-image.png";
+import image from "../static/login-image.svg";
 import nwLogo from "../static/nw-logo.png";
 import { LOGIN_PAGE } from "../common/constants";
 import { checkToken, resetUserPassword } from "../services/auth";

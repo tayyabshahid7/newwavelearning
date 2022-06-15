@@ -7,7 +7,7 @@ import {
   Link,
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
-import image from "../static/login-image.png";
+import image from "../static/login-image.svg";
 import nwLogo from "../static/nw-logo.png";
 import { LOGIN_PAGE } from "../common/constants";
 import { isValidEmail } from "../common/utils";
