@@ -4,7 +4,7 @@ import ArrowWhiteIcon from "../../../static/images/arrow-white.png";
 import completedIcon from "../../../static/images/completed.png";
 import LockIcon from "../../../static/images/lock-icon.png";
 import { useHistory, useParams } from "react-router";
-import { getSection, getSectionSteps } from "../../../../services/common";
+import { getProgrammeDetails, getSection, getSectionSteps } from "../../../../services/common";
 import { StepData } from "../../../../common/types";
 import { useSnackbar } from "notistack";
 import "./style.scss";
@@ -30,6 +30,7 @@ const StepsList = () => {
   const [completedStepCount, setCompletedStepCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [programmeId, setProgrammeId] = useState<any>("");
+  const [programme, setProgramme] = useState<any>(null);
 
   const getStepData = useCallback(
     async (stepOrder: any) => {
@@ -79,6 +80,8 @@ const StepsList = () => {
         const sectionData: any = await getSection(sectionId, cohortId);
         setSection(sectionData);
         setProgrammeId(sectionData.programme);
+        const response = await getProgrammeDetails(sectionData.programme);
+        setProgramme(response.data);
         await getStepData(sectionData?.step_order);
       } catch (error: any) {
         enqueueSnackbar(error.response?.data.detail, { variant: "error" });
@@ -178,6 +181,7 @@ const StepsList = () => {
                 margin: "0 8px 0 0",
               }}
             >
+              <img src={programme?.image} alt="programme logo" width="60px" />
               <p className={"programmes-title"}>{section?.title}</p>
             </Grid>
             <Grid className="footer programme-footer">
