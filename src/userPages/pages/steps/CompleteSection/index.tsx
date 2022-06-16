@@ -107,7 +107,7 @@ const CompleteSection = () => {
             </Typography>
           </Grid>
         </Grid>
-        <Grid mt="250px" item px="18px" width="100%">
+        <Grid item px="18px" width="100%">
           <Button
             sx={{
               padding: "16px 13.39px",
