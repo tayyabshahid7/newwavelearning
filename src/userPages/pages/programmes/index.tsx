@@ -125,7 +125,7 @@ const Programmes = () => {
                   className="all-programmes"
                 >
                   <Grid sx={{ display: "flex", alignItems: "center", padding: "0 13px" }}>
-                    <img width="68px" src={item.programme.image} alt="programme img" />
+                    <img style={{maxWidth: "68px", maxHeight:"40px"}} src={item.programme.image} alt="programme img" />
                     <p className={"programmes-title"}>{item.programme.name}</p>
                   </Grid>
                   <img
