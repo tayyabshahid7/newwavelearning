@@ -176,7 +176,7 @@ const StepsList = () => {
               sx={{
                 display: "flex",
                 alignItems: "center",
-                padding: "0 13px 0 0",
+                padding: "0 13px",
                 marginBottom: "20px !important",
                 margin: "0 8px 0 0",
               }}
