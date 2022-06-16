@@ -8,6 +8,7 @@ import { useSnackbar } from "notistack";
 import "./style.scss";
 import arrowIcon from "../../../static/images/right-arrow 6.png";
 import SideNavbar from "../../../components/SideNavbar";
+import sidebarBgImage from "../../../static/images/leftBar.svg";
 
 interface CompleteSectionParams {
   cohortId: any;
@@ -34,8 +35,10 @@ const CompleteSection = () => {
   }, [sectionId, enqueueSnackbar]);
 
   return (
-    <Grid sx={{ display: "flex" }}>
+    <Grid container sx={{ display: "flex" }}>
       <Grid
+        item
+        xs={2}
         sx={{
           width: "22%",
           position: "relative",
@@ -50,6 +53,8 @@ const CompleteSection = () => {
         <SideNavbar cohortId={cohortId} programmeId={programmeId} />
       </Grid>{" "}
       <Grid
+        item
+        xs={8}
         container
         className="success-section mobile"
         style={{
@@ -149,6 +154,17 @@ const CompleteSection = () => {
           </Button>
         </Grid>
       </Grid>
+      <Grid
+        item
+        xs={2}
+        sx={{
+          background: `url(${sidebarBgImage}) no-repeat center center`,
+          position: "sticky",
+          right: 0,
+          top: 0,
+          height: "100vh",
+        }}
+      ></Grid>
     </Grid>
   );
 };
