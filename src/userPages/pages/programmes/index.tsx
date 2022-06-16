@@ -184,9 +184,13 @@ const Programmes = () => {
       </Grid>
       <Grid
         sx={{
-          width:"23%",
+          width: "16%",
           background: `url(${sidebarBgImage}) no-repeat center center`,
           backgroundSize: "cover",
+          position: "sticky",
+          right: 0,
+          top: 0,
+          height: "100vh"
         }}
       ></Grid>
     </Grid>

@@ -166,6 +166,10 @@ const LiveSession = () => {
         sx={{
           background: `url(${sidebarBgImage}) no-repeat center center`,
           backgroundSize: "cover",
+          position: "sticky",
+          right: 0,
+          top: 0,
+          height: "100vh"
         }}
       ></Grid>
     </Grid>
