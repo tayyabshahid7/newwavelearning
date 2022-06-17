@@ -135,7 +135,7 @@ const FeedbackPage = () => {
               <MenuItem value={"0"}>All</MenuItem>
               {learnerList.map((learner: any) => (
                 <MenuItem key={learner.id} value={learner.id}>
-                  {learner.email}
+                  {learner.email} [{learner.cohort_name}]
                 </MenuItem>
               ))}
             </Select>
