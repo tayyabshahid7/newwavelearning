@@ -103,7 +103,7 @@ const Feedback = () => {
           </Typography>
         </Grid>
 
-        {feedbackList &&
+        {feedbackList?.length > 0 ? (
           feedbackList.map((item: any, index: number) => {
             return (
               <Grid
@@ -143,7 +143,14 @@ const Feedback = () => {
                 </Grid>
               </Grid>
             );
-          })}
+          })
+        ) : (
+          <Grid item sx={{textAlign: "center"}}>
+            <Typography variant="h6">
+              You have no feedback to review at this time. Please check back later
+            </Typography>
+          </Grid>
+        )}
       </Grid>
       <Grid
         item
@@ -154,7 +161,7 @@ const Feedback = () => {
           position: "sticky",
           right: 0,
           top: 0,
-          height: "100vh"
+          height: "100vh",
         }}
       ></Grid>
     </Grid>

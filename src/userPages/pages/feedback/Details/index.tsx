@@ -5,6 +5,7 @@ import arrowIcon from "../../../static/images/right-arrow 6.png";
 import { useHistory } from "react-router";
 import "./../style.scss";
 import SideNavbar from "../../../components/SideNavbar";
+import sidebarBgImage from "../../../static/images/leftBar.svg";
 
 const FeedbackDetail = () => {
   const history = useHistory();
@@ -28,8 +29,10 @@ const FeedbackDetail = () => {
   }, [history.location.state]);
 
   return (
-    <Grid sx={{ display: "flex" }}>
+    <Grid container sx={{ display: "flex" }}>
       <Grid
+        item
+        xs={2}
         sx={{
           width: "22%",
           position: "relative",
@@ -45,6 +48,8 @@ const FeedbackDetail = () => {
       </Grid>
       <Grid
         container
+        item
+        xs={8}
         className="mobile"
         style={{
           background: "#FFFFFF",
@@ -272,6 +277,18 @@ const FeedbackDetail = () => {
           </Grid>
         </Grid>
       </Grid>
+      <Grid
+        item
+        xs={2}
+        sx={{
+          background: `url(${sidebarBgImage}) no-repeat center center`,
+          backgroundSize: "cover",
+          position: "sticky",
+          right: 0,
+          top: 0,
+          height: "100vh",
+        }}
+      ></Grid>
     </Grid>
   );
 };
