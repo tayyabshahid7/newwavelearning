@@ -74,14 +74,6 @@ const SideNavbar = ({
   return (
     <Grid
       className="side-nav"
-      sx={{
-        position: "fixed",
-        width: "18%",
-        zIndex: "99",
-        "@media (max-width: 1024px)": {
-          width: "25%",
-        },
-      }}
     >
       <img
         width={"100%"}

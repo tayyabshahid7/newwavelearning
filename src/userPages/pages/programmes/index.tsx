@@ -32,19 +32,8 @@ const Programmes = () => {
   }, []);
 
   return (
-    <Grid sx={{ display: "flex" }}>
-      <Grid
-        sx={{
-          width: "23%",
-          position: "relative",
-          "@media (max-width: 768px)": {
-            width: "0 !important",
-          },
-          "@media (max-width: 1024px)": {
-            width: "36%",
-          },
-        }}
-      >
+    <Grid container>
+      <Grid item sm={0} md={2}>
         <SideNavbar
           openProgramme={() => {
             programmeList &&
@@ -74,17 +63,7 @@ const Programmes = () => {
           programmeId={""}
         />
       </Grid>
-      <Grid
-        className="programmes"
-        container
-        style={{
-          position: "relative",
-          backgroundColor: "#F1F5FF",
-          margin: "auto",
-          minHeight: "100vh",
-          width: "54%",
-        }}
-      >
+      <Grid className="programmes" container item sm={12} md={8} sx={{ padding: "40px" }}>
         <Loading loading={loading} />
         <Grid item container direction="column">
           <Grid
@@ -116,6 +95,8 @@ const Programmes = () => {
             programmeList.map((item: any, index: number) => {
               return (
                 <Grid
+                  item
+                  container
                   onClick={() => {
                     history.push({
                       pathname: `/user-dashboard/${item.id}`,
@@ -124,8 +105,12 @@ const Programmes = () => {
                   key={index}
                   className="all-programmes"
                 >
-                  <Grid sx={{ display: "flex", alignItems: "center", padding: "0 13px" }}>
-                    <img style={{maxWidth: "68px", maxHeight:"40px"}} src={item.programme.image} alt="programme img" />
+                  <Grid item sx={{ display: "flex", alignItems: "center", padding: "0 13px" }}>
+                    <img
+                      style={{ maxWidth: "68px", maxHeight: "40px" }}
+                      src={item.programme.image}
+                      alt="programme img"
+                    />
                     <p className={"programmes-title"}>{item.programme.name}</p>
                   </Grid>
                   <img
@@ -143,10 +128,10 @@ const Programmes = () => {
           item
           sx={{
             width: "100%",
-            padding: "0 15px",
-            marginTop: "35%",
+            display: "flex",
+            alignItems: "flex-end",
             "@media (max-width: 767px)": {
-              marginTop: "85%",
+              marginTop: "10%",
             },
           }}
         >
@@ -183,14 +168,16 @@ const Programmes = () => {
         </Grid>
       </Grid>
       <Grid
+        item
+        sm={0}
+        md={2}
         sx={{
-          width: "16%",
           background: `url(${sidebarBgImage}) no-repeat center center`,
           backgroundSize: "cover",
           position: "sticky",
           right: 0,
           top: 0,
-          height: "100vh"
+          height: "100vh",
         }}
       ></Grid>
     </Grid>
