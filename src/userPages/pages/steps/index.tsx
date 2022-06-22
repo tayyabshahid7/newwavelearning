@@ -35,6 +35,19 @@ type IntroParams = {
   sectionId: any;
 };
 
+const emptyStepData = {
+  content: "",
+  image: null,
+  title: "",
+  background_image: "",
+  answers: [],
+  description: "",
+  audio: "",
+  video: "",
+  answer: [],
+  url: "",
+};
+
 const Steps = () => {
   const history = useHistory();
   const [open, setOpen] = useState(false);
@@ -57,18 +70,7 @@ const Steps = () => {
   const [bgImage, setBgImage] = useState<any>(null);
   const [sectionData, setSectionData] = useState<any>({});
   const [liveSessionDetail, setLiveSessionDetail] = useState<any>([]);
-  const [stepData, setStepData] = useState<any>({
-    content: "",
-    image: "",
-    title: "",
-    background_image: "",
-    answers: [],
-    description: "",
-    audio: "",
-    video: "",
-    answer: [],
-    url: "",
-  });
+  const [stepData, setStepData] = useState<any>(emptyStepData);
 
   const getStepData = useCallback(
     async (stepOrder: any) => {
@@ -121,6 +123,7 @@ const Steps = () => {
   useEffect(() => {
     const fetchStepData = async () => {
       setLoading(true);
+      setStepData(emptyStepData);
       try {
         const response: any = await getStepDetails(stepId, cohortId);
         setStepData(response.fields);
