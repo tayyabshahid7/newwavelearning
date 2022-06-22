@@ -102,8 +102,7 @@ const CompleteSection = () => {
 
           <Grid item sx={{ padding: "5px 10%", textAlign: "center" }}>
             <Typography component="h5" sx={{ fontSize: "16px", color: "#6A6E71" }}>
-              You have completed {section?.title}. Click the button below to return to your
-              dashboard.
+              You have completed {section?.title}. Choose an option below.
             </Typography>
           </Grid>
         </Grid>
