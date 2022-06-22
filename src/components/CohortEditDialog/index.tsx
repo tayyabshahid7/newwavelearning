@@ -231,7 +231,7 @@ const CohortEditDialog = ({
                 />
 
                 <DatePicker
-                  label="Start Date"
+                  label="End Date"
                   value={endDate}
                   onChange={handleEndDateChange}
                   inputFormat="dd/MM/yyyy"
