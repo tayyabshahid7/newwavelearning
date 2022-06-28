@@ -74,7 +74,7 @@ const UserLogin = ({ history }: LoginPageProps) => {
         xs={12}
         sx={{
           background: `url(${image}) no-repeat center center`,
-          backgroundSize: "cover",
+          backgroundSize: "contain",
           height: "100vh",
           display: "flex",
           alignItems: "center",
