@@ -1,6 +1,8 @@
 .side-nav{
   background: #0E4A66;
   min-height: 100vh;
+  position: sticky;
+  top: 0;
   .name{
     font-weight: 600;
     font-size: 26px;
