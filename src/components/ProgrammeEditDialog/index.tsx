@@ -42,7 +42,7 @@ const ProgrammeEditDialog = ({
     bgImage: false,
   });
   const [image, setImage] = useState<File | null>(null);
-  const [defaultBgImage, SetDefaultBgImage] = useState<File | null>(null);
+  const [defaultBgImage, setDefaultBgImage] = useState<File | null>(null);
   const [deleteImage, setDeleteImage] = useState<boolean>(false);
   const [deleteBgImage, setDeleteBgImage] = useState<boolean>(false);
 
@@ -106,11 +106,21 @@ const ProgrammeEditDialog = ({
   };
 
   const handleAddBgImage = (files: File[]) => {
-    SetDefaultBgImage(files[0]);
+    setDefaultBgImage(files[0]);
   };
 
   const handleCancelButton = () => {
     cancelEditCallback();
+  };
+
+  const handleDeleteImage = () => {
+    setImage(null);
+    setDeleteImage(true);
+  };
+
+  const handleDeleteBgImage = () => {
+    setDefaultBgImage(null);
+    setDeleteBgImage(true);
   };
 
   return (
@@ -140,20 +150,20 @@ const ProgrammeEditDialog = ({
                 />
               </>
             ) : deleteImage ? (
-              <Typography>Background marked to be deleted after pressing "Save"</Typography>
+              <Typography>Programme Image marked to be deleted after pressing "Save"</Typography>
             ) : (
               <>
-                <Typography variant="body2">Programme background</Typography>
-                <img src={programme.image} width={150} alt="background" />
+                <Typography variant="body2">Programme image</Typography>
+                <img src={programme.image} width={150} alt="programme logo" />
                 <Button
                   variant="text"
                   color="primary"
                   onClick={() => setDropzoneOpen({ ...dropzoneOpen, image: true })}
                 >
-                  Change Background
+                  Change Programme Image
                 </Button>
-                <Button variant="text" color="error" onClick={() => setDeleteImage(true)}>
-                  Mark to Delete Background
+                <Button variant="text" color="error" onClick={handleDeleteImage}>
+                  Mark to Delete Programme Image
                 </Button>
               </>
             )}
@@ -181,7 +191,7 @@ const ProgrammeEditDialog = ({
                 >
                   Change Default Background
                 </Button>
-                <Button variant="text" color="error" onClick={() => setDeleteBgImage(true)}>
+                <Button variant="text" color="error" onClick={handleDeleteBgImage}>
                   Mark to Delete Default Background
                 </Button>
               </>
@@ -200,7 +210,7 @@ const ProgrammeEditDialog = ({
           Cancel
         </Button>
         <Button onClick={handleEditProgramme} disabled={loading}>
-          Edit
+          Save
         </Button>
       </DialogActions>
       <Loading loading={loading} />
