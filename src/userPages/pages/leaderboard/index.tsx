@@ -29,24 +29,10 @@ const LeaderBoard = () => {
     const fetchCohortData = async () => {
       setLoading(true);
       try {
-        const learnersList = await getCohortLearners(cohortId);
-        let array: any = learnersList;
-        // change sort function
-        // let index = 0;
-        // array.sort((a: any, b: any) => {
-        //   if (index !== 0) {
-        //     index++;
-        //     return b.completed_section - a.completed_section;
-        //   }
-        // });
-
-        let rank = 2;
-        for (let i = 1; i < array.length; i++) {
-          if (i > 1 && array[i].completed_section <= array[i - 1].completed_section) {
-            rank++;
-          }
-          array[i].rank = rank;
-        }
+        let learnersList: any = await getCohortLearners(cohortId);
+        learnersList.sort((a: any, b: any) => {
+          return b.completed_section - a.completed_section;
+        });
         setLearners(learnersList);
       } catch (error: any) {
         enqueueSnackbar("There was an error fetching cohort details.", { variant: "error" });
@@ -182,7 +168,7 @@ const LeaderBoard = () => {
                         fontWeight: "600",
                       }}
                     >
-                      {index === 0 ? "#1" : "#" + item.rank}
+                      {index + 1}
                     </Grid>
                     <Grid>
                       <p className={"user-name"}>
@@ -207,7 +193,7 @@ const LeaderBoard = () => {
           position: "sticky",
           right: 0,
           top: 0,
-          height: "100vh"
+          height: "100vh",
         }}
       ></Grid>
     </Grid>
