@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Grid, Typography, Button, TextField } from "@mui/material";
+import { Box, Grid, Typography, Button, TextField, useMediaQuery } from "@mui/material";
 import {
   getSection,
   getSectionSteps,
@@ -71,6 +71,7 @@ const Steps = () => {
   const [sectionData, setSectionData] = useState<any>({});
   const [liveSessionDetail, setLiveSessionDetail] = useState<any>([]);
   const [stepData, setStepData] = useState<any>(emptyStepData);
+  const isMobile = useMediaQuery("(max-width:800px)");
 
   const getStepData = useCallback(
     async (stepOrder: any) => {
@@ -217,37 +218,21 @@ const Steps = () => {
   };
 
   return (
-    <Grid
-      sx={{
-        display: "flex",
-        "@media (max-width: 768px)": {
-          marginBottom: "100px",
-        },
-      }}
-    >
+    <Grid container>
+      {!isMobile && (
+        <Grid item sm={0} md={2}>
+          <SideNavbar cohortId={cohortId} programmeId={programmeId} />
+        </Grid>
+      )}
       <Grid
-        sx={{
-          width: "29%",
-          position: "relative",
-          "@media (max-width: 768px)": {
-            width: "0 !important",
-          },
-          "@media (max-width: 1024px)": {
-            width: "36%",
-          },
-        }}
-      >
-        <SideNavbar cohortId={cohortId} programmeId={programmeId} />
-      </Grid>
-      <Grid
-        container
         className="steps mobile"
-        style={{
+        container
+        item
+        sm={12}
+        md={8}
+        sx={{
+          padding: "40px",
           background: bgImage ? `url(${bgImage}) 0 0 / cover no-repeat` : "#FFFFFF",
-          minHeight: "100vh",
-          width: "100%",
-          display: "block",
-          marginTop: "0 !important",
         }}
       >
         <Grid
@@ -526,6 +511,7 @@ const Steps = () => {
             "@media (max-width: 768px)": {
               position: "fixed",
               backgroundColor: "white",
+              bottom: 0,
             },
             padding: "10px",
           }}
@@ -607,46 +593,51 @@ const Steps = () => {
           ) : null}
         </Grid>
       </Grid>
-      <Grid
-        container
-        sx={{
-          background: "#e2f6f9",
-          minHeight: "100vh",
-          width: "30%",
-          display: "flex",
-          alignItems: "center",
-          flexDirection: "column",
-          padding: "2% 0",
-          "@media (max-width: 767px)": {
-            display: "none",
-          },
-        }}
-      >
-        <img
-          style={{ cursor: "pointer" }}
-          src={sidebarLogoImage}
-          width="120px"
-          height="120px"
-          alt="New Wave Logo"
-        />
-
-        <Grid sx={{ width: "100%", position: "relative" }}>
-          <ul>
-            {steps.map((item: any, ind: number) => {
-              return (
-                <li
-                  key={ind}
-                  className={`bar ${item.is_answered ? "completed " : ""}`.concat(
-                    ind === 0 ? "first-item " : ""
-                  )}
-                >
-                  <span>{item.fields?.question || item.fields?.title}</span>
-                </li>
-              );
-            })}
-          </ul>
+      {!isMobile && (
+        <Grid
+          container
+          item
+          zeroMinWidth
+          sm={0}
+          md={2}
+          sx={{
+            background: "#e2f6f9",
+            alignItems: "center",
+            position: "sticky",
+            right: 0,
+            top: 0,
+            height: "100vh",
+            display: "block",
+          }}
+          component={Box}
+        >
+          <Grid item sx={{ paddingTop: "30px", justifyContent: "center", display: "flex" }}>
+            <img
+              style={{ cursor: "pointer" }}
+              src={sidebarLogoImage}
+              width="120px"
+              height="120px"
+              alt="New Wave Logo"
+            />
+          </Grid>
+          <Grid item sx={{ width: "100%", position: "relative" }}>
+            <ul>
+              {steps.map((item: any, ind: number) => {
+                return (
+                  <li
+                    key={ind}
+                    className={`bar ${item.is_answered ? "completed " : ""}`.concat(
+                      ind === 0 ? "first-item " : ""
+                    )}
+                  >
+                    <span>{item.fields?.question || item.fields?.title}</span>
+                  </li>
+                );
+              })}
+            </ul>
+          </Grid>
         </Grid>
-      </Grid>
+      )}
     </Grid>
   );
 };

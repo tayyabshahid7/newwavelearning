@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Grid, Typography } from "@mui/material";
+import { Grid, Typography, useMediaQuery } from "@mui/material";
 import { useHistory, useParams } from "react-router";
 import arrowIcon from "../../static/images/right-arrow 6.png";
 import LeaderBoardIcon from "../../static/images/leaderboard.png";
@@ -24,6 +24,7 @@ const LeaderBoard = () => {
   const node: any = useRef();
   const [learners, setLearners] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const isMobile = useMediaQuery("(max-width:800px)");
 
   useEffect(() => {
     const fetchCohortData = async () => {
@@ -44,7 +45,7 @@ const LeaderBoard = () => {
 
   return (
     <Grid container sx={{ display: "flex" }}>
-      <Grid
+      {!isMobile && <Grid
         item
         xs={2}
         sx={{
@@ -59,7 +60,7 @@ const LeaderBoard = () => {
         }}
       >
         <SideNavbar cohortId={cohortId} programmeId={programmeId} />
-      </Grid>{" "}
+      </Grid>}
       <Grid
         item
         xs={8}
@@ -184,7 +185,7 @@ const LeaderBoard = () => {
             })}
         </Grid>
       </Grid>
-      <Grid
+      { !isMobile && <Grid
         item
         xs={2}
         sx={{
@@ -194,8 +195,9 @@ const LeaderBoard = () => {
           right: 0,
           top: 0,
           height: "100vh",
+          display: "block"
         }}
-      ></Grid>
+      ></Grid>}
     </Grid>
   );
 };

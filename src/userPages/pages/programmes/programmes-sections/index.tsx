@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Grid, Typography } from "@mui/material";
+import { Grid, Typography, useMediaQuery } from "@mui/material";
 import ArrowWhiteIcon from "../../../static/images/arrow-white.png";
 import { useHistory, useParams } from "react-router";
 import { getProgrammeDetails, getProgrammeSections } from "../../../../services/common";
@@ -29,6 +29,7 @@ const ProgrammeSection = () => {
   const [sections, setSections] = useState<SectionData[]>([]);
   const [completedStepCount, setCompletedStepCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
+  const isMobile = useMediaQuery("(max-width:800px)");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -84,25 +85,29 @@ const ProgrammeSection = () => {
 
   return (
     <Grid container sx={{ display: "flex" }}>
+      {!isMobile && (
+        <Grid
+          item
+          sm={0}
+          md={2}
+          sx={{
+            width: "22%",
+            position: "relative",
+            "@media (max-width: 768px)": {
+              width: "0 !important",
+            },
+            "@media (max-width: 1024px)": {
+              width: "36%",
+            },
+          }}
+        >
+          <SideNavbar cohortId={cohortId} programmeId={programmeId} />
+        </Grid>
+      )}
       <Grid
         item
-        xs={2}
-        sx={{
-          width: "22%",
-          position: "relative",
-          "@media (max-width: 768px)": {
-            width: "0 !important",
-          },
-          "@media (max-width: 1024px)": {
-            width: "36%",
-          },
-        }}
-      >
-        <SideNavbar cohortId={cohortId} programmeId={programmeId} />
-      </Grid>
-      <Grid
-        item
-        xs={8}
+        sm={12}
+        md={8}
         className="programmes-section mobile"
         container
         style={{
@@ -241,18 +246,22 @@ const ProgrammeSection = () => {
             })}
         </Grid>
       </Grid>
-      <Grid
-        item
-        xs={2}
-        sx={{
-          background: `url(${sidebarBgImage}) no-repeat center center`,
-          backgroundSize: "cover",
-          position: "sticky",
-          right: 0,
-          top: 0,
-          height: "100vh"
-        }}
-      ></Grid>
+      {!isMobile && (
+        <Grid
+          item
+          sm={0}
+          md={2}
+          sx={{
+            background: `url(${sidebarBgImage}) no-repeat center center`,
+            backgroundSize: "cover",
+            position: "sticky",
+            right: 0,
+            top: 0,
+            height: "100vh",
+            display: "block",
+          }}
+        ></Grid>
+      )}
     </Grid>
   );
 };

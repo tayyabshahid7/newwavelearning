@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Grid, Typography } from "@mui/material";
+import { Grid, Typography, useMediaQuery } from "@mui/material";
 import ArrowWhiteIcon from "../../../static/images/arrow-white.png";
 import completedIcon from "../../../static/images/completed.png";
 import LockIcon from "../../../static/images/lock-icon.png";
@@ -31,6 +31,7 @@ const StepsList = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [programmeId, setProgrammeId] = useState<any>("");
   const [programme, setProgramme] = useState<any>(null);
+  const isMobile = useMediaQuery("(max-width:800px)");
 
   const getStepData = useCallback(
     async (stepOrder: any) => {
@@ -101,7 +102,7 @@ const StepsList = () => {
 
   return (
     <Grid container sx={{ display: "flex" }}>
-      <Grid
+      {!isMobile && <Grid
         item
         xs={2}
         sx={{
@@ -116,7 +117,7 @@ const StepsList = () => {
         }}
       >
         <SideNavbar cohortId={cohortId} programmeId={programmeId} />
-      </Grid>
+      </Grid>}
       <Grid
         item
         xs={8}
@@ -255,7 +256,7 @@ const StepsList = () => {
             })}
         </Grid>
       </Grid>
-      <Grid
+      {!isMobile && <Grid
         item
         xs={2}
         sx={{
@@ -264,9 +265,10 @@ const StepsList = () => {
           position: "sticky",
           right: 0,
           top: 0,
-          height: "100vh"
+          height: "100vh",
+          display: "block"
         }}
-      ></Grid>
+      ></Grid>}
     </Grid>
   );
 };

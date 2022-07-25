@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography, useMediaQuery } from "@mui/material";
 import ArrowRightIcon from "../../static/images/right-arrow.png";
 import ArrowWhiteIcon from "../../static/images/arrow-white.png";
 import { getUserProgrammes } from "../../../services/common";
@@ -13,6 +13,7 @@ const Programmes = () => {
   const [programmeList, setProgrammeList] = useState<any>(null);
   const history = useHistory();
   const [loading, setLoading] = useState<boolean>(false);
+  const isMobile = useMediaQuery("(max-width:800px)");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,36 +34,38 @@ const Programmes = () => {
 
   return (
     <Grid container>
-      <Grid item sm={0} md={2}>
-        <SideNavbar
-          openProgramme={() => {
-            programmeList &&
-              history.push({
-                pathname: `/user-dashboard/${programmeList[0]?.id}`,
-              });
-          }}
-          openLiveSession={() => {
-            programmeList &&
-              history.push({
-                pathname: `/user-live-sessions/${programmeList[0]?.id}`,
-              });
-          }}
-          openFeedback={() => {
-            programmeList &&
-              history.push({
-                pathname: `/user-feedback/${programmeList[0]?.id}/${programmeList[0]?.programme?.id}`,
-              });
-          }}
-          openLeaderboard={() => {
-            programmeList &&
-              history.push({
-                pathname: `/leaderBoard/${programmeList[0]?.id}/${programmeList[0]?.programme?.id}`,
-              });
-          }}
-          cohortId={""}
-          programmeId={""}
-        />
-      </Grid>
+      {!isMobile && (
+        <Grid item sm={0} md={2} sx={{ display: "block" }}>
+          <SideNavbar
+            openProgramme={() => {
+              programmeList &&
+                history.push({
+                  pathname: `/user-dashboard/${programmeList[0]?.id}`,
+                });
+            }}
+            openLiveSession={() => {
+              programmeList &&
+                history.push({
+                  pathname: `/user-live-sessions/${programmeList[0]?.id}`,
+                });
+            }}
+            openFeedback={() => {
+              programmeList &&
+                history.push({
+                  pathname: `/user-feedback/${programmeList[0]?.id}/${programmeList[0]?.programme?.id}`,
+                });
+            }}
+            openLeaderboard={() => {
+              programmeList &&
+                history.push({
+                  pathname: `/leaderBoard/${programmeList[0]?.id}/${programmeList[0]?.programme?.id}`,
+                });
+            }}
+            cohortId={""}
+            programmeId={""}
+          />
+        </Grid>
+      )}
       <Grid className="programmes" container item sm={12} md={8} sx={{ padding: "40px" }}>
         <Loading loading={loading} />
         <Grid item container direction="column">
@@ -167,19 +170,22 @@ const Programmes = () => {
           </Button>
         </Grid>
       </Grid>
-      <Grid
-        item
-        sm={0}
-        md={2}
-        sx={{
-          background: `url(${sidebarBgImage}) no-repeat center center`,
-          backgroundSize: "cover",
-          position: "sticky",
-          right: 0,
-          top: 0,
-          height: "100vh",
-        }}
-      ></Grid>
+      {!isMobile && (
+        <Grid
+          item
+          sm={0}
+          md={2}
+          sx={{
+            background: `url(${sidebarBgImage}) no-repeat center center`,
+            backgroundSize: "cover",
+            position: "sticky",
+            right: 0,
+            top: 0,
+            height: "100vh",
+            display: "block",
+          }}
+        ></Grid>
+      )}
     </Grid>
   );
 };

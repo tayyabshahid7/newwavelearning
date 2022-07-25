@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Grid, Typography } from "@mui/material";
+import { Grid, Typography, useMediaQuery } from "@mui/material";
 import JourneyIcon from "../../static/images/journey-icon.png";
 import LeaderboardIcon from "../../static/images/leaderboard.png";
 import FeedbackIcon from "../../static/images/feedback.png";
@@ -50,7 +50,7 @@ const UserDashboard = () => {
   const [open, setOpen] = useState(false);
   const node: any = useRef();
   const [loading, setLoading] = useState<boolean>(false);
-  // const { enqueueSnackbar } = useSnackbar();
+  const isMobile = useMediaQuery("(max-width:800px)");
 
   useEffect(() => {
     if (cohortId) {
@@ -73,27 +73,18 @@ const UserDashboard = () => {
   }, [cohortId]);
 
   return (
-    <Grid container sx={{ display: "flex" }}>
-      <Grid
-        item
-        xs={2}
-        sx={{
-          position: "relative",
-          "@media (max-width: 768px)": {
-            width: "0 !important",
-          },
-          "@media (max-width: 1024px)": {
-            width: "36%",
-          },
-        }}
-      >
-        <SideNavbar cohortId={cohortId} programmeId={programme?.id} />
-      </Grid>
+    <Grid container>
+      {!isMobile && (
+        <Grid item sm={0} md={2}>
+          <SideNavbar cohortId={cohortId} programmeId={programme?.id} />
+        </Grid>
+      )}
       <Grid
         item
         className="dashboard mobile"
         container
-        xs={8}
+        sm={12}
+        md={8}
         style={{
           position: "relative",
           backgroundColor: "#F1F5FF",
@@ -203,18 +194,22 @@ const UserDashboard = () => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid
-        item
-        xs={2}
-        sx={{
-          background: `url(${sidebarBgImage}) no-repeat center center`,
-          backgroundSize: "cover",
-          position: "sticky",
-          right: 0,
-          top: 0,
-          height: "100vh"
-        }}
-      ></Grid>
+      {!isMobile && (
+        <Grid
+          item
+          sm={0}
+          md={2}
+          sx={{
+            background: `url(${sidebarBgImage}) no-repeat center center`,
+            backgroundSize: "cover",
+            position: "sticky",
+            right: 0,
+            top: 0,
+            height: "100vh",
+            display: "block",
+          }}
+        ></Grid>
+      )}
     </Grid>
   );
 };

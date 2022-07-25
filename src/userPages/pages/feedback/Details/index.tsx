@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Chip, Grid, Paper, Stack, Typography } from "@mui/material";
+import { Chip, Grid, Paper, Stack, Typography, useMediaQuery } from "@mui/material";
 import FeedbackIcon from "../../../static/images/feedback-icon.png";
 import arrowIcon from "../../../static/images/right-arrow 6.png";
 import { useHistory } from "react-router";
@@ -16,6 +16,7 @@ const FeedbackDetail = () => {
   const [facilitatorName, setFacilitatorName] = useState<string>("");
   const [cohortId, setCohortId] = useState<string>("");
   const [programmeId, setProgrammeId] = useState<any>("");
+  const isMobile = useMediaQuery("(max-width:800px)");
 
   useEffect(() => {
     let state: any = history.location.state;
@@ -30,22 +31,24 @@ const FeedbackDetail = () => {
 
   return (
     <Grid container sx={{ display: "flex" }}>
-      <Grid
-        item
-        xs={2}
-        sx={{
-          width: "22%",
-          position: "relative",
-          "@media (max-width: 768px)": {
-            width: "0 !important",
-          },
-          "@media (max-width: 1024px)": {
-            width: "36%",
-          },
-        }}
-      >
-        <SideNavbar cohortId={cohortId} programmeId={programmeId} />
-      </Grid>
+      {!isMobile && (
+        <Grid
+          item
+          xs={2}
+          sx={{
+            width: "22%",
+            position: "relative",
+            "@media (max-width: 768px)": {
+              width: "0 !important",
+            },
+            "@media (max-width: 1024px)": {
+              width: "36%",
+            },
+          }}
+        >
+          <SideNavbar cohortId={cohortId} programmeId={programmeId} />
+        </Grid>
+      )}
       <Grid
         container
         item
@@ -277,18 +280,21 @@ const FeedbackDetail = () => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid
-        item
-        xs={2}
-        sx={{
-          background: `url(${sidebarBgImage}) no-repeat center center`,
-          backgroundSize: "cover",
-          position: "sticky",
-          right: 0,
-          top: 0,
-          height: "100vh",
-        }}
-      ></Grid>
+      {!isMobile && (
+        <Grid
+          item
+          xs={2}
+          sx={{
+            background: `url(${sidebarBgImage}) no-repeat center center`,
+            backgroundSize: "cover",
+            position: "sticky",
+            right: 0,
+            top: 0,
+            height: "100vh",
+            display: "block",
+          }}
+        ></Grid>
+      )}
     </Grid>
   );
 };

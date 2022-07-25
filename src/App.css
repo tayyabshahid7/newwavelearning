@@ -55,6 +55,9 @@
   }
   .burger-menu{
     display: flex !important;
+    z-index: 999;
+    min-width: "100vw";
+    min-height: "100hw";
   }
   .video{
     width: 100%;
