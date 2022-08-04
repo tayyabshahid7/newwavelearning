@@ -8,7 +8,7 @@ const VideoResponse = ({ isSubmitted, userAnswer, uploadVideo }: any) => {
 
   useEffect(() => {
     if (userAnswer.length) {
-      setVideo(userAnswer[0].file_answer);
+      setVideo(userAnswer[0].video_file_url);
     }
   }, [userAnswer]);
 

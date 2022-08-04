@@ -93,7 +93,6 @@ const EditVideoContent = () => {
   };
 
   const handleAddVideo = (event: any) => {
-    debugger;
     setVideoFile(event.target.files[0]);
   };
 
