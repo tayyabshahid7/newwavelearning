@@ -66,7 +66,19 @@ const Programmes = () => {
           />
         </Grid>
       )}
-      <Grid className="programmes" container item sm={12} md={8} sx={{ padding: "40px" }}>
+      <Grid
+        className="programmes"
+        container
+        item
+        sm={12}
+        md={8}
+        sx={{
+          padding: "40px",
+          "@media (max-width: 767px)": {
+            padding: "20px",
+          },
+        }}
+      >
         <Loading loading={loading} />
         <Grid item container direction="column">
           <Grid
@@ -98,23 +110,17 @@ const Programmes = () => {
             programmeList.map((item: any, index: number) => {
               return (
                 <Grid
-                  item
-                  container
+                  key={index}
                   onClick={() => {
                     history.push({
                       pathname: `/user-dashboard/${item.id}`,
                     });
                   }}
-                  key={index}
                   className="all-programmes"
                 >
-                  <Grid item sx={{ display: "flex", alignItems: "center", padding: "0 13px" }}>
-                    <img
-                      style={{ maxWidth: "68px", maxHeight: "40px" }}
-                      src={item.programme.image}
-                      alt="programme img"
-                    />
-                    <p className={"programmes-title"}>{item.programme.name}</p>
+                  <Grid sx={{ display: "flex", alignItems: "center", padding: "0 13px" }}>
+                    <img width="68px" src={item.programme.image} alt="img" />
+                    <p className={"programmes-title"}>{item.programme?.name}</p>
                   </Grid>
                   <img
                     style={{ marginRight: "20px", objectFit: "cover", borderRadius: "4px" }}
