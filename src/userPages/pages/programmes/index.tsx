@@ -53,6 +53,9 @@ const Programmes = () => {
             "@media (min-width: 2560px)": {
               maxWidth: "16.666667% !important",
             },
+            "@media (max-width: 1139px)": {
+              maxWidth: "24.666667% !important",
+            },
           }}
         >
           <SideNavbar
@@ -219,6 +222,9 @@ const Programmes = () => {
             },
             "@media (min-width: 2560px)": {
               maxWidth: "16.666667% !important",
+            },
+            "@media (max-width: 1139px)": {
+              maxWidth: "8.666667%!important",
             },
           }}
         ></Grid>
