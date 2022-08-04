@@ -221,12 +221,11 @@ const Steps = () => {
     const data = new FormData();
     if (stepType === "video_response") {
       setLoading(true);
-      debugger;
       await uploadFile();
       setLoading(false);
       let name = s3Key + videoFile?.name;
       const s3ObjectUrl = `https://${bucketName}.s3.${s3Region}.amazonaws.com/${name}`;
-      data.append("file_answer", videoFile);
+      // data.append("file_answer", videoFile);
       data.append("video_file_url", s3ObjectUrl);
     }
 
@@ -242,7 +241,6 @@ const Steps = () => {
   };
 
   const uploadFile = async () => {
-    debugger;
     let target: any = {
       Bucket: bucketName,
       Key: s3Key + videoFile?.name,
