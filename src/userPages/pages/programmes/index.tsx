@@ -35,7 +35,23 @@ const Programmes = () => {
   return (
     <Grid container>
       {!isMobile && (
-        <Grid item sm={0} md={2} sx={{ display: "block" }}>
+        <Grid
+          item
+          sm={0}
+          md={2}
+          sx={{
+            display: "block",
+            "@media (min-width: 1200px)": {
+              maxWidth: "18.666667% !important",
+            },
+            "@media (min-width: 900px)": {
+              maxWidth: "24.666667% !important",
+            },
+            "@media (min-width: 1140px)": {
+              maxWidth: "16.666667% !important",
+            },
+          }}
+        >
           <SideNavbar
             openProgramme={() => {
               programmeList &&
@@ -189,6 +205,15 @@ const Programmes = () => {
             top: 0,
             height: "100vh",
             display: "block",
+            "@media (min-width: 1200px)": {
+              maxWidth: "14.666667% !important",
+            },
+            "@media (min-width: 900px)": {
+              maxWidth: "8.666667% !important",
+            },
+            "@media (min-width: 1140px)": {
+              maxWidth: "16.666667% !important",
+            },
           }}
         ></Grid>
       )}
