@@ -48,6 +48,9 @@ const Programmes = () => {
               maxWidth: "24.666667% !important",
             },
             "@media (min-width: 1140px)": {
+              maxWidth: "17.666667% !important",
+            },
+            "@media (min-width: 2560px)": {
               maxWidth: "16.666667% !important",
             },
           }}
@@ -212,6 +215,9 @@ const Programmes = () => {
               maxWidth: "8.666667% !important",
             },
             "@media (min-width: 1140px)": {
+              maxWidth: "15.666667% !important",
+            },
+            "@media (min-width: 2560px)": {
               maxWidth: "16.666667% !important",
             },
           }}
