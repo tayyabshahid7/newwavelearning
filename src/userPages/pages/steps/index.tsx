@@ -28,6 +28,9 @@ import SideNavbar from "../../components/SideNavbar";
 import LiveSession from "./LiveSession";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { Burger, Menu } from "../../components/BurgerMenu";
+import { getUser } from "../../../services/auth";
+import { Upload } from "@aws-sdk/lib-storage";
+import { S3Client } from "@aws-sdk/client-s3";
 
 type IntroParams = {
   cohortId: string;
@@ -46,6 +49,15 @@ const emptyStepData = {
   video: "",
   answer: [],
   url: "",
+};
+
+let bucketName = process.env.REACT_APP_S3_BUCKET_NAME;
+let s3Key: any = process.env.REACT_APP_S3_KEY;
+let s3Region: any = process.env.REACT_APP_S3_REGION;
+
+let credentials: any = {
+  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
 };
 
 const Steps = () => {
@@ -128,7 +140,8 @@ const Steps = () => {
       try {
         const response: any = await getStepDetails(stepId, cohortId);
         setStepData(response.fields);
-        setLearner(response.learner);
+        let user = getUser();
+        setLearner(user?.learner);
         setLiveSessionDetail(response.live_session_details);
         if (response.answer.length > 0) {
           setIsSubmitted(true);
@@ -206,10 +219,20 @@ const Steps = () => {
     }
 
     const data = new FormData();
+    if (stepType === "video_response") {
+      setLoading(true);
+      await uploadFile();
+      setLoading(false);
+      let name = s3Key + videoFile?.name;
+      const s3ObjectUrl = `https://${bucketName}.s3.${s3Region}.amazonaws.com/${name}`;
+      data.append("file_answer", videoFile);
+      data.append("video_file_url", s3ObjectUrl);
+    }
+
     data.append("learner", learner);
     data.append("step", stepId);
     data.append("answer", JSON.stringify(obj));
-    stepType === "video_response" && data.append("file_answer", videoFile);
+
     stepType === "audio_response" && data.append("file_answer", audioFile);
     await submitStepAnswer(data);
     const sectionInfo: any = await getSection(sectionId, Number(cohortId));
@@ -217,8 +240,32 @@ const Steps = () => {
     await getStepData(sectionInfo?.step_order);
   };
 
+  const uploadFile = async () => {
+    let target: any = {
+      Bucket: bucketName,
+      Key: s3Key + videoFile?.name,
+      Body: videoFile,
+      partSize: 10,
+    };
+    try {
+      const parallelUploads3 = new Upload({
+        client: new S3Client({ region: s3Region, credentials }),
+        leavePartsOnError: true, // optional manually handle dropped parts
+        params: target,
+      });
+
+      parallelUploads3.on("httpUploadProgress", progress => {
+        console.log(progress);
+      });
+
+      await parallelUploads3.done();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
-    <Grid container>
+    <Grid container sx={{ height: "114vh" }}>
       {!isMobile && (
         <Grid item sm={0} md={2}>
           <SideNavbar cohortId={cohortId} programmeId={programmeId} />
