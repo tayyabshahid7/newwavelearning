@@ -11,7 +11,7 @@ const VideoResponse = ({ stepAnswer }: any) => {
         <Typography>{stepAnswer?.step.fields.content}</Typography>
         <Typography variant="h6">Learner Answer</Typography>
         <video
-          src={stepAnswer?.file_answer}
+          src={stepAnswer?.video_file_url}
           className="video"
           controls
           controlsList="nodownload"
