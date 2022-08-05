@@ -44,8 +44,8 @@
   display: none;
 }
 .video{
-  width: 50%;
-  height: 60%;
+  width: 80% !important;
+  height: 120% !important;
 }
 
 @media screen and (max-width: 767px) {
