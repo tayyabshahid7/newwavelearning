@@ -5,7 +5,7 @@
   top: 0;
   .name{
     font-weight: 600;
-    font-size: 26px;
+    font-size: 24px;
     line-height: 27px;
     text-align: center;
     text-transform: capitalize;
@@ -15,7 +15,7 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    width: 75%;
+    width: 80%;
     cursor: pointer;
   }
 }
@@ -23,5 +23,16 @@
 @media screen and (max-width: 768px) {
   .side-nav {
     display: none !important;
+  }
+}
+
+@media screen and (min-width: 2560px) {
+  .side-nav {
+    .items{
+      width: 60%;
+    }
+    .name{
+      font-size: 28px;
+    }
   }
 }
