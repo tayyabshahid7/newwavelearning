@@ -89,7 +89,8 @@ const ProgrammeSection = () => {
         <Grid
           item
           sm={0}
-          md={2}
+          md={3}
+          lg={2}
           sx={{
             width: "22%",
             position: "relative",
@@ -250,7 +251,8 @@ const ProgrammeSection = () => {
         <Grid
           item
           sm={0}
-          md={2}
+          md={1}
+          lg={2}
           sx={{
             background: `url(${sidebarBgImage}) no-repeat center center`,
             backgroundSize: "cover",

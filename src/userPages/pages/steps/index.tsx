@@ -265,7 +265,7 @@ const Steps = () => {
   return (
     <Grid container sx={{ height: "114vh" }}>
       {!isMobile && (
-        <Grid item sm={0} md={2}>
+        <Grid item sm={0} md={3} lg={2}>
           <SideNavbar cohortId={cohortId} programmeId={programmeId} />
         </Grid>
       )}
@@ -644,7 +644,8 @@ const Steps = () => {
           item
           zeroMinWidth
           sm={0}
-          md={2}
+          md={1}
+          lg={2}
           sx={{
             background: "#e2f6f9",
             alignItems: "center",

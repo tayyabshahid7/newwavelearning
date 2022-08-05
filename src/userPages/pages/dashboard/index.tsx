@@ -75,7 +75,7 @@ const UserDashboard = () => {
   return (
     <Grid container>
       {!isMobile && (
-        <Grid item sm={0} md={2}>
+        <Grid item sm={0} md={3} lg={2}>
           <SideNavbar cohortId={cohortId} programmeId={programme?.id} />
         </Grid>
       )}
@@ -198,7 +198,8 @@ const UserDashboard = () => {
         <Grid
           item
           sm={0}
-          md={2}
+          md={1}
+          lg={2}
           sx={{
             background: `url(${sidebarBgImage}) no-repeat center center`,
             backgroundSize: "cover",
