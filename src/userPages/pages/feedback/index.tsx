@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Typography, useMediaQuery } from "@mui/material";
 import FeedbackIcon from "../../static/images/feedback-icon.png";
-import { getLearnerFeedbackList } from "../../../services/common";
+import { getLearnerFeedbackList, getUserCohortDetails } from "../../../services/common";
 import "./style.scss";
 import arrowIcon from "../../static/images/right-arrow 6.png";
 import { useHistory } from "react-router";
@@ -22,16 +22,19 @@ const Feedback = () => {
   const isMobile = useMediaQuery("(max-width:800px)");
 
   useEffect(() => {
-    const fetchFeedbackData = async () => {
-      try {
-        let user = getUser();
-        const response = await getLearnerFeedbackList(cohortId, user?.learner);
-        setFeedbackList(response.data);
-      } catch (error: any) {
-        console.log(error);
-      }
-    };
-    fetchFeedbackData();
+    if (cohortId) {
+      const fetchData = async () => {
+        try {
+          const cohortDetails: any = await getUserCohortDetails(cohortId);
+          const response = await getLearnerFeedbackList(cohortId, cohortDetails?.data?.learners);
+          setFeedbackList(response.data);
+          setTimeout(() => {}, 300);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchData();
+    }
   }, [cohortId]);
 
   const detailHandler = (data: any) => {
