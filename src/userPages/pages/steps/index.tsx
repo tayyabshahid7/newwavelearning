@@ -217,18 +217,17 @@ const Steps = () => {
         value: selectedToggleValue,
       };
     }
-
+    let s3ObjectUrl = "";
     const data = new FormData();
     if (stepType === "video_response") {
       setLoading(true);
       await uploadFile();
       setLoading(false);
       let name = s3Key + videoFile?.name;
-      const s3ObjectUrl = `https://${bucketName}.s3.${s3Region}.amazonaws.com/${name}`;
+      s3ObjectUrl = `https://${bucketName}.s3.${s3Region}.amazonaws.com/${name}`;
       // data.append("file_answer", videoFile);
-      data.append("video_file_url", s3ObjectUrl);
     }
-
+    data.append("video_file_url", s3ObjectUrl);
     data.append("learner", learner);
     data.append("step", stepId);
     data.append("answer", JSON.stringify(obj));
