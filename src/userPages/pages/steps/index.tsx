@@ -140,8 +140,7 @@ const Steps = () => {
       try {
         const response: any = await getStepDetails(stepId, cohortId);
         setStepData(response.fields);
-        let user = getUser();
-        setLearner(user?.learner);
+        setLearner(response.learner);
         setLiveSessionDetail(response.live_session_details);
         if (response.answer.length > 0) {
           setIsSubmitted(true);
