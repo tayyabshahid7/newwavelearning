@@ -205,7 +205,7 @@ const FeedbackDetail = () => {
               {stepType === "video_response" && (
                 <Stack sx={{ width: "50%", height: "50%" }} spacing={2}>
                   <video
-                    src={stepAnswer?.file_answer}
+                    src={stepAnswer?.video_file_url}
                     className="video"
                     controls
                     controlsList="nodownload"
