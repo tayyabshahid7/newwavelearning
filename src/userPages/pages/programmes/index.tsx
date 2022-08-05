@@ -38,24 +38,10 @@ const Programmes = () => {
         <Grid
           item
           sm={0}
-          md={2}
+          md={3}
+          lg={2}
           sx={{
             display: "block",
-            "@media (min-width: 1200px)": {
-              maxWidth: "18.666667% !important",
-            },
-            "@media (min-width: 900px)": {
-              maxWidth: "24.666667% !important",
-            },
-            "@media (min-width: 1140px)": {
-              maxWidth: "17.666667% !important",
-            },
-            "@media (min-width: 2560px)": {
-              maxWidth: "16.666667% !important",
-            },
-            "@media (max-width: 1139px)": {
-              maxWidth: "24.666667% !important",
-            },
           }}
         >
           <SideNavbar
@@ -202,7 +188,8 @@ const Programmes = () => {
         <Grid
           item
           sm={0}
-          md={2}
+          md={1}
+          lg={2}
           sx={{
             background: `url(${sidebarBgImage}) no-repeat center center`,
             backgroundSize: "cover",
@@ -211,21 +198,6 @@ const Programmes = () => {
             top: 0,
             height: "100vh",
             display: "block",
-            "@media (min-width: 1200px)": {
-              maxWidth: "14.666667% !important",
-            },
-            "@media (min-width: 900px)": {
-              maxWidth: "8.666667% !important",
-            },
-            "@media (min-width: 1140px)": {
-              maxWidth: "15.666667% !important",
-            },
-            "@media (min-width: 2560px)": {
-              maxWidth: "16.666667% !important",
-            },
-            "@media (max-width: 1139px)": {
-              maxWidth: "8.666667%!important",
-            },
           }}
         ></Grid>
       )}
