@@ -263,7 +263,7 @@ const Steps = () => {
   };
 
   return (
-    <Grid container sx={{ height: "114vh" }}>
+    <Grid container sx={{ minHeight: "120vh" }}>
       {!isMobile && (
         <Grid item sm={0} md={3} lg={2}>
           <SideNavbar cohortId={cohortId} programmeId={programmeId} />
