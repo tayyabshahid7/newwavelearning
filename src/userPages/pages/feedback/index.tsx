@@ -46,6 +46,8 @@ const Feedback = () => {
       {!isMobile && (
         <Grid
           xs={2}
+          md={3}
+          lg={2}
           item
           sx={{
             width: "22%",
@@ -159,6 +161,8 @@ const Feedback = () => {
         <Grid
           item
           xs={2}
+          md={1}
+          lg={2}
           sx={{
             background: `url(${sidebarBgImage}) no-repeat center center`,
             backgroundSize: "cover",

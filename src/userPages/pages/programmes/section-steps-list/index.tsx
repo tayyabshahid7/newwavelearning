@@ -102,22 +102,26 @@ const StepsList = () => {
 
   return (
     <Grid container sx={{ display: "flex" }}>
-      {!isMobile && <Grid
-        item
-        xs={2}
-        sx={{
-          width: "22%",
-          position: "relative",
-          "@media (max-width: 768px)": {
-            width: "0 !important",
-          },
-          "@media (max-width: 1024px)": {
-            width: "36%",
-          },
-        }}
-      >
-        <SideNavbar cohortId={cohortId} programmeId={programmeId} />
-      </Grid>}
+      {!isMobile && (
+        <Grid
+          item
+          xs={2}
+          md={3}
+          lg={2}
+          sx={{
+            width: "22%",
+            position: "relative",
+            "@media (max-width: 768px)": {
+              width: "0 !important",
+            },
+            "@media (max-width: 1024px)": {
+              width: "36%",
+            },
+          }}
+        >
+          <SideNavbar cohortId={cohortId} programmeId={programmeId} />
+        </Grid>
+      )}
       <Grid
         item
         xs={8}
@@ -256,19 +260,23 @@ const StepsList = () => {
             })}
         </Grid>
       </Grid>
-      {!isMobile && <Grid
-        item
-        xs={2}
-        sx={{
-          background: `url(${sidebarBgImage}) no-repeat center center`,
-          backgroundSize: "cover",
-          position: "sticky",
-          right: 0,
-          top: 0,
-          height: "100vh",
-          display: "block"
-        }}
-      ></Grid>}
+      {!isMobile && (
+        <Grid
+          item
+          xs={2}
+          md={1}
+          lg={2}
+          sx={{
+            background: `url(${sidebarBgImage}) no-repeat center center`,
+            backgroundSize: "cover",
+            position: "sticky",
+            right: 0,
+            top: 0,
+            height: "100vh",
+            display: "block",
+          }}
+        ></Grid>
+      )}
     </Grid>
   );
 };

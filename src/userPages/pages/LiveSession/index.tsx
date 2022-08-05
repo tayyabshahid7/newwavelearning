@@ -52,6 +52,8 @@ const LiveSession = () => {
             },
           }}
           xs={2}
+          md={3}
+          lg={2}
         >
           <SideNavbar cohortId={cohortId} programmeId={programmeId} />
         </Grid>
@@ -167,6 +169,8 @@ const LiveSession = () => {
         <Grid
           item
           xs={2}
+          md={1}
+          lg={2}
           sx={{
             background: `url(${sidebarBgImage}) no-repeat center center`,
             backgroundSize: "cover",
