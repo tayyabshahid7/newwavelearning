@@ -16,7 +16,12 @@ import {
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import { EditCohort, getFacilitators, getProgrammes } from "../../services/common";
+import {
+  EditCohort,
+  getAllProgrammesList,
+  getFacilitators,
+  getProgrammes,
+} from "../../services/common";
 import { format, parse } from "date-fns";
 
 const initialErrors = {
@@ -72,8 +77,8 @@ const CohortEditDialog = ({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let response = await getProgrammes();
-        setProgrammeList(response.data.results);
+        let response = await getAllProgrammesList();
+        setProgrammeList(response.data);
         response = await getFacilitators();
         setFacilitatorList(response.data);
       } catch (error) {
