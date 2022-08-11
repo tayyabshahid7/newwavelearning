@@ -8,7 +8,7 @@ import {
 } from "../../../services/common";
 import "./style.scss";
 import Loading from "../../../components/Loading";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import arrowIcon from "../../static/images/right-arrow 6.png";
 import sidebarLogoImage from "../../static/images/right-sidebar-logo.png";
 import TextQuestion from "./TextQuestion";
@@ -84,6 +84,11 @@ const Steps = () => {
   const [liveSessionDetail, setLiveSessionDetail] = useState<any>([]);
   const [stepData, setStepData] = useState<any>(emptyStepData);
   const isMobile = useMediaQuery("(max-width:800px)");
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   const getStepData = useCallback(
     async (stepOrder: any) => {
