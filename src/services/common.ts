@@ -530,3 +530,13 @@ export const getUserCohortDetails = async (cohortId: string) => {
     throw error;
   }
 };
+
+export const getAllProgrammesList = async (pageUrl: string | null = null) => {
+  const url = pageUrl || "/programmes/all-programmes/";
+  try {
+    const response = await axs.get<ResponseData>(url);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
