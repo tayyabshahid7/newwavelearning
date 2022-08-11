@@ -16,7 +16,12 @@ import {
 import DashboardLayout from "../components/DashboardLayout";
 import { DatePicker, LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import { AddCohort, getFacilitators, getProgrammes } from "../services/common";
+import {
+  AddCohort,
+  getAllProgrammesList,
+  getFacilitators,
+  getProgrammes,
+} from "../services/common";
 import { format } from "date-fns";
 import { useHistory } from "react-router";
 
@@ -58,8 +63,8 @@ const AddCohortPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getProgrammes();
-        setProgrammeList(response.data.results);
+        const response = await getAllProgrammesList();
+        setProgrammeList(response.data);
       } catch (error) {
         console.log(error);
       }
