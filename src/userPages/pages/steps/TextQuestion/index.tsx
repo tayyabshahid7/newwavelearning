@@ -93,7 +93,7 @@ const TextQuestion = ({
             {isSubmitted && item.isSelected && (
               <img
                 style={{ cursor: "pointer" }}
-                src={item.isSelected === item.correct ? selectedIcon : removeIcon}
+                src={item.isSelected === item.correct ? correctIcon : removeIcon}
                 width="27px"
                 height="27px"
                 alt="Burger Logo"
