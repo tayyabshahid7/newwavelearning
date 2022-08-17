@@ -24,7 +24,7 @@ const OpenEndedQuestion = ({ isSubmitted, answeredQuestion, keywords, userAnswer
           }}
           aria-label="empty textarea"
           placeholder="Type your answer here..."
-          style={{ width: "100%", height: 500 }}
+          style={{ width: "100%", height: 200 }}
         />
       ) : (
         <Grid
