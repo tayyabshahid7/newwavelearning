@@ -19,9 +19,9 @@
         img{
             width: 100%;
             padding: 0.5%;
-            height: 326px;
+            min-height: 326px;
             border-radius: 20px;
-            object-fit: cover;
+            //object-fit: cover;
         }
     }
 }
