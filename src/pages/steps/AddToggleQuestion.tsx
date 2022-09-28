@@ -11,6 +11,7 @@ const AddToggleQuestion = () => {
   const history = useHistory();
   const [loading, setLoading] = useState<boolean>(false);
   const [backgroundImage, setBackgroundImage] = useState<File | null>(null);
+  const [image, setImage] = useState<File | null>(null);
   const [stepData, setStepData] = useState<any>({
     question: "",
     description: "",
@@ -22,6 +23,10 @@ const AddToggleQuestion = () => {
 
   const updateFiles = (newImages: File[]) => {
     setBackgroundImage(newImages[0]);
+  };
+
+  const handleAddImage = (addedFiles: File[]) => {
+    setImage(addedFiles[0]);
   };
 
   const handleTextChange = (e: BaseSyntheticEvent) => {
@@ -42,6 +47,9 @@ const AddToggleQuestion = () => {
     data.append("fields", JSON.stringify(stepData));
     if (backgroundImage) {
       data.append("background_image", backgroundImage);
+    }
+    if (image) {
+      data.append("image", image);
     }
 
     try {
@@ -101,6 +109,14 @@ const AddToggleQuestion = () => {
           </Grid>
           <Grid item xs={6}>
             <Stack spacing={2}>
+              <Typography>Image</Typography>
+              <FileDropZone
+                accept="image/*"
+                maxFiles={1}
+                addFilesCallback={handleAddImage}
+                showPreview
+                helpText={"You can only upload image files"}
+              />
               <Typography>Background Image</Typography>
               <FileDropZone
                 accept="image/*"

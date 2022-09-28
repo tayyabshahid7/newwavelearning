@@ -14,7 +14,6 @@ import PrivateRoutes from "./config/PrivateRoutes";
 
 function App() {
   useEffect(() => {
-    console.log("admin");
     const viewport: any = document.querySelector('meta[name="viewport"]');
 
     if (viewport) {

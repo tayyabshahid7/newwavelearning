@@ -11,6 +11,7 @@ const AddModelAnswerQuestion = () => {
   const history = useHistory();
   const [loading, setLoading] = useState<boolean>(false);
   const [backgroundImage, setBackgroundImage] = useState<File | null>(null);
+  const [image, setImage] = useState<File | null>(null);
   const [stepData, setStepData] = useState<any>({
     question: "",
     description: "",
@@ -37,6 +38,9 @@ const AddModelAnswerQuestion = () => {
     data.append("number", "0");
     data.append("section", sectionId);
     data.append("fields", JSON.stringify(stepData));
+    if (image) {
+      data.append("image", image);
+    }
     if (backgroundImage) {
       data.append("background_image", backgroundImage);
     }
@@ -48,6 +52,10 @@ const AddModelAnswerQuestion = () => {
     }
     setLoading(false);
     history.goBack();
+  };
+
+  const handleAddImage = (addedFiles: File[]) => {
+    setImage(addedFiles[0]);
   };
 
   return (
@@ -85,6 +93,14 @@ const AddModelAnswerQuestion = () => {
           </Grid>
           <Grid item xs={6}>
             <Stack spacing={2}>
+              <Typography>Image</Typography>
+              <FileDropZone
+                accept="image/*"
+                maxFiles={1}
+                addFilesCallback={handleAddImage}
+                showPreview
+                helpText={"You can only upload image files"}
+              />
               <Typography>Background Image</Typography>
               <FileDropZone
                 accept="image/*"
