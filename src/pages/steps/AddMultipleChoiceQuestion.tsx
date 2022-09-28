@@ -21,6 +21,7 @@ const AddMultipleChoiceQuestion = () => {
   const { sectionId } = useParams<AddStepParams>();
   const history = useHistory();
   const [loading, setLoading] = useState<boolean>(false);
+  const [image, setImage] = useState<File | null>(null);
   const [stepData, setStepData] = useState<any>({
     question: "",
     description: "",
@@ -79,6 +80,9 @@ const AddMultipleChoiceQuestion = () => {
     data.append("number", "0");
     data.append("section", sectionId);
     data.append("fields", JSON.stringify(stepData));
+    if (image) {
+      data.append("image", image);
+    }
     images.map((image: File) => data.append("background_image", image));
     try {
       await addStep(data);
@@ -87,6 +91,10 @@ const AddMultipleChoiceQuestion = () => {
     }
     setLoading(false);
     history.goBack();
+  };
+
+  const handleAddImage = (addedFiles: File[]) => {
+    setImage(addedFiles[0]);
   };
 
   return (
@@ -152,6 +160,14 @@ const AddMultipleChoiceQuestion = () => {
           </Grid>
           <Grid item xs={6}>
             <Stack spacing={2}>
+              <Typography>Image</Typography>
+              <FileDropZone
+                accept="image/*"
+                maxFiles={1}
+                addFilesCallback={handleAddImage}
+                showPreview
+                helpText={"You can only upload image files"}
+              />
               <Typography>Background Image</Typography>
               <FileDropZone
                 accept="image/*"

@@ -327,9 +327,6 @@ const Steps = () => {
             className={"progress-bar"}
             completed={(sectionData?.completed_steps / sectionData.steps) * 100}
           />
-          {stepType === "text_content" && stepData.image && (
-            <TextContentQuestion image={stepData.image} />
-          )}
           {stepType !== "live_session" && (
             <Grid
               item
@@ -359,6 +356,7 @@ const Steps = () => {
               </Typography>
             </Grid>
           )}
+          {stepData.image && <TextContentQuestion image={stepData.image} />}
           {totalAnswerCount && (
             <Grid item sx={{ padding: "5% 10% 0 10%", textAlign: "center" }}>
               <Typography
@@ -396,6 +394,7 @@ const Steps = () => {
               </Typography>
             </Grid>
           )}
+
           {stepType === "video" && <VideoQuestion video={stepData.video} />}
           {stepType === "live_session" && (
             <LiveSession data={stepData} liveSessionDetail={liveSessionDetail} />

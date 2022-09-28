@@ -23,6 +23,7 @@ const AddPictureChoiceQuestion = () => {
   const history = useHistory();
   const [loading, setLoading] = useState<boolean>(false);
   const [backgroundImage, setBackgroundImage] = useState<File[]>([]);
+  const [image, setImage] = useState<File | null>(null);
   const [stepData, setStepData] = useState<any>({
     question: "",
     description: "",
@@ -87,6 +88,10 @@ const AddPictureChoiceQuestion = () => {
     data.append("step_type", "picture_choice_question");
     data.append("number", "0");
     data.append("section", sectionId);
+    if (image) {
+      data.append("image", image);
+    }
+
     let fields = JSON.parse(JSON.stringify(stepData)); // DEEP COPY
     stepData.answers.forEach((a: any) => {
       data.append("pictures", a.picture);
@@ -103,6 +108,10 @@ const AddPictureChoiceQuestion = () => {
     }
     setLoading(false);
     history.goBack();
+  };
+
+  const handleAddImage = (addedFiles: File[]) => {
+    setImage(addedFiles[0]);
   };
 
   return (
@@ -221,6 +230,14 @@ const AddPictureChoiceQuestion = () => {
           </Grid>
           <Grid item xs={6}>
             <Stack spacing={2}>
+              <Typography>Image</Typography>
+              <FileDropZone
+                accept="image/*"
+                maxFiles={1}
+                addFilesCallback={handleAddImage}
+                showPreview
+                helpText={"You can only upload image files"}
+              />
               <Typography>Background Image</Typography>
               <FileDropZone
                 accept="image/*"

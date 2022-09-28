@@ -14,6 +14,7 @@ const AddAudioContent = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [backgroundImage, setBackgroundImage] = useState<File | null>(null);
   const [audioFile, setAudioFile] = useState<File | null>(null);
+  const [image, setImage] = useState<File | null>(null);
   const [stepData, setStepData] = useState<any>({
     title: "",
     description: "",
@@ -51,6 +52,10 @@ const AddAudioContent = () => {
       data.append("background_image", backgroundImage);
     }
 
+    if (image) {
+      data.append("image", image);
+    }
+
     try {
       await addStep(data);
     } catch (error: any) {
@@ -58,6 +63,10 @@ const AddAudioContent = () => {
     }
     setLoading(false);
     history.goBack();
+  };
+
+  const handleAddImage = (addedFiles: File[]) => {
+    setImage(addedFiles[0]);
   };
 
   return (
@@ -86,7 +95,7 @@ const AddAudioContent = () => {
 
               <Stack direction="row" spacing={2}>
                 <Stack direction="column" textAlign="center" spacing={1}>
-                  <Paper variant="outlined" sx={{ p: 2}}>
+                  <Paper variant="outlined" sx={{ p: 2 }}>
                     {audioFile ? (
                       <Stack spacing={1}>
                         <Player source={audioFile} fileType="audio" />
@@ -136,6 +145,14 @@ const AddAudioContent = () => {
           </Grid>
           <Grid item xs={6}>
             <Stack spacing={2}>
+              <Typography>Image</Typography>
+              <FileDropZone
+                accept="image/*"
+                maxFiles={1}
+                addFilesCallback={handleAddImage}
+                showPreview
+                helpText={"You can only upload image files"}
+              />
               <Typography>Background Image</Typography>
               <FileDropZone
                 accept="image/*"

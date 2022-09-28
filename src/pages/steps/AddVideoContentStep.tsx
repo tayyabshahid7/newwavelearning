@@ -25,6 +25,7 @@ const AddVideoContent = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [backgroundImage, setBackgroundImage] = useState<File | null>(null);
   const [videoFile, setVideoFile] = useState<File | null>(null);
+  const [image, setImage] = useState<File | null>(null);
   const [stepData, setStepData] = useState<any>({
     title: "",
     description: "",
@@ -77,6 +78,14 @@ const AddVideoContent = () => {
     data.append("step_type", "video");
     data.append("number", "0");
     data.append("section", sectionId);
+
+    if (image) {
+      data.append("image", image);
+    }
+    if (backgroundImage) {
+      data.append("background_image", backgroundImage);
+    }
+
     let fields: any = stepData;
     if (videoFile) {
       await uploadFile();
@@ -86,14 +95,12 @@ const AddVideoContent = () => {
       data.append("fields", JSON.stringify(fields));
       await saveData(data);
     } else {
+      data.append("fields", JSON.stringify(fields));
       await saveData(data);
     }
   };
 
   const saveData = async (data: any) => {
-    if (backgroundImage) {
-      data.append("background_image", backgroundImage);
-    }
     try {
       await addStep(data);
     } catch (error: any) {
@@ -101,6 +108,10 @@ const AddVideoContent = () => {
     }
     setLoading(false);
     history.goBack();
+  };
+
+  const handleAddImage = (addedFiles: File[]) => {
+    setImage(addedFiles[0]);
   };
 
   return (
@@ -180,6 +191,14 @@ const AddVideoContent = () => {
           </Grid>
           <Grid item xs={6}>
             <Stack spacing={2}>
+              <Typography>Image</Typography>
+              <FileDropZone
+                accept="image/*"
+                maxFiles={1}
+                addFilesCallback={handleAddImage}
+                showPreview
+                helpText={"You can only upload image files"}
+              />
               <Typography>Background Image</Typography>
               <FileDropZone
                 accept="image/*"

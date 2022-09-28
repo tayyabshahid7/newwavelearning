@@ -24,6 +24,8 @@ const EditMultipleChoiceQuestion = () => {
   const [changeBackground, setChangeBackground] = useState<boolean>(false);
   const [deleteBackground, setDeleteBackground] = useState<boolean>(false);
   const [backgroundImage, setBackgroundImage] = useState<File | null>(null);
+  const [changeImage, setChangeImage] = useState<boolean>(false);
+  const [image, setImage] = useState<any>(null);
   const [stepData, setStepData] = useState<any>({
     question: "",
     description: "",
@@ -38,6 +40,8 @@ const EditMultipleChoiceQuestion = () => {
       try {
         const response = await getStepDetails(stepId);
         setStepData(response.fields);
+        setImage(response.fields.image);
+        setChangeImage(response.fields.image instanceof String);
       } catch (error: any) {
         console.log(error);
       }
@@ -105,6 +109,11 @@ const EditMultipleChoiceQuestion = () => {
       data.append("background_image", backgroundImage);
       fields.background_image = backgroundImage.name;
     }
+    data.append("image", image);
+
+    if (!image) {
+      fields.image = null;
+    }
     data.append("fields", JSON.stringify(fields));
 
     try {
@@ -114,6 +123,28 @@ const EditMultipleChoiceQuestion = () => {
     }
     setLoading(false);
     history.goBack();
+  };
+
+  const handleCancelRemoveImage = () => {
+    setImage(stepData.image);
+  };
+
+  const handleChangeImage = () => {
+    setImage(null);
+    setChangeImage(true);
+  };
+
+  const handleRemoveImage = () => {
+    setImage(null);
+  };
+
+  const handleCancelChangeImage = () => {
+    setImage(stepData.image);
+    setChangeImage(false);
+  };
+
+  const handleAddImage = (addedFiles: File[]) => {
+    setImage(addedFiles[0]);
   };
 
   return (
@@ -179,6 +210,40 @@ const EditMultipleChoiceQuestion = () => {
           </Grid>
           <Grid item xs={6}>
             <Stack spacing={2}>
+              <Typography>Image</Typography>
+              {changeImage ? (
+                <>
+                  <FileDropZone
+                    accept="image/*"
+                    maxFiles={1}
+                    addFilesCallback={handleAddImage}
+                    showPreview
+                    helpText={"You can only upload image files"}
+                  />
+
+                  <Button variant="text" color="error" onClick={handleCancelChangeImage}>
+                    Cancel image change
+                  </Button>
+                </>
+              ) : image !== null ? (
+                <>
+                  <img src={image} width={150} alt="step" />
+                  <Button variant="text" onClick={handleChangeImage}>
+                    Change image
+                  </Button>
+                  <Button variant="text" color="error" onClick={handleRemoveImage}>
+                    Remove image
+                  </Button>
+                </>
+              ) : stepData.image !== null ? (
+                <Button variant="text" color="error" onClick={handleCancelRemoveImage}>
+                  Cancel Remove image
+                </Button>
+              ) : (
+                <Button variant="text" onClick={handleChangeImage}>
+                  Add image
+                </Button>
+              )}
               <Typography>Background Image</Typography>
               {stepData.background_image && !changeBackground && !deleteBackground ? (
                 <>
