@@ -89,7 +89,7 @@ const UserDetailsPage = () => {
                       <b>Programme:</b> {learner.programme || "5/7"}
                     </Typography>
                     <Typography sx={{ color: "text.secondary" }}>
-                      <b>Completion:</b> {learner.completion || "5/7"}
+                      <b>Completion:</b> {learner.completed_steps + "/" + learner.steps}
                     </Typography>
                     <Typography sx={{ color: "text.secondary" }}>
                       <b>Facilitator:</b> {learner.facilitator}

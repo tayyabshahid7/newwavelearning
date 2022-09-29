@@ -16,12 +16,7 @@ import {
 import DashboardLayout from "../components/DashboardLayout";
 import { DatePicker, LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import {
-  AddCohort,
-  getAllProgrammesList,
-  getFacilitators,
-  getProgrammes,
-} from "../services/common";
+import { AddCohort, getAllProgrammesList, getFacilitators } from "../services/common";
 import { format } from "date-fns";
 import { useHistory } from "react-router";
 

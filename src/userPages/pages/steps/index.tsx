@@ -28,7 +28,6 @@ import SideNavbar from "../../components/SideNavbar";
 import LiveSession from "./LiveSession";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { Burger, Menu } from "../../components/BurgerMenu";
-import { getUser } from "../../../services/auth";
 import { Upload } from "@aws-sdk/lib-storage";
 import { S3Client } from "@aws-sdk/client-s3";
 
