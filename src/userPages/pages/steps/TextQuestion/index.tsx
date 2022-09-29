@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Typography } from "@mui/material";
-import selectedIcon from "../../../static/images/selected.png";
 import removeIcon from "../../../static/images/remove.png";
 import * as _ from "lodash";
 import correctIcon from "../../../static/images/correct.png";

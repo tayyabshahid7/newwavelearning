@@ -6,7 +6,6 @@ import "./style.scss";
 import arrowIcon from "../../static/images/right-arrow 6.png";
 import { useHistory } from "react-router";
 import { useParams } from "react-router-dom";
-import { getUser } from "../../../services/auth";
 import SideNavbar from "../../components/SideNavbar";
 import sidebarBgImage from "../../static/images/leftBar.svg";
 

@@ -16,12 +16,7 @@ import {
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import {
-  EditCohort,
-  getAllProgrammesList,
-  getFacilitators,
-  getProgrammes,
-} from "../../services/common";
+import { EditCohort, getAllProgrammesList, getFacilitators } from "../../services/common";
 import { format, parse } from "date-fns";
 
 const initialErrors = {
