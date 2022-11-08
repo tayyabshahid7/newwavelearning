@@ -217,7 +217,7 @@ const CohortEditDialog = ({
                   value={startDate}
                   onChange={handleStartDateChange}
                   inputFormat="dd/MM/yyyy"
-                  renderInput={params => (
+                  renderInput={(params: any) => (
                     <TextField
                       size="small"
                       {...params}
@@ -235,7 +235,7 @@ const CohortEditDialog = ({
                   value={endDate}
                   onChange={handleEndDateChange}
                   inputFormat="dd/MM/yyyy"
-                  renderInput={params => (
+                  renderInput={(params: any) => (
                     <TextField
                       size="small"
                       {...params}
