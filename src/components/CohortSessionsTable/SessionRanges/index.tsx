@@ -110,7 +110,7 @@ const SessionRanges = ({ session }: SessionRagesProps) => {
           onChange={handleStartDateChange}
           inputFormat="dd/MM/yyyy"
           showTodayButton
-          renderInput={params => (
+          renderInput={(params: any) => (
             <TextField
               size="small"
               {...params}
@@ -126,7 +126,7 @@ const SessionRanges = ({ session }: SessionRagesProps) => {
           onChange={handleEndDateChange}
           inputFormat="dd/MM/yyyy"
           showTodayButton
-          renderInput={params => (
+          renderInput={(params: any) => (
             <TextField
               size="small"
               {...params}

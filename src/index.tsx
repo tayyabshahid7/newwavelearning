@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import theme from "./common/theme";
 import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
+// @ts-ignore
 import { SnackbarProvider } from "notistack";
 // import Learner from "./Learner";
 
@@ -25,6 +26,7 @@ importBuildTarget().then(({ default: Environment }) =>
     <React.StrictMode>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        {/*@ts-ignore*/}
         <SnackbarProvider
           anchorOrigin={{
             vertical: "top",
