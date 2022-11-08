@@ -257,7 +257,7 @@ const UsersPage = () => {
 
   return (
     <DashboardLayout selectedPage={"users"}>
-      <Typography variant="h2">Users</Typography>
+      <Typography variant="h2">User22s</Typography>
       <Stack spacing={2}>
         <Stack direction="row" spacing={3}>
           <FormControl fullWidth>
