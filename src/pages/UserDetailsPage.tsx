@@ -12,9 +12,11 @@ import {
 } from "@mui/material";
 import DashboardLayout from "components/DashboardLayout";
 import { useHistory, useParams } from "react-router-dom";
-import { getUserDetails } from "services/common";
+import { getUserDetailAnswer, getUserDetails } from "services/common";
 import StepAnswerDetails from "components/StepAnswerDetails";
 import EditUserDialog from "components/EditUserDialog/inedx";
+import { Learner } from "../common/types";
+import { CSVDownload } from "react-csv";
 
 interface UserDetailsPageParams {
   userId: string;
@@ -25,14 +27,19 @@ const UserDetailsPage = () => {
   const { userId } = useParams<UserDetailsPageParams>();
   const [loading, setLoading] = useState<boolean>(false);
   const [user, setUser] = useState<any>(null);
+  const [answer, setAnswer] = useState<any>(null);
   const [editDialogOpen, setEditDialogOpen] = useState<boolean>(false);
+  const [downloadLearnersCSV, setDownloadLearnersCSV] = useState<boolean>(false);
+  const [learnersCsvData, setLearnersCsvData] = useState<any>([]);
 
   useEffect(() => {
     const fetchUserDetails = async () => {
       setLoading(true);
       try {
         const response = await getUserDetails(userId);
+        const answers = await getUserDetailAnswer(userId);
         setUser(response.data);
+        setAnswer(answers.data);
       } catch (error: any) {
         console.log(error);
       }
@@ -46,6 +53,22 @@ const UserDetailsPage = () => {
     setEditDialogOpen(false);
   };
 
+  const handleDownloadLearnersCSV = () => {
+    let data = answer.map((item: any) => {
+      return [
+        item.step.step_type,
+        item.step.fields.question || item.step.fields.answer,
+        item.step.fields.description,
+        item.step.fields.question || item.step.fields.answer,
+        item.answer.value,
+      ];
+    });
+    data = [["type", "question/title", "description", "answer", "correct answers"], ...data];
+    setLearnersCsvData(data);
+    setDownloadLearnersCSV(true);
+    setTimeout(setDownloadLearnersCSV, 100, false);
+  };
+
   return (
     <DashboardLayout selectedPage={"users"} loading={loading}>
       <Button
@@ -57,6 +80,9 @@ const UserDetailsPage = () => {
         Back to users list
       </Button>
       <Typography variant="h4">User Details</Typography>
+      {downloadLearnersCSV && <CSVDownload data={learnersCsvData} target="_blank" />}
+      <Button onClick={handleDownloadLearnersCSV}>Download Learners CSV</Button>
+
       {user && (
         <Stack spacing={3} component={Paper} sx={{ p: 4 }}>
           <Stack direction="row" justifyContent="space-between">

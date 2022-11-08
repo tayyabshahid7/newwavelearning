@@ -28,9 +28,12 @@ import { useSnackbar } from "notistack";
 import AddUserDialog from "components/AddUserDialog/inedx";
 import { useHistory } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
+import { Learner } from "../common/types";
+import { CSVDownload } from "react-csv";
 
 const UsersPage = () => {
   const { enqueueSnackbar } = useSnackbar();
+
   const history = useHistory();
   const [deleteDialog, setDeleteDialog] = useState<any>({
     open: false,
@@ -130,13 +133,6 @@ const UsersPage = () => {
       },
     },
   ];
-
-  // const data = [
-  //   { email: "1", name: "Joe James", company: "Test Corp", city: "Yonkers", state: "NY" },
-  //   { email: "1", name: "John Walsh", company: "Test Corp", city: "Hartford", state: "CT" },
-  //   { email: "1", name: "Bob Herm", company: "Test Corp", city: "Tampa", state: "FL" },
-  //   { email: "1", name: "James Houston", company: "Test Corp", city: "Dallas", state: "TX" },
-  // ];
 
   const options: any = {
     serverSide: true,

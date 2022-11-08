@@ -517,6 +517,15 @@ export const getUserDetails = async (userId: string | number) => {
   }
 };
 
+export const getUserDetailAnswer = async (userId: string | number) => {
+  try {
+    const response = await axs.get<ResponseData>(`/users/${userId}/get-details-answers/`);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
 export const submitStepAnswer = async (data: any) => {
   try {
     const response = await axs.post<ResponseData>(`/stepanswers/`, data);
