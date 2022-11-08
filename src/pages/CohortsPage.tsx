@@ -153,6 +153,7 @@ const CohortsPage = ({ history1 }: CohortsPageProps) => {
             <TableRow>
               <TableCell></TableCell>
               <TableCell align="left">Cohort</TableCell>
+              <TableCell align="left">Average Steps Completed</TableCell>
               <TableCell align="left">Learners</TableCell>
               <TableCell></TableCell>
             </TableRow>
@@ -164,6 +165,7 @@ const CohortsPage = ({ history1 }: CohortsPageProps) => {
                   <b>#{i + 1}</b>
                 </TableCell>
                 <TableCell>{cohort.name}</TableCell>
+                <TableCell>{cohort.average_steps_completed}</TableCell>
                 <TableCell>
                   {cohort.learners_count} learner{cohort.learners_count !== 1 && "s"}
                 </TableCell>
