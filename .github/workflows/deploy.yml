@@ -27,6 +27,4 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Execute Deployment
         run: |
-          git add .
-          git commit -m "changes"
           bash .cicd/deploy.sh
