@@ -29,6 +29,7 @@
     "date-fns": "^2.25.0",
     "filestream": "^5.0.0",
     "lodash": "^4.17.21",
+    "mui-datatables": "^4.2.2",
     "notistack": "^2.0.3",
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.0",
@@ -69,6 +70,7 @@
     ]
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.181"
+    "@types/lodash": "^4.14.181",
+    "@types/mui-datatables": "^3.7.9"
   }
 }

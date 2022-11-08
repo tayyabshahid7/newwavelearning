@@ -21,11 +21,13 @@ import {
   TableRow,
   TextField,
 } from "@mui/material";
+import DownloadIcon from "@mui/icons-material/GetApp";
 import { deleteUser, getUsers, getUsersPage, getUserTypes } from "services/common";
 import PromptDialog from "components/PromptDialog";
 import { useSnackbar } from "notistack";
 import AddUserDialog from "components/AddUserDialog/inedx";
 import { useHistory } from "react-router-dom";
+import MUIDataTable from "mui-datatables";
 
 const UsersPage = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -55,6 +57,103 @@ const UsersPage = () => {
     };
     fetchTypes();
   }, []);
+
+  const columns = [
+    {
+      name: "id",
+      options: { display: "false" as const },
+    },
+    {
+      name: "email",
+      label: "Email",
+      options: {
+        filter: false,
+        sort: false,
+      },
+    },
+    {
+      name: "first_name",
+      label: "Name",
+      options: {
+        filter: false,
+        sort: false,
+        customBodyRender: (value: any, tableMeta: any, updateValue: any) => {
+          const id = tableMeta?.rowData[0];
+          let user: any = null;
+          if (id) user = userList.filter((item: any) => item.id == id)[0];
+          return (
+            <div>
+              {user.first_name} {user.last_name}
+            </div>
+          );
+        },
+      },
+    },
+
+    {
+      name: "role",
+      label: "Role",
+      options: {
+        filter: false,
+        sort: false,
+      },
+    },
+    {
+      name: "last_login",
+      label: "Last login",
+      options: {
+        filter: false,
+        sort: false,
+      },
+    },
+    {
+      name: "",
+      label: "",
+      options: {
+        filter: false,
+        sort: false,
+        customBodyRender: (value: any, tableMeta: any, updateValue: any) => {
+          const id = tableMeta?.rowData[0];
+          let user: any = null;
+          if (id) user = userList.filter((item: any) => item.id == id)[0];
+          return (
+            <div style={{ display: "flex" }}>
+              <Button size="small" onClick={() => history.push(`/users/${id}/`)}>
+                View
+              </Button>
+              <Button variant="text" color="error" onClick={() => handleDeleteUser(user)}>
+                Delete
+              </Button>
+            </div>
+          );
+        },
+      },
+    },
+  ];
+
+  // const data = [
+  //   { email: "1", name: "Joe James", company: "Test Corp", city: "Yonkers", state: "NY" },
+  //   { email: "1", name: "John Walsh", company: "Test Corp", city: "Hartford", state: "CT" },
+  //   { email: "1", name: "Bob Herm", company: "Test Corp", city: "Tampa", state: "FL" },
+  //   { email: "1", name: "James Houston", company: "Test Corp", city: "Dallas", state: "TX" },
+  // ];
+
+  const options: any = {
+    serverSide: true,
+    filterType: "",
+    selectableRows: false,
+    download: true,
+    filter: false,
+    search: false,
+    print: false,
+    responsive: "standard",
+    viewColumns: false,
+    count: pagination?.count,
+    rowsPerPageOptions: [],
+    onTableChange: (action: any, tableState: any) => {
+      if (action === "changePage") handleChangePage(null, tableState.page + 1);
+    },
+  };
 
   useEffect(() => {
     const getUserList = async () => {
@@ -144,6 +243,13 @@ const UsersPage = () => {
     setUserList([user, ...userList]);
     setAddDialogOpen(false);
   };
+
+  const components = {
+    icons: {
+      DownloadIcon,
+    },
+  };
+
   return (
     <DashboardLayout selectedPage={"users"}>
       <Typography variant="h2">Users</Typography>
@@ -179,53 +285,14 @@ const UsersPage = () => {
             Add New User
           </Button>
         </Stack>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Email</TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell>Role</TableCell>
-                <TableCell colSpan={2}>Last login</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {userList.map((user: any) => (
-                <TableRow key={user.id}>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>{`${user.first_name} ${user.last_name}`}</TableCell>
-                  <TableCell>{user.last_login || "-"}</TableCell>
-                  <TableCell>{user.role || "-"}</TableCell>
-                  <TableCell align="right">
-                    <Button size="small" onClick={() => history.push(`/users/${user.id}/`)}>
-                      View
-                    </Button>
-                    <Button variant="text" color="error" onClick={() => handleDeleteUser(user)}>
-                      Delete
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TablePagination
-                  rowsPerPageOptions={[10]}
-                  count={pagination.count}
-                  page={pagination.page}
-                  rowsPerPage={10}
-                  SelectProps={{
-                    inputProps: {
-                      "aria-label": "rows per page",
-                    },
-                    native: true,
-                  }}
-                  onPageChange={handleChangePage}
-                />
-              </TableRow>
-            </TableFooter>
-          </Table>
-        </TableContainer>
+
+        <MUIDataTable
+          title={"Users List"}
+          components={components}
+          data={userList}
+          columns={columns}
+          options={options}
+        />
       </Stack>
       <PromptDialog
         open={deleteDialog.open}
