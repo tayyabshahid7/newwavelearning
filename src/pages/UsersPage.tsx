@@ -153,6 +153,10 @@ const UsersPage = () => {
     onTableChange: (action: any, tableState: any) => {
       if (action === "changePage") handleChangePage(null, tableState.page + 1);
     },
+    downloadOptions: {
+      filename: "Users.csv",
+      separator: ",",
+    },
   };
 
   useEffect(() => {
