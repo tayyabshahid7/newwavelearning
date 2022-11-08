@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import Typography from "@mui/material/Typography";
 
 import DashboardLayout from "../components/DashboardLayout";
-import { getFeedbackFiltersData, getFilteredFeedbackList } from "services/common";
+import {
+  filterUserByEmail,
+  getFeedbackFiltersData,
+  getFilteredFeedbackList,
+  getUsers,
+} from "services/common";
 import {
   Button,
   FormControl,
@@ -18,6 +23,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
 } from "@mui/material";
 import AddFeedbackDialog from "components/AddFeedbackDialog";
 import { Feedback } from "common/types";
@@ -36,6 +42,9 @@ const FeedbackPage = () => {
     cohortId: "0",
     learnerId: "0",
   });
+
+  const [email, setEmail] = useState<any>("");
+
   useEffect(() => {
     const fetchFeedbackData = async () => {
       try {
@@ -100,6 +109,20 @@ const FeedbackPage = () => {
     setDialog({ ...dialog, open: false });
   };
 
+  const handleSearchUser = async (event: any) => {
+    event.preventDefault();
+    try {
+      const response: any = await filterUserByEmail(email);
+      setFeedbackList(response.data);
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+
+  const handleTextChange = (event: any) => {
+    setEmail(event.target.value);
+  };
+
   return (
     <DashboardLayout selectedPage={"feedback"}>
       <Typography variant="h2">Feedback</Typography>
@@ -122,7 +145,14 @@ const FeedbackPage = () => {
               ))}
             </Select>
           </FormControl>
-
+          <form onSubmit={handleSearchUser} style={{ width: "100%" }}>
+            <TextField
+              onChange={handleTextChange}
+              value={filters.searchText}
+              label="Search"
+              fullWidth
+            />
+          </form>
           <FormControl fullWidth>
             <InputLabel id="select-learner-label">Learner</InputLabel>
             <Select

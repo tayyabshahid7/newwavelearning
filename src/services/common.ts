@@ -372,6 +372,19 @@ export const getFilteredFeedbackList = async (
   }
 };
 
+export const filterUserByEmail = async (email: string | null = null) => {
+  try {
+    let url = `/feedback/filter-user/`;
+    if (email) {
+      url = url + `?email=${email}`;
+    }
+    const response = await axs.get<ResponseData>(url);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
 export const getLearnerFeedbackList = async (
   cohortId: string | null = null,
   learnerId: string | null = null
