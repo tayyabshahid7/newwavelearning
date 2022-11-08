@@ -218,6 +218,7 @@ const UsersPage = () => {
       console.log(error);
     }
   };
+
   const handleDeleteUser = (user: any) => {
     setDeleteDialog({
       open: true,
