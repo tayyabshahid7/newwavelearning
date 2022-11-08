@@ -6,6 +6,7 @@ import {
   AccordionSummary,
   Button,
   Divider,
+  Grid,
   Paper,
   Stack,
   Typography,
@@ -59,7 +60,7 @@ const UserDetailsPage = () => {
         item.step.step_type,
         item.step.fields.question || item.step.fields.answer,
         item.step.fields.description,
-        item.step.fields.question || item.step.fields.answer,
+        "",
         item.answer.value,
       ];
     });
@@ -81,7 +82,9 @@ const UserDetailsPage = () => {
       </Button>
       <Typography variant="h4">User Details</Typography>
       {downloadLearnersCSV && <CSVDownload data={learnersCsvData} target="_blank" />}
-      <Button onClick={handleDownloadLearnersCSV}>Download Learners CSV</Button>
+      <Grid sx={{ display: "flex", justifyContent: "end", marginBottom: "10px" }}>
+        <Button onClick={handleDownloadLearnersCSV}>Download Learners CSV</Button>
+      </Grid>
 
       {user && (
         <Stack spacing={3} component={Paper} sx={{ p: 4 }}>
