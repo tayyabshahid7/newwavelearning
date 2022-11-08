@@ -219,7 +219,7 @@ const UsersPage = () => {
         count: response.data.count,
       });
     } catch (error: any) {
-      console.log(error);
+      console.log("error" + error);
     }
   };
 
