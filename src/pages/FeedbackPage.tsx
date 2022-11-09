@@ -4,6 +4,9 @@ import Typography from "@mui/material/Typography";
 import DashboardLayout from "../components/DashboardLayout";
 import {
   filterUserByEmail,
+  getAllProgrammesList,
+  getFacilitators,
+  getFacilitatorUsers,
   getFeedbackFiltersData,
   getFilteredFeedbackList,
   getUsers,
@@ -28,12 +31,14 @@ import {
 import AddFeedbackDialog from "components/AddFeedbackDialog";
 import { Feedback } from "common/types";
 import { Warning } from "@mui/icons-material";
+import { getUser } from "../services/auth";
 
 const FeedbackPage = () => {
   const [dialog, setDialog] = useState<any>({
     open: false,
     feedback: null,
   });
+  const [facilitatorList, setFacilitatorList] = useState<any>(null);
   const [feedbackList, setFeedbackList] = useState<any>([]);
   const [cohortList, setCohortList] = useState<any>([]);
   const [learnerList, setLearnerList] = useState<any>([]);
@@ -43,7 +48,20 @@ const FeedbackPage = () => {
     learnerId: "0",
   });
 
+  const user = getUser();
   const [email, setEmail] = useState<any>("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getFacilitators();
+        setFacilitatorList(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const fetchFeedbackData = async () => {
@@ -123,6 +141,17 @@ const FeedbackPage = () => {
     setEmail(event.target.value);
   };
 
+  const handleFacilitatorFilterChange = async (event: any) => {
+    event.preventDefault();
+    try {
+      const response: any = await getFacilitatorUsers(event.target.value);
+      setFeedbackList(response.data);
+      debugger;
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+
   return (
     <DashboardLayout selectedPage={"feedback"}>
       <Typography variant="h2">Feedback</Typography>
@@ -145,31 +174,53 @@ const FeedbackPage = () => {
               ))}
             </Select>
           </FormControl>
-          <form onSubmit={handleSearchUser} style={{ width: "100%" }}>
-            <TextField
-              onChange={handleTextChange}
-              value={filters.searchText}
-              label="Search"
-              fullWidth
-            />
-          </form>
-          <FormControl fullWidth>
-            <InputLabel id="select-learner-label">Learner</InputLabel>
-            <Select
-              labelId="select-learner-label"
-              id="select-learner"
-              value={filters.learnerId}
-              label="Learner"
-              onChange={handleLearnerFilterChange}
-            >
-              <MenuItem value={"0"}>All</MenuItem>
-              {learnerList.map((learner: any) => (
-                <MenuItem key={learner.id} value={learner.id}>
-                  {learner.email} [{learner.cohort_name}]
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          {user.role === "admin" ? (
+            <>
+              <form onSubmit={handleSearchUser} style={{ width: "100%" }}>
+                <TextField
+                  onChange={handleTextChange}
+                  value={filters.searchText}
+                  label="Search"
+                  fullWidth
+                />
+              </form>
+              <FormControl fullWidth>
+                <InputLabel id="select-learner-label">Facilitator</InputLabel>
+                <Select
+                  labelId="select-facilitator-label"
+                  id="select-facilitator"
+                  label="All"
+                  onChange={handleFacilitatorFilterChange}
+                >
+                  <MenuItem value={"0"}>All</MenuItem>
+                  {facilitatorList &&
+                    facilitatorList.map((item: any) => (
+                      <MenuItem key={item.id} value={item.email}>
+                        {item.email}
+                      </MenuItem>
+                    ))}
+                </Select>
+              </FormControl>
+            </>
+          ) : (
+            <FormControl fullWidth>
+              <InputLabel id="select-learner-label">Learner</InputLabel>
+              <Select
+                labelId="select-learner-label"
+                id="select-learner"
+                value={filters.learnerId}
+                label="Learner"
+                onChange={handleLearnerFilterChange}
+              >
+                <MenuItem value={"0"}>All</MenuItem>
+                {learnerList.map((learner: any) => (
+                  <MenuItem key={learner.id} value={learner.id}>
+                    {learner.email} [{learner.cohort_name}]
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
         </Stack>
         <TableContainer component={Paper}>
           <Table>
