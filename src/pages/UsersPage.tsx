@@ -57,39 +57,9 @@ const UsersPage = () => {
   });
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let users: any = null;
-        fetch(`${API_URL}/users/get-all-users/`, {
-          method: "get",
-          headers: new Headers({
-            Authorization: "Bearer " + localStorage.getItem("access_token"),
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          }),
-        })
-          .then(response => response.json())
-          .then(responseData => {
-            users = responseData;
-          });
-
-        let data = users.map((user: any, i: number) => [
-          user.email,
-          user.first_name,
-          user.last_name,
-        ]);
-        data = [["email", "first Name", "last name"], ...data];
-        setLearnersCsvData(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchData();
-  }, []);
-
-  useEffect(() => {
     const fetchTypes = async () => {
       const response: any = await getUserTypes();
+
       setRoles(response.data);
     };
     fetchTypes();
@@ -186,6 +156,15 @@ const UsersPage = () => {
   };
 
   const handleDownloadLearnersCSV = async () => {
+    const response: any = await getAllUsers();
+    let data = response.data.map((user: any, i: number) => [
+      user.email,
+      user.first_name,
+      user.last_name,
+    ]);
+    debugger;
+    data = [["email", "first Name", "last name"], ...data];
+    setLearnersCsvData(data);
     setDownloadLearnersCSV(true);
     setTimeout(setDownloadLearnersCSV, 100, false);
   };
