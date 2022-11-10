@@ -496,7 +496,7 @@ export const getUserTypes = async () => {
 
 export const getAllUsers = async () => {
   try {
-    const response = await axs.get<string[]>(`/users/get-all-users`);
+    const response = await axs.get<string[]>(`/get-all-users`);
     return response;
   } catch (error: any) {
     throw error;

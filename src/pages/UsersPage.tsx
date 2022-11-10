@@ -146,9 +146,8 @@ const UsersPage = () => {
   };
 
   const handleDownloadLearnersCSV = async () => {
-    const response = await getAllUsers();
-    debugger;
-    let users = response.data;
+    const response: any = await getAllUsers();
+    let users = response.data.user;
     let data = users.map((user: any, i: number) => [user.email, user.first_name, user.last_name]);
     data = [["email", "first Name", "last name"], ...data];
     setLearnersCsvData(data);
