@@ -14,7 +14,7 @@ import {
   TextField,
 } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/GetApp";
-import { deleteUser, getAllUsers, getUsers, getUsersPage, getUserTypes } from "services/common";
+import { deleteUser, getUsers, getUsersPage, getUserTypes } from "services/common";
 import PromptDialog from "components/PromptDialog";
 import { useSnackbar } from "notistack";
 import AddUserDialog from "components/AddUserDialog/inedx";
@@ -49,11 +49,10 @@ const UsersPage = () => {
 
   useEffect(() => {
     const fetchTypes = async () => {
-      const response = await getUserTypes();
-      setRoles(response.data);
+      const response: any = await getUserTypes();
+      setRoles(response.data.roles);
 
-      const response2: any = await getAllUsers();
-      let users = response2.data.user;
+      let users = response.data.users;
       let data = users.map((user: any, i: number) => [user.email, user.first_name, user.last_name]);
       data = [["email", "first Name", "last name"], ...data];
 

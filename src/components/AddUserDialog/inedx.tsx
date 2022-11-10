@@ -32,8 +32,8 @@ const AddUserDialog = ({ open, cancelCallback, addedUserCallback }: AddUserDialo
 
   useEffect(() => {
     const fetchTypes = async () => {
-      const response = await getUserTypes();
-      setRoles(response.data);
+      const response: any = await getUserTypes();
+      setRoles(response.data.roles);
     };
     if (open) {
       fetchTypes();
