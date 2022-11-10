@@ -30,6 +30,7 @@ import { useHistory } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import { CSVDownload } from "react-csv";
 import GetAppIcon from "@mui/icons-material/GetApp";
+import { API_URL, TOKEN_REFRESH_URL } from "../common/constants";
 
 const UsersPage = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -58,8 +59,20 @@ const UsersPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response: any = await getAllUsers();
-        let users = response.data;
+        let users: any = null;
+        fetch(`${API_URL}/users/get-all-users/`, {
+          method: "get",
+          headers: new Headers({
+            Authorization: "Bearer " + localStorage.getItem("access_token"),
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          }),
+        })
+          .then(response => response.json())
+          .then(responseData => {
+            users = responseData;
+          });
+
         let data = users.map((user: any, i: number) => [
           user.email,
           user.first_name,
