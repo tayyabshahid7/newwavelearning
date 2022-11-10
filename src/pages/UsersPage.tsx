@@ -5,31 +5,23 @@ import DashboardLayout from "../components/DashboardLayout";
 import {
   Button,
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
-  Paper,
   Select,
   SelectChangeEvent,
   Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableFooter,
-  TableHead,
-  TablePagination,
-  TableRow,
   TextField,
 } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/GetApp";
-import { deleteUser, getUsers, getUsersPage, getUserTypes } from "services/common";
+import { deleteUser, getAllUsers, getUsers, getUsersPage, getUserTypes } from "services/common";
 import PromptDialog from "components/PromptDialog";
 import { useSnackbar } from "notistack";
 import AddUserDialog from "components/AddUserDialog/inedx";
 import { useHistory } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
-import { Learner } from "../common/types";
 import { CSVDownload } from "react-csv";
+import GetAppIcon from "@mui/icons-material/GetApp";
 
 const UsersPage = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -39,6 +31,8 @@ const UsersPage = () => {
     open: false,
     user: null,
   });
+  const [downloadLearnersCSV, setDownloadLearnersCSV] = useState<boolean>(false);
+  const [learnersCsvData, setLearnersCsvData] = useState<any>(null);
   const [addDialogOpen, setAddDialogOpen] = useState<boolean>(false);
   const [roles, setRoles] = useState<string[]>(["all"]);
   const [userList, setUserList] = useState<any>([]);
@@ -138,7 +132,7 @@ const UsersPage = () => {
     serverSide: true,
     filterType: "",
     selectableRows: false,
-    download: true,
+    download: false,
     filter: false,
     search: false,
     print: false,
@@ -149,10 +143,16 @@ const UsersPage = () => {
     onTableChange: (action: any, tableState: any) => {
       if (action === "changePage") handleChangePage(null, tableState.page + 1);
     },
-    downloadOptions: {
-      filename: "Users.csv",
-      separator: ",",
-    },
+  };
+
+  const handleDownloadLearnersCSV = async () => {
+    const response = await getAllUsers();
+    let users = response.data;
+    let data = users.map((user: any, i: number) => [user.email, user.first_name, user.last_name]);
+    data = [["email", "first Name", "last name"], ...data];
+    setLearnersCsvData(data);
+    setDownloadLearnersCSV(true);
+    setTimeout(setDownloadLearnersCSV, 100, false);
   };
 
   useEffect(() => {
@@ -287,6 +287,13 @@ const UsersPage = () => {
           </Button>
         </Stack>
 
+        {downloadLearnersCSV && <CSVDownload data={learnersCsvData} target="_blank" />}
+        <Grid sx={{ display: "flex", justifyContent: "end" }}>
+          <Button onClick={handleDownloadLearnersCSV}>
+            <GetAppIcon />
+            <span style={{ marginLeft: "7px" }}> Download All Users</span>
+          </Button>
+        </Grid>
         <MUIDataTable
           title={"Users List"}
           components={components}

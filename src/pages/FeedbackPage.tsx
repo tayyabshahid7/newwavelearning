@@ -146,7 +146,6 @@ const FeedbackPage = () => {
     try {
       const response: any = await getFacilitatorUsers(event.target.value);
       setFeedbackList(response.data);
-      debugger;
     } catch (error: any) {
       console.log(error);
     }

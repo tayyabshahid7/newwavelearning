@@ -494,6 +494,15 @@ export const getUserTypes = async () => {
   }
 };
 
+export const getAllUsers = async () => {
+  try {
+    const response = await axs.get<string[]>(`/users/get-all-users/`);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
 export const addUser = async (user: any) => {
   try {
     const response = await axs.post<ResponseData>("/users/", user);
