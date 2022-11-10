@@ -8,7 +8,7 @@ axios.defaults.baseURL = `${API_URL}`;
 axios.defaults.headers.common["Content-Type"] = "application/json";
 
 export let axs = axios.create({
-  timeout: 5000,
+  timeout: 1000000,
   headers: {
     Authorization: "Bearer " + localStorage.getItem("access_token"),
     "Content-Type": "application/json",

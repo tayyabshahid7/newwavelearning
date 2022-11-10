@@ -41,7 +41,7 @@ const EditUserDialog = ({
   useEffect(() => {
     const fetchTypes = async () => {
       const response: any = await getUserTypes();
-      setRoles(response.data.roles);
+      setRoles(response.data);
     };
     if (open) {
       fetchTypes();

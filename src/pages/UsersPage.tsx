@@ -17,6 +17,7 @@ import DownloadIcon from "@mui/icons-material/GetApp";
 import {
   deleteUser,
   getAllProgrammesList,
+  getAllUsers,
   getFacilitators,
   getUsers,
   getUsersPage,
@@ -57,7 +58,15 @@ const UsersPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response: any = await getUserTypes();
+        const response: any = await getAllUsers();
+        let users = response.data;
+        let data = users.map((user: any, i: number) => [
+          user.email,
+          user.first_name,
+          user.last_name,
+        ]);
+        data = [["email", "first Name", "last name"], ...data];
+        setLearnersCsvData(data);
       } catch (error) {
         console.log(error);
       }
@@ -68,13 +77,7 @@ const UsersPage = () => {
   useEffect(() => {
     const fetchTypes = async () => {
       const response: any = await getUserTypes();
-      setRoles(response.data.roles);
-
-      let users = response.data.users;
-      let data = users.map((user: any, i: number) => [user.email, user.first_name, user.last_name]);
-      data = [["email", "first Name", "last name"], ...data];
-
-      setLearnersCsvData(data);
+      setRoles(response.data);
     };
     fetchTypes();
   }, []);

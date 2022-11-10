@@ -575,3 +575,13 @@ export const getAllProgrammesList = async (pageUrl: string | null = null) => {
     throw error;
   }
 };
+
+export const getAllUsers = async (pageUrl: string | null = null) => {
+  const url = pageUrl || "/users/get-all-users/";
+  try {
+    const response = await axs.get<ResponseData>(url);
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
+};
