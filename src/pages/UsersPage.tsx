@@ -51,6 +51,13 @@ const UsersPage = () => {
     const fetchTypes = async () => {
       const response = await getUserTypes();
       setRoles(response.data);
+
+      const response2: any = await getAllUsers();
+      let users = response2.data.user;
+      let data = users.map((user: any, i: number) => [user.email, user.first_name, user.last_name]);
+      data = [["email", "first Name", "last name"], ...data];
+
+      setLearnersCsvData(data);
     };
     fetchTypes();
   }, []);
@@ -146,11 +153,6 @@ const UsersPage = () => {
   };
 
   const handleDownloadLearnersCSV = async () => {
-    const response: any = await getAllUsers();
-    let users = response.data.user;
-    let data = users.map((user: any, i: number) => [user.email, user.first_name, user.last_name]);
-    data = [["email", "first Name", "last name"], ...data];
-    setLearnersCsvData(data);
     setDownloadLearnersCSV(true);
     setTimeout(setDownloadLearnersCSV, 100, false);
   };
