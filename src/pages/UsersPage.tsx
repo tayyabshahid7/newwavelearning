@@ -14,7 +14,14 @@ import {
   TextField,
 } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/GetApp";
-import { deleteUser, getUsers, getUsersPage, getUserTypes } from "services/common";
+import {
+  deleteUser,
+  getAllProgrammesList,
+  getFacilitators,
+  getUsers,
+  getUsersPage,
+  getUserTypes,
+} from "services/common";
 import PromptDialog from "components/PromptDialog";
 import { useSnackbar } from "notistack";
 import AddUserDialog from "components/AddUserDialog/inedx";
@@ -46,6 +53,17 @@ const UsersPage = () => {
     page: 0,
     count: 0,
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response: any = await getUserTypes();
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const fetchTypes = async () => {
