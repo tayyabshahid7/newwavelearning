@@ -54,14 +54,64 @@ const UserDetailsPage = () => {
     setEditDialogOpen(false);
   };
 
+  const getCorrectAnswers = (item: any) => {
+    let data = [];
+    data =
+      item &&
+      item.map((obj: any) => {
+        if (obj.correct) {
+          return obj.id;
+        }
+      });
+    if (data) {
+      data = data.filter((element: any) => {
+        return element !== undefined;
+      });
+      return data;
+    }
+  };
+
+  const getUserAnswer = (item: any) => {
+    let type = item.step.step_type;
+    let answer = "";
+    if (type === "picture_choice_question" || type === "multiple_choice_question") {
+      answer = item?.answer?.answer?.toString();
+    } else if (type === "video_response") {
+      answer = item?.video_file_url;
+    } else if (type === "video") {
+      answer = item.step.fields.video;
+    } else if (type === "audio") {
+      answer = item.step.fields.audio;
+    } else if (type === "audio_response") {
+      answer = item?.file_answer;
+    } else if (type === "toggle") {
+      answer = item?.answer.value;
+    } else if (type === "text_content") {
+      answer = item?.step.fields.content;
+    } else if (
+      type === "open_ended_question" ||
+      type === "keyword_question" ||
+      type === "model_answer_question"
+    ) {
+      answer = item?.answer?.text;
+    }
+    return answer;
+  };
+
   const handleDownloadLearnersCSV = () => {
     let data = answer.map((item: any) => {
+      let type = item.step.step_type;
+      let fields = item.step.fields;
       return [
         item.step.step_type,
-        item.step.fields.question || item.step.fields.answer,
-        item.step.fields.description,
-        "",
-        item.answer.value,
+        fields.question || fields.answer,
+        fields.description,
+        getUserAnswer(item),
+        type === "keyword_question"
+          ? fields.keywords.toString()
+          : type === "model_answer_question"
+          ? fields.model_answer
+          : getCorrectAnswers(fields.answers),
       ];
     });
     data = [["type", "question/title", "description", "answer", "correct answers"], ...data];

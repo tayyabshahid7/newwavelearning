@@ -122,7 +122,7 @@ const UsersPage = () => {
         customBodyRender: (value: any, tableMeta: any, updateValue: any) => {
           const id = tableMeta?.rowData[0];
           let user: any = null;
-          if (id) user = userList.filter((item: any) => item.id == id)[0];
+          if (id) user = userList.filter((item: any) => item.id === id)[0];
           return (
             <div style={{ display: "flex" }}>
               <Button size="small" onClick={() => history.push(`/users/${id}/`)}>
@@ -162,7 +162,6 @@ const UsersPage = () => {
       user.first_name,
       user.last_name,
     ]);
-    debugger;
     data = [["email", "first Name", "last name"], ...data];
     setLearnersCsvData(data);
     setDownloadLearnersCSV(true);
